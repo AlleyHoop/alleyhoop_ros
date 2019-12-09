@@ -79,6 +79,7 @@ else:
 # unarchive image
 if not (os.path.exists(userarg_image_pth)):
     if (os.path.exists(userarg_image_archive_pth)):
+        print("extracting file " + userarg_image_archive_pth)
         subprocess.call(["unxz", userarg_image_archive])
         log.append("unarchived file, resulting file : " + userarg_image_pth)
     else:

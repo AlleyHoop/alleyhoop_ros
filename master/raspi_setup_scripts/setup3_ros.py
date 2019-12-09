@@ -52,11 +52,11 @@ arg_ros_distribution = "ros-kinetic-desktop-full"
 #install ros
 if not (os.path.exists(pth_ros_distribution)):
     subprocess.call(["sudo", "sh", "-c", arg_ros_sources])
-    subprocess.call(["sudo", "apt-key", "adv", "--keyserver", arg_keyp1, '--recv-key', arg_keyp2])
-    subprocess.call(["sudo", "apt-get", "update"])
-    subprocess.call(["sudo", "apt-get", "install", arg_ros_distribution])
+    subprocess.call(["sudo", "apt-key", "adv", "--keyserver", arg_keyp1, '--recv-key', arg_keyp2, "-y"])
+    subprocess.call(["sudo", "apt-get", "update", "-y"])
+    subprocess.call(["sudo", "apt-get", "install", arg_ros_distribution, "-y"])
     subprocess.call(["sudo", "rosdep", "init"])
     subprocess.call(["rosdep", "update"])
-    subprocess.call(["echo", pth_ros_distribution, ">>", pth_bashrc])
+    subprocess.call(["echo", '"source /opt/ros/kinetic/setup.bash"', ">>", pth_bashrc])
 else:
     log.append("ros-kinetic already installed!")

@@ -42,29 +42,60 @@ def copy_dir_to_dir(dir_path1, dir_path2):
 # system args
 sysarg_user = getpass.getuser()
 sysarg_user_home = "/home/"+sysarg_user+"/"
-sysarg_current_dir = os.getcwd()
+sysarg_current_dir = os.getcwd() 
 
 # interfaces config
-interfaces_config_pth = sysarg_current_dir + "/config/interfaces"
+interfaces_config_pth = sysarg_current_dir + "/config_files/interfaces"
 
 # user args
-userarg_target_sd = "/dev/sdb"
+userarg_target_sd = "sdb"
+userarg_target_sd_pth = "/dev" + userarg_target_sd
+userarg_image_url = "https://ubuntu-mate.org/raspberry-pi/ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img.xz"
+userarg_image_archive = "ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img.xz"
+userarg_image_archive_pth = sysarg_current_dir +  "/" + userarg_image_archive
+userarg_image = "ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img"
+userarg_image_pth = sysarg_current_dir +  "/" + userarg_image
+
 # read args
 for arg in sys.argv:
     if(re.match("sd=",arg)):
-        txt = re.sub("sd=", "", arg)
-        userarg_target_sd = "/dev/"+txt
+        userarg_target_sd = re.sub("sd=", "", arg)
+        userarg_target_sd_pth = "/dev/"+userarg_target_sd
 
-
-# check if target existing
-if not (os.path.exists(userarg_target_sd)):
-    log.append("could not find " + userarg_target_sd)
-    print_log()
-    sys.exit()
-
-# install ubuntu mate on sd card sdb
+# ensure download tools installed
 subprocess.call(["apt-get", "install", "gddrescue"])
 subprocess.call(["apt-get", "install", "wget"])
-subprocess.call(["wget", "wget https://ubuntu-mate.org/raspberry-pi/ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img.xz"])
-subprocess.call(["unxz", "ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img.xz"])
-subprocess.call(["ddrescue", "-d", "-D", "--force", "ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img", "/dev/sdb"])
+
+# download image if not existing in current dir
+if not (os.path.exists(userarg_image_archive_pth)):
+    subprocess.call(["wget", userarg_image_url])
+    log.append("downloaded : " + userarg_image_archive_pth)
+else:
+    log.append("did not download image " + userarg_image_archive + ", image already existing")
+
+# unarchive image
+if not (os.path.exists(userarg_image_pth)):
+    if (os.path.exists(userarg_image_archive_pth)):
+        subprocess.call(["unxz", userarg_image_archive])
+        log.append("unarchived file, resulting file : " + userarg_image_pth)
+    else:
+        log.append("could not find image to unarchive, path : " + userarg_image_archive_pth)
+        print_log()
+        sys.exit()
+else:
+     log.append("did not unarchive image " + userarg_image_archive + ", image already unarchived as " + userarg_image)
+
+# install image
+if (os.path.exists(userarg_target_sd_pth)):
+    if (os.path.exists(userarg_image_pth)):
+        subprocess.call(["ddrescue", "-d", "-D", "--force", userarg_image, userarg_target_sd_pth])
+        log.append("succesfully installed image " + userarg_image + " to " + userarg_target_sd_pth)
+    else:
+        log.append("could not install image, could not find " + userarg_target_sd_pth)
+else:
+    log.append("could not install image, could not find " + userarg_target_sd_pth)
+
+
+# print and exit
+print_log()
+sys.exit()

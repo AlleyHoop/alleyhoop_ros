@@ -6,7 +6,10 @@ import os
 import glob
 import getpass
 
-print("assuming image is ubuntu-16.04-preinstalled-server-armhf+raspi3.img")
+print(" 1. will download image https://ubuntu-mate.org/raspberry-pi/ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img.xz to current directory")
+print(" 2. Will extract download as ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img")
+print(" 3. Will install image to /dev/sdb as default")
+
 
 # list with logs
 log = []

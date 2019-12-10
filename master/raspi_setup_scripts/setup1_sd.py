@@ -6,6 +6,11 @@ import os
 import glob
 import getpass
 
+# exit if no sudo
+if os.geteuid() != 0:
+    print("please run with sudo!!!")
+    sys.exit()
+
 print(" 1. will download image https://ubuntu-mate.org/raspberry-pi/ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img.xz to current directory")
 print(" 2. Will extract download as ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img")
 print(" 3. Will install image to /dev/sdb as default")
@@ -16,7 +21,7 @@ log = []
 
 # print log list
 def print_log():
-    print("\n Project Maker Script Log and Error list:")
+    print("\n SD card setup Script Log and Error list:")
     if not log:
         print("No entries in script log found.")
     else:
@@ -24,23 +29,6 @@ def print_log():
         for entry in log:
             count += 1
             print("\n"+str(count)+") "+entry)
-
-# create new directory
-def create_directory_if_not_existing(dir_path):
-    if not (os.path.exists(dir_path)):
-        subprocess.call(["mkdir", "-p", dir_path])
-    else:
-        log.append("did not create directory "+dir_path+", because already existing")
-
-# copy file/dir to dir
-def copy_dir_to_dir(dir_path1, dir_path2):
-    if (os.path.exists(dir_path1)):
-        if (os.path.exists(dir_path2)):
-            subprocess.call(["cp", "-r", dir_path1, dir_path2])
-        else:
-            log.append(dir_path2 + "not existing!!")
-    else:
-        log.append(dir_path1 + "not existing!!")
 
 # system args
 sysarg_user = getpass.getuser()

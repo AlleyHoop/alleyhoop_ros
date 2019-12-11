@@ -1,5 +1,6 @@
 #include <ros.h>
 #include <std_msgs/String.h>
+#include <std_msgs/Empty.h>
 
 void blinkLed()
 {
@@ -38,7 +39,7 @@ void setup()
 void loop(){
 
   //publish data
-  char txt[10] = "I am slave";
+  char txt[11] = "I am slave";
   str_msg.data = txt;
   serial_publisher.publish( &str_msg );
 

@@ -1,49 +1,41 @@
 #include <ros.h>
 #include <std_msgs/String.h>
-#include <std_msgs/Empty.h>
 
-void blinkLed()
-{
-  digitalWrite(7, HIGH);   // blink the led
-  delay(500);
-  digitalWrite(7, LOW);
-}
-
-//ros node
-ros::NodeHandle nh;
+//ros node (only one possible on arduino)
+ros::NodeHandle nodeHandle;
 
 //publisher exmpl
 std_msgs::String str_msg;
-ros::Publisher serial_publisher("arduino_slave_pub", &str_msg);
+ros::Publisher serial_publisher("arduino_pub", &str_msg);
 
 //subsriber exmpl
-void messageCb( const std_msgs::Empty& toggle_msg){
-  blinkLed();
+void messageCb( const std_msgs::String& toggle_msg){
+  digitalWrite(13, HIGH-digitalRead(13));   // blink the led
 }
-ros::Subscriber<std_msgs::Empty> sub("arduino_slave_sub", &messageCb );
+ros::Subscriber<std_msgs::String> serial_subscriber("arduino_sub", &messageCb );
 
-//ros
 void setup()
 {
-  //led
+  //setup led
   pinMode(7, OUTPUT);
   
   //node init
-  nh.initNode();
+  nodeHandle.initNode();
 
   //subscriber
-  nh.subscribe(sub);
+  nodeHandle.subscribe(serial_subscriber);
+  nodeHandle.advertise(serial_publisher);
 }
 
 //ros spin
 void loop(){
 
-  //publish data
-  char txt[11] = "I am slave";
+  //setup data to publish
+  char txt[11] = "I am arduino";
   str_msg.data = txt;
-  serial_publisher.publish( &str_msg );
 
   //callback and send data
-  nh.spinOnce();
+  serial_publisher.publish( &str_msg );
+  nodeHandle.spinOnce();
   delay(1);
 }

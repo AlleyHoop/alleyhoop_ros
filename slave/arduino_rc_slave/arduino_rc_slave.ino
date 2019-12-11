@@ -1,6 +1,4 @@
 #include <Servo.h>
-//#include <ros.h>
-//#include <std_msgs/String.h>
 
 //structs
 struct CarConfig
@@ -24,14 +22,12 @@ const int tracingPinRight =    6;
 
 //variables
 CarConfig currentConf;
+const int defaultVal = 1500;
+const int fowardVal = 1600;
+const int backwardVal = 1400;
+const int leftVal = 1250;
+const int rightVal = 1750;
 
-//ros
-/*ros::NodeHandle nh;
-std_msgs::String str_msg;
-ros::Publisher chatter("chatter", &str_msg);
-
-char txt[10] = "I am slave";
-*/
 
 void setup()
 {
@@ -48,8 +44,8 @@ void setup()
  esc.attach(9);
 
  //configuration
- currentConf.velocity = 1500;
- currentConf.steer = 1500;
+ currentConf.velocity = defaultVal;
+ currentConf.steer = defaultVal;
  currentConf.brake = false;
  
  //communication
@@ -59,71 +55,71 @@ void setup()
 CarConfig makeDecision(bool ultrasoon, bool tracker1, bool tracker2)
 {
   CarConfig conf;
-  conf.velocity = 1500;
-  conf.steer = 1500;
+  conf.velocity = defaultVal;
+  conf.steer = defaultVal;
   conf.brake = false;
 
   // 1: do nothing
   if(!ultrasoon && !tracker1 && !tracker2)
   {
-    conf.velocity = 1500;
-    conf.steer = 1500;
+    conf.velocity = defaultVal;
+    conf.steer = defaultVal;
     return conf;
   }
 
   // 2: go backwards
   if(ultrasoon && !tracker1 && !tracker2)
   {
-    conf.velocity = 1400;
-    conf.steer = 1500;
+    conf.velocity = backwardVal;
+    conf.steer = defaultVal;
     return conf;
   }
 
   // 3: go fowards left
   if(!ultrasoon && tracker1 && !tracker2)
   {
-    conf.velocity = 1600;
-    conf.steer = 1250;
+    conf.velocity = fowardVal;
+    conf.steer = leftVal;
     return conf;
   }
 
   // 4: go backwards right
   if(ultrasoon && tracker1 && !tracker2)
   {
-    conf.velocity = 1400;
-    conf.steer = 1750;
+    conf.velocity = backwardVal;
+    conf.steer = rightVal;
     return conf;
   }
 
   // 5: go fowards right
   if(!ultrasoon && !tracker1 && tracker2)
   {
-    conf.velocity = 1600;
-    conf.steer = 1750;
+    conf.velocity = fowardVal;
+    conf.steer = rightVal;
     return conf;
   }
 
   // 6: go backwards left
   if(ultrasoon && !tracker1 && tracker2)
   {
-    conf.velocity = 1400;
-    conf.steer = 1250;
+    conf.velocity = backwardVal;
+    conf.steer = leftVal;
     return conf;
   }
 
   // 7: go fowards
   if(!ultrasoon && tracker1 && tracker2)
   {
-    conf.velocity = 1600;
-    conf.steer = 1500;
+    conf.velocity = fowardVal;
+    conf.steer = defaultVal;
     return conf;
   }
 
-  // 8: go fowards
+  // 8: go backwards
   if(ultrasoon && tracker1 && tracker2)
   {
-    conf.velocity = 1400;
-    conf.steer = 1500;
+    conf.velocity = backwardVal;
+    conf.steer = defaultVal;
     return conf;
   }
 
@@ -140,9 +136,6 @@ bool ultrasoon(int val)
   distance=duration*0.032/2;
   delay(10);
 
-  Serial.print("Distance: ");
-  Serial.println(distance);
-
   if(distance < val)
   {
     return true;
@@ -157,11 +150,11 @@ void loop(){
   CarConfig newConf = makeDecision(ultrasoon(30), digitalRead(tracingPinLeft), digitalRead(tracingPinRight));
 
   //brake when direction switch
-  if(newConf.velocity > 1500 && currentConf.velocity < 1500)
+  if(newConf.velocity > defaultVal && currentConf.velocity < defaultVal)
   { 
     newConf.brake = true;
   }
-  if(newConf.velocity < 1500 && currentConf.velocity > 1500)
+  if(newConf.velocity < defaultVal && currentConf.velocity > defaultVal)
   {
     newConf.brake = true;
   }
@@ -172,13 +165,15 @@ void loop(){
   //control motors
   if(!currentConf.brake)
   {
+    //move car
     esc.writeMicroseconds(currentConf.velocity);
     myservo.writeMicroseconds(currentConf.steer);
   }
   else
   {
-    esc.writeMicroseconds(1500);
-    myservo.writeMicroseconds(1500); 
+    //brake and wait alittle
+    esc.writeMicroseconds(defaultVal);
+    myservo.writeMicroseconds(defaultVal); 
     delay(1000);
   }
 
@@ -194,12 +189,4 @@ void loop(){
   {
       Serial.println("free");
   }
-  
-  
-  //ros spin
-  /*
-  str_msg.data = txt;
-  chatter.publish( &str_msg );
-  nh.spinOnce();
-  */
 }

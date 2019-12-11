@@ -8,7 +8,7 @@ struct CarConfig
   int steer;
   int velocity;
   bool brake;
-}
+};
 
 //motors
 Servo                myservo;
@@ -59,12 +59,16 @@ void setup()
 CarConfig makeDecision(bool ultrasoon, bool tracker1, bool tracker2)
 {
   CarConfig conf;
+  conf.velocity = 1500;
+  conf.steer = 1500;
+  conf.brake = false;
 
   // 1: do nothing
   if(!ultrasoon && !tracker1 && !tracker2)
   {
     conf.velocity = 1500;
     conf.steer = 1500;
+    return conf;
   }
 
   // 2: go backwards
@@ -72,6 +76,7 @@ CarConfig makeDecision(bool ultrasoon, bool tracker1, bool tracker2)
   {
     conf.velocity = 1400;
     conf.steer = 1500;
+    return conf;
   }
 
   // 3: go fowards left
@@ -79,6 +84,7 @@ CarConfig makeDecision(bool ultrasoon, bool tracker1, bool tracker2)
   {
     conf.velocity = 1600;
     conf.steer = 1250;
+    return conf;
   }
 
   // 4: go backwards right
@@ -86,6 +92,7 @@ CarConfig makeDecision(bool ultrasoon, bool tracker1, bool tracker2)
   {
     conf.velocity = 1400;
     conf.steer = 1750;
+    return conf;
   }
 
   // 5: go fowards right
@@ -93,6 +100,7 @@ CarConfig makeDecision(bool ultrasoon, bool tracker1, bool tracker2)
   {
     conf.velocity = 1600;
     conf.steer = 1750;
+    return conf;
   }
 
   // 6: go backwards left
@@ -100,6 +108,7 @@ CarConfig makeDecision(bool ultrasoon, bool tracker1, bool tracker2)
   {
     conf.velocity = 1400;
     conf.steer = 1250;
+    return conf;
   }
 
   // 7: go fowards
@@ -107,13 +116,15 @@ CarConfig makeDecision(bool ultrasoon, bool tracker1, bool tracker2)
   {
     conf.velocity = 1600;
     conf.steer = 1500;
+    return conf;
   }
 
   // 8: go fowards
   if(ultrasoon && tracker1 && tracker2)
   {
-    conf.velocity = 1600;
+    conf.velocity = 1400;
     conf.steer = 1500;
+    return conf;
   }
 
   return conf;
@@ -127,10 +138,12 @@ bool ultrasoon(int val)
   digitalWrite(trigPin, LOW);
   duration=pulseIn(echoPin, HIGH);
   distance=duration*0.032/2;
-  Serial.print(distance);
-  delayMicroseconds(10000);
+  delay(10);
 
-  if(distance < 30)
+  Serial.print("Distance: ");
+  Serial.println(distance);
+
+  if(distance < val)
   {
     return true;
   }
@@ -141,11 +154,17 @@ bool ultrasoon(int val)
 void loop(){
   
   // make decision
-  CarConfig newConf = makeDecision(ultrasoon(), digitalRead(tracingPinLeft), digitalRead(tracingPinRight));
+  CarConfig newConf = makeDecision(ultrasoon(30), digitalRead(tracingPinLeft), digitalRead(tracingPinRight));
 
-  //brake direction switch
-  if(newConf.velocity > 1500 && currentConf.velocity < 1500) newConf.brake = true;
-  if(newConf.velocity < 1500 && currentConf.velocity > 1500) newConf.brake = true;
+  //brake when direction switch
+  if(newConf.velocity > 1500 && currentConf.velocity < 1500)
+  { 
+    newConf.brake = true;
+  }
+  if(newConf.velocity < 1500 && currentConf.velocity > 1500)
+  {
+    newConf.brake = true;
+  }
 
   //set new config
   currentConf = newConf;
@@ -160,9 +179,22 @@ void loop(){
   {
     esc.writeMicroseconds(1500);
     myservo.writeMicroseconds(1500); 
-    delay(1000);  
+    delay(1000);
   }
 
+  //debug data
+  Serial.println("configuration:");
+  Serial.println(currentConf.velocity);
+  Serial.println(currentConf.steer);
+  if(currentConf.brake) 
+  {
+      Serial.println("brake"); 
+  }
+  else 
+  {
+      Serial.println("free");
+  }
+  
   
   //ros spin
   /*

@@ -22,12 +22,12 @@ def GetPiCameraImage():
     return image
 
 # img pub
-def main(args):    
-    print("starting raspi cam image publisher")
+def main(args):
+    print("starting raspi cam image publisher on topic /raspi_camera/image_raw")
 
     # init ros
-    pub = rospy.Publisher('raspi_cam_image_raw', Image, queue_size=10)
     rospy.init_node('raspi_camera', anonymous=True)
+    pub = rospy.Publisher('/raspi_camera/image_raw', Image, queue_size=10)
     rate = rospy.Rate(10)
 
     # create cv2 bridge
@@ -36,11 +36,8 @@ def main(args):
     # loop
     while not rospy.is_shutdown():
         cv_image = GetPiCameraImage()
-        if(cv_image != None):
-            image = bridge.cv2_to_imgmsg(cv_image, "bgr8")
-            pub.publish(image)
-        else:
-            print("Could not get raspi camera image")
+        image = bridge.cv2_to_imgmsg(cv_image, "bgr8")
+        pub.publish(image)
         rate.sleep()
 
 if __name__ == '__main__':

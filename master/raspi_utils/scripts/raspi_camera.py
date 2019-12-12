@@ -8,11 +8,11 @@ import picamera
 import picamera.array
 import time
 import cv2
+import io
 import numpy as np
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
-
 
 # pi camera
 def GetPiCameraImageAsCvImage():
@@ -47,7 +47,7 @@ def main(args):
 
     # loop
     while not rospy.is_shutdown():
-        cv_image = GetPiCameraImageAsCvImageJpegFormat()
+        cv_image = GetPiCameraImageAsCvImage()
         image = bridge.cv2_to_imgmsg(cv_image, "bgr8")
         pub.publish(image)
         rate.sleep()

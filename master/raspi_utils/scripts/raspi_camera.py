@@ -8,17 +8,29 @@ import picamera
 import picamera.array
 import time
 import cv2
+import numpy as np
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 
+
 # pi camera
-def GetPiCameraImage():
+def GetPiCameraImageAsCvImage():
     image = None
     with picamera.PiCamera() as camera:
         with picamera.array.PiRGBArray(camera) as stream:
             camera.capture(stream, format='bgr')
             image = stream.array
+
+    return image
+
+def GetPiCameraImageAsCvImageJpegFormat():
+    stream = io.BytesIO()
+    with picamera.PiCamera() as camera:
+        camera.capture(stream, format='jpeg')
+    
+    data = np.fromstring(stream.getvalue(), dtype=np.uint8)
+    image = cv2.imdecode(data, 1)
     return image
 
 # img pub
@@ -35,7 +47,7 @@ def main(args):
 
     # loop
     while not rospy.is_shutdown():
-        cv_image = GetPiCameraImage()
+        cv_image = GetPiCameraImageAsCvImageJpegFormat()
         image = bridge.cv2_to_imgmsg(cv_image, "bgr8")
         pub.publish(image)
         rate.sleep()

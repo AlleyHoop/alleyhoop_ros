@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+  <robot name="vehicle">
+    <link name="base_link">
+      <visual>
+        <geometry>
+          <box size="1 .5 .5"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <material name="white">
+          <color rgba="1 1 1 1"/>
+        </material>
+      </visual>
+    </link>
+
+    <link name="lidar_link">
+      <visual>
+        <geometry>
+          <cylinder length="0.1" radius="0.1"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+          <material name="black">
+            <color rgba="0 0 0 1"/>
+          </material>
+      </visual>
+    </link>
+  
+    <joint name="base_to_lidar" type="fixed">
+      <parent link="base_link"/>
+      <child link="lidar_link"/>
+      <origin xyz="0 0 0.4"/>
+    </joint>
+</robot>

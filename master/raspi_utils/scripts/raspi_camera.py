@@ -16,10 +16,9 @@ from cv_bridge import CvBridge, CvBridgeError
 def GetPiCameraImage():
     image = None
     with picamera.PiCamera() as camera:
-    camera.start_preview()
-    with picamera.array.PiRGBArray(camera) as stream:
-        camera.capture(stream, format='bgr')
-        image = stream.array
+        with picamera.array.PiRGBArray(camera) as stream:
+            camera.capture(stream, format='bgr')
+            image = stream.array
     return image
 
 # img pub
@@ -32,13 +31,13 @@ def main(args):
     rate = rospy.Rate(10)
 
     # create cv2 bridge
-    self.bridge = CvBridge()
+    bridge = CvBridge()
 
     # loop
     while not rospy.is_shutdown():
         cv_image = GetPiCameraImage()
         if(cv_image != None):
-            image = bridge.cv2_to_imgmsg(cv2_image, "bgr8")
+            image = bridge.cv2_to_imgmsg(cv_image, "bgr8")
             pub.publish(image)
         else:
             print("Could not get raspi camera image")

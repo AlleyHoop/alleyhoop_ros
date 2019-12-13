@@ -33,6 +33,7 @@ void loop() {
     {
       state = true;
     }
+    timer_reset(timer1);
   }
 
   digitalWrite(13, state);

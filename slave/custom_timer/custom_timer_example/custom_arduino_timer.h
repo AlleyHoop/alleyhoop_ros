@@ -44,11 +44,18 @@ bool timer_isDone(TimerConfig &timer)
 {
   if(timer.timer_done)
   {
-    timer.timer_done = false;
     return true;
   }
   else
   {
     return false;
   }
+}
+
+//reset timer
+bool timer_reset(TimerConfig &timer)
+{
+    timer.timer_done = false;
+    timer.start_time = millis();
+    timer.timer_running = false;
 }

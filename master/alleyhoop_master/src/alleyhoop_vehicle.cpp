@@ -5,7 +5,7 @@
 namespace AutonomousDriving
 {
 
-    AlleyHoopVehicle:AlleyHoopVehicle(ros::NodeHandle* _nh)
+    AlleyHoopVehicle::AlleyHoopVehicle(ros::NodeHandle* _nh)
 	: Vehicle(), nh(*_nh)
     {
     }

@@ -1,5 +1,5 @@
 #include "alleyhoop_ros/alleyhoop_ros_controller.h"
-#include "alleyhoop_ros/alleyhoop_ros_ultrasoon.h"
+#include "alleyhoop_ros_sensors/alleyhoop_ros_ultrasoon.h"
 #include <sstream>
 #include <iostream>
 
@@ -9,7 +9,7 @@ namespace AlleyHoopROS
     AlleyHoopController::AlleyHoopController(ros::NodeHandle* _nh, AlleyHoopMVC::Vehicle* v)
 	: AlleyHoopMVC::Controller(v), nh(*_nh)
     {
-        
+
     }
 
     bool AlleyHoopController::update()

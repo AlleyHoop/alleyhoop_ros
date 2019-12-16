@@ -6,14 +6,14 @@ namespace AlleyHoopROSSensors
 {
 
     AlleyHoopUltrasoon::AlleyHoopUltrasoon(ros::NodeHandle* _nh, std::string _name, std::string _topic)
-	: AlleyHooprOS::Sensor(_nh, _name, _topic)
+	    : AlleyHoopROS::Sensor(_nh, _name, _topic)
     {
 
     }
 
     void sensorDataCallBack()
     {
-        
+
     }
 
 }

@@ -10,7 +10,7 @@ namespace AlleyHoopAutonomousDriving
     class AlleyHoopController : public AutonomousDriving::Controller
     {
         public:
-            AlleyHoopController(ros::NodeHandle* _nh, Vehicle* v);
+            AlleyHoopController(ros::NodeHandle* _nh, AutonomousDriving::Vehicle* v);
             ~AlleyHoopController() = default;
             bool update();
 

@@ -1,13 +1,13 @@
-#include "alleyhoop_controller.h"
+#include "alleyhoop_master/alleyhoop_controller.h"
 #include <sstream>
 #include <iostream>
 
 namespace AutonomousDriving
 {
 
-    AlleyHoopController::AlleyHoopController(int argc, char **argv)
+    AlleyHoopController::AlleyHoopController(ros::NodeHandle* _nh)
+	: Controller(), nh(*_nh)
     {
-        ros::init(argc, argv, "alleyhoop_core"); 
     }
 
     void AlleyHoopController::update()
@@ -24,7 +24,6 @@ namespace AutonomousDriving
         {
             std::cout << "ros was not running!" << std::endl;
         }
-        
     }
 
 }

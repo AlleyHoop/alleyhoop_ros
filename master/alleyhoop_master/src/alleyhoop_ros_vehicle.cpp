@@ -2,11 +2,11 @@
 #include <sstream>
 #include <iostream>
 
-namespace AlleyHoopAutonomousDriving
+namespace AlleyHoopROS
 {
 
     AlleyHoopVehicle::AlleyHoopVehicle(ros::NodeHandle* _nh)
-	: AutonomousDriving::Vehicle(), nh(*_nh)
+	: AlleyHoopMVC::Vehicle(), nh(*_nh)
     {
     }
 

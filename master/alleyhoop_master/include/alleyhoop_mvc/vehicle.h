@@ -4,14 +4,21 @@
 #include <map>
 #include "alleyhoop_mvc/actuator.h"
 
-namespace AutonomousDriving
+namespace AlleyHoopMVC
 {
 
     class Vehicle
     {
         public:
-            virtual ~Vehicle() = default;
             virtual bool update() = 0;
+
+            virtual ~Vehicle()
+            {
+                for (std::map<std::string, Actuator*>::iterator it = sensors.begin(); it != sensors.end(); it++)
+                {
+                    delete it->second;
+                }
+            }
 
             bool addActuator(Actuator* s) 
             {

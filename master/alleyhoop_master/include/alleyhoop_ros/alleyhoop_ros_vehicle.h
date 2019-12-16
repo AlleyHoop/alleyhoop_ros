@@ -5,21 +5,21 @@
 #include "ros/ros.h"
 
 
-namespace AlleyHoopAutonomousDriving
+namespace AlleyHoopROS
 {
 
-    class AlleyHoopVehicle : public AutonomousDriving::Vehicle
+    class AlleyHoopVehicle : public AlleyHoopMVC::Vehicle
     {
         public:
             AlleyHoopVehicle(ros::NodeHandle* _nh);
             ~AlleyHoopVehicle() = default;
             bool update();
 
-        private:
+        protected:
             //ros
             ros::NodeHandle nh;
     };
 
 }
 
-#endif //! ALLEYHOOPVEHICLE_H_
+#endif //!  ALLEYHOOPROSVEHICLE_H_

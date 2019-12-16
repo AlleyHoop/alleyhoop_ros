@@ -5,14 +5,19 @@
 #include "alleyhoop_mvc/vehicle.h"
 #include "alleyhoop_mvc/sensor.h"
 
-namespace AutonomousDriving
+namespace AlleyHoopMVC
 {
     class Controller
     {
         public:
-            virtual ~Controller() = default;
             virtual bool update() = 0;
-            
+            virtual ~Controller()
+            {
+                for (std::map<std::string, Sensor*>::iterator it = sensors.begin(); it != sensors.end(); it++)
+                {
+                    delete it->second;
+                }
+            }      
             bool addSensor(Sensor* s) 
             {
                 if(sensors.find(s->name) == sensors.end())

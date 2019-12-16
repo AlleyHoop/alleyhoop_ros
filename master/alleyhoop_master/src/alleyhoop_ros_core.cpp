@@ -7,9 +7,9 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "alleyhoop_master");
     ros::NodeHandle n;
 
-    AutonomousDriving::Vehicle* vehicle = new AlleyHoopAutonomousDriving::AlleyHoopVehicle(&n);
-    AutonomousDriving::Controller* controller = new AlleyHoopAutonomousDriving::AlleyHoopController(&n, vehicle);
-    AutonomousDriving::Model* model = new AlleyHoopAutonomousDriving::AlleyHoopFeatureFinder(&n);
+    AlleyHoopMVC::Vehicle* vehicle = new AlleyHoopROS::AlleyHoopVehicle(&n);
+    AlleyHoopMVC::Controller* controller = new AlleyHoopROS::AlleyHoopController(&n, vehicle);
+    AlleyHoopMVC::Model* model = new AlleyHoopROS::AlleyHoopFeatureFinder(&n);
 
     bool state = true;
     while(state)

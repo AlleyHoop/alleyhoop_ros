@@ -1,24 +1,24 @@
-#ifndef ALLEYHOOPCONTROLLER_H_
-#define ALLEYHOOPCONTROLLER_H_
+#ifndef  ALLEYHOOPROSCONTROLLER_H_
+#define  ALLEYHOOPROSCONTROLLER_H_
 
 #include "alleyhoop_mvc/controller.h"
 #include "ros/ros.h"
 
 
-namespace AlleyHoopAutonomousDriving
+namespace AlleyHoopROS
 {
-    class AlleyHoopController : public AutonomousDriving::Controller
+    class AlleyHoopController : public AlleyHoopMVC::Controller
     {
         public:
-            AlleyHoopController(ros::NodeHandle* _nh, AutonomousDriving::Vehicle* v);
+            AlleyHoopController(ros::NodeHandle* _nh, AlleyHoopMVC::Vehicle* v);
             ~AlleyHoopController() = default;
             bool update();
 
-        private:
+        protected:
             //ros
             ros::NodeHandle nh;
     };
 
 }
 
-#endif //! ALLEYHOOPCONTROLLER_H_
+#endif //!  ALLEYHOOPROSCONTROLLER_H_

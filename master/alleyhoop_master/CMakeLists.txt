@@ -11,7 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES alleyhoop_ros 
+  LIBRARIES alleyhoop_ros alleyhoop_ros_sensors
   CATKIN_DEPENDS roscpp rospy tf
   # DEPENDS system_lib
 )
@@ -28,8 +28,13 @@ target_link_libraries(alleyhoop_ros
    ${catkin_LIBRARIES}
 )
 
+add_library(alleyhoop_ros_sensors src/alleyhoop_ros_ultrasoon.cpp)
+target_link_libraries(alleyhoop_ros_sensors 
+   ${catkin_LIBRARIES}
+)
+
 add_executable(alleyhoop_ros_node src/alleyhoop_ros_core.cpp)
-target_link_libraries(alleyhoop_ros_node alleyhoop_ros 
+target_link_libraries(alleyhoop_ros_node alleyhoop_ros alleyhoop_ros_sensors
    ${catkin_LIBRARIES}
 )
 

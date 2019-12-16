@@ -3,13 +3,12 @@
 
 #include <string>
 
-namespace AutonomousDriving
+namespace AlleyHoopMVC
 {
     class Actuator
     {
         public:
             virtual ~Actuator() = default;
-            virtual bool update() = 0;
 
             const std::string name;
 

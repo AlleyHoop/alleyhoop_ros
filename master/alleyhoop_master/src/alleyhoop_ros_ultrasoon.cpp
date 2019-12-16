@@ -6,7 +6,7 @@ namespace AlleyHoopROSSensors
 {
 
     AlleyHoopUltrasoon::AlleyHoopUltrasoon(ros::NodeHandle* _nh, std::string _name, std::string _topic)
-	    : AlleyHoopROS::Sensor(_nh, _name, _topic)
+	    : AlleyHoopROS::AlleyHoopSensor(_nh, _name, _topic)
     {
 
     }

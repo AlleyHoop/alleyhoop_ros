@@ -14,7 +14,7 @@ namespace AlleyHoopMVC
 
             virtual ~Vehicle()
             {
-                for (std::map<std::string, Actuator*>::iterator it = sensors.begin(); it != sensors.end(); it++)
+                for (std::map<std::string, Actuator*>::iterator it = actuators.begin(); it != actuators.end(); it++)
                 {
                     delete it->second;
                 }

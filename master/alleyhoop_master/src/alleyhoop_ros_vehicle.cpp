@@ -1,22 +1,22 @@
-#include "alleyhoop_ros/alleyhoop_controller.h"
+#include "alleyhoop_ros/alleyhoop_ros_vehicle.h"
 #include <sstream>
 #include <iostream>
 
 namespace AlleyHoopAutonomousDriving
 {
 
-    AlleyHoopController::AlleyHoopController(ros::NodeHandle* _nh, AutonomousDriving::Vehicle* v)
-	: AutonomousDriving::Controller(v), nh(*_nh)
+    AlleyHoopVehicle::AlleyHoopVehicle(ros::NodeHandle* _nh)
+	: AutonomousDriving::Vehicle(), nh(*_nh)
     {
     }
 
-    bool AlleyHoopController::update()
+    bool AlleyHoopVehicle::update()
     {
         if (ros::ok())
         {
             // print text
             std::stringstream ss;
-            ss << "controller running..";
+            ss << "vehicle running...";
             ROS_INFO("%s", ss.str().c_str());
             ros::spinOnce();
             return true;

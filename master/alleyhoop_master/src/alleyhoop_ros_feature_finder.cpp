@@ -1,4 +1,4 @@
-#include "alleyhoop_ros/alleyhoop_feature_finder.h"
+#include "alleyhoop_ros/alleyhoop_ros_feature_finder.h"
 #include <sstream>
 #include <iostream>
 

@@ -20,15 +20,15 @@ include_directories(include
    ${catkin_INCLUDE_DIRS}
 )
 
-add_library(alleyhoop_ros src/alleyhoop_controller.cpp
-                             src/alleyhoop_vehicle.cpp
-                             src/alleyhoop_feature_finder.cpp
+add_library(alleyhoop_ros src/alleyhoop_ros_controller.cpp
+                             src/alleyhoop_ros_vehicle.cpp
+                             src/alleyhoop_ros_feature_finder.cpp
 )
 target_link_libraries(alleyhoop_ros 
    ${catkin_LIBRARIES}
 )
 
-add_executable(alleyhoop_ros_node src/core.cpp)
+add_executable(alleyhoop_ros_node src/alleyhoop_ros_core.cpp)
 target_link_libraries(alleyhoop_ros_node alleyhoop_ros 
    ${catkin_LIBRARIES}
 )

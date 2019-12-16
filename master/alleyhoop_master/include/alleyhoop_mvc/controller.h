@@ -1,7 +1,9 @@
 #ifndef CONTROLLER_H_
 #define CONTROLLER_H_
 
+#include <map>
 #include "alleyhoop_mvc/vehicle.h"
+#include "alleyhoop_mvc/sensor.h"
 
 namespace AutonomousDriving
 {
@@ -13,7 +15,9 @@ namespace AutonomousDriving
 
 	    protected:
 	        Controller(Vehicle* v) : vehicle(v)  {};
+            
             Vehicle* vehicle;
+            std::map<std::string, Sensor*> sensors;
     };
 }
 

@@ -5,8 +5,8 @@
 namespace AlleyHoopAutonomousDriving
 {
 
-    AlleyHoopController::AlleyHoopController(ros::NodeHandle* _nh, Vehicle* v)
-	: Controller(v), nh(*_nh)
+    AlleyHoopController::AlleyHoopController(ros::NodeHandle* _nh, AutonomousDriving::Vehicle* v)
+	: AutonomousDriving::Controller(v), nh(*_nh)
     {
     }
 

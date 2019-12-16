@@ -6,7 +6,7 @@ namespace AlleyHoopAutonomousDriving
 {
 
     AlleyHoopFeatureFinder::AlleyHoopFeatureFinder(ros::NodeHandle* _nh)
-	: Model(), nh(*_nh)
+	: AutonomousDriving::Model(), nh(*_nh)
     {
     }
 

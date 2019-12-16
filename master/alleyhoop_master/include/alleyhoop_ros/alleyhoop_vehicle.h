@@ -1,19 +1,19 @@
 #ifndef ALLEYHOOPVEHICLE_H_
 #define ALLEYHOOPVEHICLE_H_
 
-#include "alleyhoop_master/vehicle.h"
+#include "alleyhoop_mvc/vehicle.h"
 #include "ros/ros.h"
 
 
-namespace AutonomousDriving
+namespace AlleyHoopAutonomousDriving
 {
 
-    class AlleyHoopVehicle : public Vehicle
+    class AlleyHoopVehicle : public AutonomousDriving::Vehicle
     {
         public:
             AlleyHoopVehicle(ros::NodeHandle* _nh);
             ~AlleyHoopVehicle() = default;
-            void update();
+            bool update();
 
         private:
             //ros

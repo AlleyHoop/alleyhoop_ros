@@ -8,7 +8,7 @@ namespace AutonomousDriving
     {
         public:
             virtual ~Model() = default;
-            virtual void update() = 0;
+            virtual bool update() = 0;
 	    protected:
 	        Model() {};
     };

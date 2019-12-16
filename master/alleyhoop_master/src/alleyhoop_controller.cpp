@@ -1,8 +1,8 @@
-#include "alleyhoop_master/alleyhoop_controller.h"
+#include "alleyhoop_ros/alleyhoop_controller.h"
 #include <sstream>
 #include <iostream>
 
-namespace AutonomousDriving
+namespace AlleyHoopAutonomousDriving
 {
 
     AlleyHoopController::AlleyHoopController(ros::NodeHandle* _nh, Vehicle* v)
@@ -10,7 +10,7 @@ namespace AutonomousDriving
     {
     }
 
-    void AlleyHoopController::update()
+    bool AlleyHoopController::update()
     {
         if (ros::ok())
         {
@@ -19,11 +19,11 @@ namespace AutonomousDriving
             ss << "controller running..";
             ROS_INFO("%s", ss.str().c_str());
             ros::spinOnce();
+            return true;
         }
-        else
-        {
-            std::cout << "ros was not running!" << std::endl;
-        }
+
+        std::cout << "roscore was not running!" << std::endl;
+        return false;
     }
 
 }

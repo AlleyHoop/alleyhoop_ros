@@ -1,8 +1,8 @@
-#include "alleyhoop_master/alleyhoop_vehicle.h"
+#include "alleyhoop_ros/alleyhoop_vehicle.h"
 #include <sstream>
 #include <iostream>
 
-namespace AutonomousDriving
+namespace AlleyHoopAutonomousDriving
 {
 
     AlleyHoopVehicle::AlleyHoopVehicle(ros::NodeHandle* _nh)
@@ -19,11 +19,11 @@ namespace AutonomousDriving
             ss << "vehicle running...";
             ROS_INFO("%s", ss.str().c_str());
             ros::spinOnce();
+            return true;
         }
-        else
-        {
-            std::cout << "ros was not running!" << std::endl;
-        }
+
+        std::cout << "roscore was not running!" << std::endl;
+        return false;
     }
 
 }

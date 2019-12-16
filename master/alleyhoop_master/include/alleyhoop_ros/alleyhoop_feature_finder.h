@@ -1,19 +1,19 @@
 #ifndef ALLEYFEATUREFINDER_H_
 #define ALLEYFEATUREFINDER_H_
 
-#include "alleyhoop_master/model.h"
+#include "alleyhoop_mvc/model.h"
 #include "ros/ros.h"
 
 
-namespace AutonomousDriving
+namespace AlleyHoopAutonomousDriving
 {
 
-    class AlleyHoopFeatureFinder : public Model
+    class AlleyHoopFeatureFinder : public AutonomousDriving::Model
     {
         public:
             AlleyHoopFeatureFinder(ros::NodeHandle* _nh);
             ~AlleyHoopFeatureFinder() = default;
-            void update();
+            bool update();
 
         private:
             //ros

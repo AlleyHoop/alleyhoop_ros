@@ -9,7 +9,7 @@ namespace AutonomousDriving
     {
         public:
             virtual ~Controller() = default;
-            virtual void update() = 0;
+            virtual bool update() = 0;
 
 	    protected:
 	        Controller(Vehicle* v) : vehicle(v)  {};

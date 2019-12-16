@@ -12,6 +12,33 @@ namespace AutonomousDriving
         public:
             virtual ~Controller() = default;
             virtual bool update() = 0;
+            
+            bool addSensor(Sensor* s) 
+            {
+                if(sensors.find(s->name) == sensors.end())
+                {
+                    sensors.insert({s->name, s});
+                    return true;
+                }
+                return false;
+            };
+            bool removeSensor(std::string n)
+            {
+                if(sensors.find(n) != sensors.end())
+                {
+                    sensors.erase(n);
+                    return true;
+                }
+                return false;
+            };
+            Sensor* getSensor(std::string n)
+            {
+                if(sensors.find(n) == sensors.end())
+                {
+                    return nullptr;
+                }
+                return sensors.find(n)->second;
+            };
 
 	    protected:
 	        Controller(Vehicle* v) : vehicle(v)  {};

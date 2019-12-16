@@ -11,7 +11,7 @@ namespace AutonomousDriving
             virtual ~Sensor() = default;
             virtual bool update() = 0;
 
-            const std::string name;
+            const std::string name; 
 
 	    protected:
 	        Sensor(std::string n) : name(n)  {};

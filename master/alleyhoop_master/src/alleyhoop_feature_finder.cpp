@@ -10,7 +10,7 @@ namespace AlleyHoopAutonomousDriving
     {
     }
 
-    void AlleyHoopFeatureFinder::update()
+    bool AlleyHoopFeatureFinder::update()
     {
         if (ros::ok())
         {

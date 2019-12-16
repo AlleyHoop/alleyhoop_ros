@@ -1,16 +1,16 @@
-#include "alleyhoop_master/alleyhoop_controller.h"
+#include "alleyhoop_master/alleyhoop_feature_finder.h"
 #include <sstream>
 #include <iostream>
 
 namespace AutonomousDriving
 {
 
-    AlleyHoopController::AlleyHoopController(ros::NodeHandle* _nh, Vehicle* v)
-	: Controller(v), nh(*_nh)
+    AlleyHoopFeatureFinder::AlleyHoopFeatureFinder(ros::NodeHandle* _nh)
+	: Model(), nh(*_nh)
     {
     }
 
-    void AlleyHoopController::update()
+    void AlleyHoopFeatureFinder::update()
     {
         if (ros::ok())
         {

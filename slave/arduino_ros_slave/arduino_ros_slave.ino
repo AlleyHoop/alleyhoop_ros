@@ -26,12 +26,13 @@ void updateUltrasoon()
 {
   //read ultrasoon
   long duration, distance;
+  digitalWrite(ultrasoon_trigpin, LOW);
+  delayMicroseconds(2);
   digitalWrite(ultrasoon_trigpin, HIGH);
-  delayMicroseconds(1000);
+  delayMicroseconds(10);
   digitalWrite(ultrasoon_trigpin, LOW);
   duration=pulseIn(ultrasoon_echopin, HIGH);
   distance=duration*0.032/2;
-  delay(10);
 
   //publish data
   ultrasoon_msg.data = distance;
@@ -71,5 +72,4 @@ void loop(){
 
   //callback and send data
   nodeHandle.spinOnce();
-  delay(1);
 }

@@ -22,7 +22,7 @@ namespace AlleyHoopROS
             if(AlleyHoopROS::AlleyHoopVehicle* ah_vehicle = dynamic_cast<AlleyHoopROS::AlleyHoopVehicle*>(vehicle))
             {
                 int ultrasoon_data = ultrasoon_sensor->getData();
-                if(ultrasoon_data < 30 && ultrasoon_data != 0)
+                if(ultrasoon_data < 30 && ultrasoon_data > 0)
                 {
                     ah_vehicle->led1->setState(true);
                 }

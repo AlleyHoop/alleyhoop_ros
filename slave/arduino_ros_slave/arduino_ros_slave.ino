@@ -50,7 +50,11 @@ void updateUltrasoon()
 void updateLed1()
 {
   //update led state
-  digitalWrite(led1_pin, led1_state);
+  if(led1_state)
+    digitalWrite(led1_pin, HIGH);
+  else
+    digitalWrite(led1_pin, LOW);
+  
 }
 
 //arduino setup

@@ -21,15 +21,14 @@ namespace AlleyHoopROS
             // make decisions
             if(AlleyHoopROS::AlleyHoopVehicle* ah_vehicle = dynamic_cast<AlleyHoopROS::AlleyHoopVehicle*>(vehicle))
             {
-                if(ultrasoon_sensor->getData() < 30)
+                int ultrasoon_data = ultrasoon_sensor->getData();
+                if(ultrasoon_data < 30 && ultrasoon_data != 0)
                 {
                     ah_vehicle->led1->setState(true);
-                    ROS_INFO("Set data led state to TRUE");
                 }
                 else
                 {
                     ah_vehicle->led1->setState(false);
-                    ROS_INFO("Set data led state to FALSE");
                 }
             }
 

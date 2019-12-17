@@ -17,7 +17,6 @@ namespace AlleyHoopROS
     {
         if (ros::ok())
         {
-            
             updateActuators();
             return true;
         }

@@ -1,4 +1,5 @@
 #include "alleyhoop_ros/alleyhoop_ros_controller.h"
+#include "alleyhoop_ros/alleyhoop_ros_vehicle.h"
 #include <sstream>
 #include <iostream>
 
@@ -17,9 +18,20 @@ namespace AlleyHoopROS
     {
         if (ros::ok())
         {
-            // print text
-            
-            
+            // make decisions
+            if(AlleyHoopROS::AlleyHoopVehicle* ah_vehicle = dynamic_cast<AlleyHoopROS::AlleyHoopVehicle*>(vehicle))
+            {
+                if(ultrasoon_sensor->getData() < 30)
+                {
+                    ah_vehicle->led1->setState(true);
+                }
+                else
+                {
+                    ah_vehicle->led1->setState(false);
+                }
+            }
+
+            //update routinely
             updateSensors(); //used for conventional implementation // for ros the following line, 'spinOnce()' is called instead 
             ros::spinOnce();
             return true;

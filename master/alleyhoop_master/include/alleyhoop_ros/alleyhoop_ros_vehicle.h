@@ -16,12 +16,14 @@ namespace AlleyHoopROS
             ~AlleyHoopVehicle() = default;
             bool update();
 
+            //actuators
+            AlleyHoopROSActuators::AlleyHoopLed* led1;
+
         protected:
             //ros
             ros::NodeHandle nh;
 
-            //actuators
-            AlleyHoopROSActuators::AlleyHoopLed* led1;
+            
     };
 
 }

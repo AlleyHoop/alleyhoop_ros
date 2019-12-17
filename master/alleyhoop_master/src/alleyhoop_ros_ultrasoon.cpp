@@ -22,7 +22,6 @@ namespace AlleyHoopROSSensors
 
     void AlleyHoopUltrasoon::callBack(const std_msgs::UInt8 msg)
     {
-        ROS_INFO("I heard: [%d]", msg.data);
         distance = msg.data;
     }
 }

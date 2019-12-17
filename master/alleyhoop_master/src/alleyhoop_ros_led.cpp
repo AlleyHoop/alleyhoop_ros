@@ -9,7 +9,7 @@ namespace AlleyHoopROSActuators
     AlleyHoopLed::AlleyHoopLed(std::string _name, ros::NodeHandle* _nh, std::string _topic)
 	    : AlleyHoopMVC::Actuator(_name), nh(*_nh), topic_name(_topic), state(false)
     {
-        pub = nh.advertise<std_msgs::Bool>(topic_name, 1000);
+        pub = nh.advertise<std_msgs::Bool>(topic_name, 1);
     }
 
     bool AlleyHoopLed::getState()

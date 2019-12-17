@@ -24,10 +24,12 @@ namespace AlleyHoopROS
                 if(ultrasoon_sensor->getData() < 30)
                 {
                     ah_vehicle->led1->setState(true);
+                    ROS_INFO("Set data led state to TRUE");
                 }
                 else
                 {
                     ah_vehicle->led1->setState(false);
+                    ROS_INFO("Set data led state to FALSE");
                 }
             }
 
@@ -37,7 +39,7 @@ namespace AlleyHoopROS
             return true;
         }
 
-        std::cout << "roscore was not running!" << std::endl;
+        std::cout << "program terminated" << std::endl;
         return false;
     }
 

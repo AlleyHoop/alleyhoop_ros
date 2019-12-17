@@ -5,12 +5,13 @@ struct CarConfig
 {
   int steer;
   int velocity;
-  bool brake;
 };
 
 //motors
 Servo                myservo;
 Servo                    esc;
+long pause_timer ;
+bool pause_brake = false;
 
 //ultrasoon
 int trigPin = 2;
@@ -42,12 +43,12 @@ void setup()
  //servo init
  myservo.attach(8);
  esc.attach(9);
+ pause_timer = millis() + 1000;
 
  //configuration
  currentConf.velocity = defaultVal;
  currentConf.steer = defaultVal;
- currentConf.brake = false;
- 
+
  //communication
  Serial.begin (9600);
 }
@@ -57,7 +58,7 @@ CarConfig makeDecision(bool ultrasoon, bool tracker1, bool tracker2)
   CarConfig conf;
   conf.velocity = defaultVal;
   conf.steer = defaultVal;
-  conf.brake = false;
+  conf.pause_brake = false;
 
   // 1: do nothing
   if(!ultrasoon && !tracker1 && !tracker2)
@@ -128,13 +129,15 @@ CarConfig makeDecision(bool ultrasoon, bool tracker1, bool tracker2)
 
 bool ultrasoon(int val)
 {
+  //read ultrasoon
   long duration, distance;
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(1000);
-  digitalWrite(trigPin, LOW);
-  duration=pulseIn(echoPin, HIGH);
+  digitalWrite(ultrasoon_trigpin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(ultrasoon_trigpin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(ultrasoon_trigpin, LOW);
+  duration=pulseIn(ultrasoon_echopin, HIGH);
   distance=duration*0.032/2;
-  delay(10);
 
   if(distance < val)
   {
@@ -149,21 +152,24 @@ void loop(){
   // make decision
   CarConfig newConf = makeDecision(ultrasoon(30), digitalRead(tracingPinLeft), digitalRead(tracingPinRight));
 
-  //brake when direction switch
-  if(newConf.velocity > defaultVal && currentConf.velocity < defaultVal)
+  //stop for a while when direction switch
+  if((newConf.velocity > defaultVal && currentConf.velocity < defaultVal) || (newConf.velocity < defaultVal && currentConf.velocity > defaultVal))
   { 
-    newConf.brake = true;
+    pause_brake = true;
+    pause_timer = millis() + 1000;
   }
-  if(newConf.velocity < defaultVal && currentConf.velocity > defaultVal)
+
+  //check if pause brake needs resetting
+  if(pause_brake && millis() > pause_timer)
   {
-    newConf.brake = true;
+    pause_brake = false;
   }
 
   //set new config
   currentConf = newConf;
 
   //control motors
-  if(!currentConf.brake)
+  if(!pause_brake)
   {
     //move car
     esc.writeMicroseconds(currentConf.velocity);
@@ -174,19 +180,10 @@ void loop(){
     //brake and wait alittle
     esc.writeMicroseconds(defaultVal);
     myservo.writeMicroseconds(defaultVal); 
-    delay(1000);
   }
 
   //debug data
   Serial.println("configuration:");
   Serial.println(currentConf.velocity);
   Serial.println(currentConf.steer);
-  if(currentConf.brake) 
-  {
-      Serial.println("brake"); 
-  }
-  else 
-  {
-      Serial.println("free");
-  }
 }

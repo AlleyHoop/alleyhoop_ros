@@ -1,41 +1,75 @@
+//ros includes
 #include <ros.h>
-#include <std_msgs/String.h>
+#include <std_msgs/Bool.h>
+#include <std_msgs/UInt8.h>
 
 //ros node (only one possible on arduino)
 ros::NodeHandle nodeHandle;
 
-//publisher exmpl
-std_msgs::String str_msg;
-ros::Publisher serial_publisher("arduino_pub", &str_msg);
+//ultrasoon publisher
+const int ultrasoon_trigpin = 2;
+const int ultrasoon_echopin = 4;
+std_msgs::UInt8 ultrasoon_msg;
+ros::Publisher ultrasoon_pub("ultrasoon_pub", &ultrasoon_msg);
 
-//subsriber exmpl
-void messageCb( const std_msgs::String& toggle_msg){
-  digitalWrite(13, HIGH-digitalRead(13));   // blink the led
+//led state subscriber
+int led1_pin = 13;
+bool led1_state = false;
+void messageCb( const std_msgs::Bool& msg){
+  
+  led1_state = msg.data;
 }
-ros::Subscriber<std_msgs::String> serial_subscriber("arduino_sub", &messageCb );
+ros::Subscriber<std_msgs::Bool> led1_sub("led1_sub", &messageCb );
 
+//ultrasoon routine function
+void updateUltrasoon()
+{
+  //read ultrasoon
+  long duration, distance;
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(1000);
+  digitalWrite(trigPin, LOW);
+  duration=pulseIn(echoPin, HIGH);
+  distance=duration*0.032/2;
+  delay(10);
+
+  //publish data
+  ultrasoon_msg.data = distance;
+  ultrasoon_pub.publish( &ultrasoon_msg );
+}
+
+//led 1 routine function
+void updateLed1()
+{
+  //update led state
+  digitalWrite(led1_pin, led1_state);
+}
+
+//arduino setup
 void setup()
 {
-  //setup led
-  pinMode(7, OUTPUT);
-  
   //node init
   nodeHandle.initNode();
 
-  //subscriber
-  nodeHandle.subscribe(serial_subscriber);
-  nodeHandle.advertise(serial_publisher);
+  //ultrasoon
+  pinMode(ultrasoon_trigpin, OUTPUT);
+  pinMode(ultrasoon_echopin, INPUT);
+  nodeHandle.advertise(ultrasoon_pub);
+
+  //setup led
+  pinMode(led1_pin, OUTPUT);
+  nodeHandle.subscribe(led1_sub);  
 }
 
-//ros spin
+//routine
 void loop(){
+  //update actuators
+  updateLed1();
 
-  //setup data to publish
-  char txt[11] = "I am arduino";
-  str_msg.data = txt;
+  //update sensors
+  updateUltrasoon();
 
   //callback and send data
-  serial_publisher.publish( &str_msg );
   nodeHandle.spinOnce();
   delay(1);
 }

@@ -10,7 +10,7 @@ ros::NodeHandle nodeHandle;
 const int ultrasoon_trigpin = 2;
 const int ultrasoon_echopin = 4;
 std_msgs::UInt8 ultrasoon_msg;
-ros::Publisher ultrasoon_pub("ultrasoon_pub", &ultrasoon_msg);
+ros::Publisher ultrasoon_pub("/arduino_slave/ultrasoon_sensor", &ultrasoon_msg);
 
 //led state subscriber
 int led1_pin = 13;
@@ -19,17 +19,17 @@ void messageCb( const std_msgs::Bool& msg){
   
   led1_state = msg.data;
 }
-ros::Subscriber<std_msgs::Bool> led1_sub("led1_sub", &messageCb );
+ros::Subscriber<std_msgs::Bool> led1_sub("/arduino_slave/led1_actuator", &messageCb );
 
 //ultrasoon routine function
 void updateUltrasoon()
 {
   //read ultrasoon
   long duration, distance;
-  digitalWrite(trigPin, HIGH);
+  digitalWrite(ultrasoon_trigpin, HIGH);
   delayMicroseconds(1000);
-  digitalWrite(trigPin, LOW);
-  duration=pulseIn(echoPin, HIGH);
+  digitalWrite(ultrasoon_trigpin, LOW);
+  duration=pulseIn(ultrasoon_echopin, HIGH);
   distance=duration*0.032/2;
   delay(10);
 

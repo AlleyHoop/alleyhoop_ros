@@ -9,7 +9,7 @@ namespace AlleyHoopROS
 	: AlleyHoopMVC::Controller(v), nh(*_nh)
     {
         //setup sensors
-        ultrasoon_sensor = new AlleyHoopROSSensors::AlleyHoopUltrasoon("ultrasoon_sensor", _nh, "ultrasoon_sensor_topic");
+        ultrasoon_sensor = new AlleyHoopROSSensors::AlleyHoopUltrasoon("ultrasoon_sensor", _nh, "/arduino_slave/ultrasoon_sensor");
         addSensor(ultrasoon_sensor);
     }
 

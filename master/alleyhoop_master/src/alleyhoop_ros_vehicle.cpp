@@ -9,7 +9,7 @@ namespace AlleyHoopROS
 	: AlleyHoopMVC::Vehicle(), nh(*_nh)
     {
          //setup sensors
-        led1 = new AlleyHoopROSActuators::AlleyHoopLed("ultrasoon_sensor", _nh, "ultrasoon_sensor_topic");
+        led1 = new AlleyHoopROSActuators::AlleyHoopLed("led1_actuator", _nh, "/arduino_slave/led1_actuator");
         addActuator(led1);
     }
 

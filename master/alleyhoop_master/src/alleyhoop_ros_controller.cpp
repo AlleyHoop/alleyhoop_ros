@@ -9,7 +9,9 @@ namespace AlleyHoopROS
     AlleyHoopController::AlleyHoopController(ros::NodeHandle* _nh, AlleyHoopMVC::Vehicle* v)
 	: AlleyHoopMVC::Controller(v), nh(*_nh)
     {
-
+        //setup sensors
+        AlleyHoopROSSensors::AlleyHoopUltrasoon* ultrasoon_sensor = new AlleyHoopROSSensors::AlleyHoopUltrasoon("ultrasoon_sensor", _nh, "ultrasoon_sensor_topic");
+        addSensor(ultrasoon_sensor);
     }
 
     bool AlleyHoopController::update()

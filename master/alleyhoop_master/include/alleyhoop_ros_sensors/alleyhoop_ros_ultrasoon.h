@@ -1,22 +1,30 @@
 #ifndef ALLEYHOOPROSULTRASOON_H_
 #define ALLEYHOOPROSULTRASOON_H_
 
-#include "alleyhoop_ros/alleyhoop_ros_sensor.h"
-#include "std_msgs/String.h"
+#include "alleyhoop_mvc/sensor.h"
+#include "std_msgs/UInt8.h"
 #include "ros/ros.h"
 
 
 namespace AlleyHoopROSSensors
 {
 
-    class AlleyHoopUltrasoon : public AlleyHoopROS::AlleyHoopSensor
+    class AlleyHoopUltrasoon : public AlleyHoopMVC::Sensor
     {
         public:      
-            ~AlleyHoopUltrasoon() = default;
-            void sensorDataCallBack();
+            AlleyHoopUltrasoon(std::string _name, ros::NodeHandle* _nh, std::string _topic);
+            virtual ~AlleyHoopUltrasoon() = default;
+
+            void callBack(const std_msgs::UInt8 msg);
+
+            const std::string topic_name;
+
+        protected:
+            ros::Subscriber sub;
+            ros::NodeHandle nh;
 
         private:
-            AlleyHoopUltrasoon(ros::NodeHandle* _nh, std::string _name, std::string _topic);
+            int distance;
     };
 
 }

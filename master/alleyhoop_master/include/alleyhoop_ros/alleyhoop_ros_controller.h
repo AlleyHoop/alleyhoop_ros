@@ -2,6 +2,7 @@
 #define  ALLEYHOOPROSCONTROLLER_H_
 
 #include "alleyhoop_mvc/controller.h"
+#include "alleyhoop_ros_sensors/alleyhoop_ros_ultrasoon.h"
 #include "ros/ros.h"
 
 
@@ -17,6 +18,9 @@ namespace AlleyHoopROS
         protected:
             //ros
             ros::NodeHandle nh;
+
+            //sensors
+            AlleyHoopROSSensors::AlleyHoopUltrasoon* ultrasoon_sensor;
     };
 
 }

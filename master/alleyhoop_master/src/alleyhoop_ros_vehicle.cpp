@@ -8,6 +8,7 @@ namespace AlleyHoopROS
     AlleyHoopVehicle::AlleyHoopVehicle(ros::NodeHandle* _nh)
 	: AlleyHoopMVC::Vehicle(), nh(*_nh)
     {
+        
     }
 
     bool AlleyHoopVehicle::update()

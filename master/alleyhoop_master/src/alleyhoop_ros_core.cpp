@@ -5,11 +5,11 @@
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "alleyhoop_master");
-    ros::NodeHandle n;
+    ros::NodeHandle nodeHandle;
 
-    AlleyHoopMVC::Vehicle* vehicle = new AlleyHoopROS::AlleyHoopVehicle(&n);
-    AlleyHoopMVC::Controller* controller = new AlleyHoopROS::AlleyHoopController(&n, vehicle);
-    AlleyHoopMVC::Model* model = new AlleyHoopROS::AlleyHoopFeatureFinder(&n);
+    AlleyHoopMVC::Vehicle* vehicle = new AlleyHoopROS::AlleyHoopVehicle(&nodeHandle);
+    AlleyHoopMVC::Controller* controller = new AlleyHoopROS::AlleyHoopController(&nodeHandle, vehicle);
+    AlleyHoopMVC::Model* model = new AlleyHoopROS::AlleyHoopFeatureFinder(&nodeHandle);
 
     bool state = true;
     while(state)

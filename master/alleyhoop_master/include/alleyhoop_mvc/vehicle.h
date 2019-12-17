@@ -12,11 +12,19 @@ namespace AlleyHoopMVC
         public:
             virtual bool update() = 0;
 
-            virtual ~Vehicle()
+            ~Vehicle()
             {
                 for (std::map<std::string, Actuator*>::iterator it = actuators.begin(); it != actuators.end(); it++)
                 {
                     delete it->second;
+                }
+            }
+
+            void updateActuators()
+            {
+                for (std::map<std::string, Actuator*>::iterator it = actuators.begin(); it != actuators.end(); it++)
+                {
+                    it->second->update();
                 }
             }
 

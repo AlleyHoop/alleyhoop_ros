@@ -2,6 +2,7 @@
 #define ALLEYHOOPVEHICLE_H_
 
 #include "alleyhoop_mvc/vehicle.h"
+#include "alleyhoop_ros_actuators/alleyhoop_ros_led.h"
 #include "ros/ros.h"
 
 
@@ -18,6 +19,9 @@ namespace AlleyHoopROS
         protected:
             //ros
             ros::NodeHandle nh;
+
+            //actuators
+            AlleyHoopROSActuators::AlleyHoopLed* led1;
     };
 
 }

@@ -33,8 +33,13 @@ target_link_libraries(alleyhoop_ros_sensors
    ${catkin_LIBRARIES}
 )
 
+add_library(alleyhoop_ros_actuators src/alleyhoop_ros_led.cpp)
+target_link_libraries(alleyhoop_ros_actuators 
+   ${catkin_LIBRARIES}
+)
+
 add_executable(alleyhoop_ros_node src/alleyhoop_ros_core.cpp)
-target_link_libraries(alleyhoop_ros_node alleyhoop_ros alleyhoop_ros_sensors
+target_link_libraries(alleyhoop_ros_node alleyhoop_ros alleyhoop_ros_sensors alleyhoop_ros_actuators
    ${catkin_LIBRARIES}
 )
 
@@ -43,6 +48,8 @@ install(DIRECTORY include/ DESTINATION include)
 install(TARGETS
    alleyhoop_ros_node
    alleyhoop_ros
+   alleyhoop_ros_sensors
+   alleyhoop_ros_actuators
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

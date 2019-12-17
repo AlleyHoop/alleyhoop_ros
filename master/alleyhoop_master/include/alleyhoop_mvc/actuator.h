@@ -9,6 +9,7 @@ namespace AlleyHoopMVC
     {
         public:
             virtual ~Actuator() = default;
+            virtual void update() = 0;
 
             const std::string name;
 

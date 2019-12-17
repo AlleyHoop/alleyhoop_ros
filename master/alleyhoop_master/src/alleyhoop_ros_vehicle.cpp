@@ -8,18 +8,17 @@ namespace AlleyHoopROS
     AlleyHoopVehicle::AlleyHoopVehicle(ros::NodeHandle* _nh)
 	: AlleyHoopMVC::Vehicle(), nh(*_nh)
     {
-        
+         //setup sensors
+        led1 = new AlleyHoopROSActuators::AlleyHoopLed("ultrasoon_sensor", _nh, "ultrasoon_sensor_topic");
+        addActuator(led1);
     }
 
     bool AlleyHoopVehicle::update()
     {
         if (ros::ok())
         {
-            // print text
-            std::stringstream ss;
-            ss << "vehicle running...";
-            ROS_INFO("%s", ss.str().c_str());
-            ros::spinOnce();
+            
+            updateActuators();
             return true;
         }
 

@@ -16,6 +16,8 @@ namespace AlleyHoopROSSensors
             virtual ~AlleyHoopUltrasoon() = default;
 
             void callBack(const std_msgs::UInt8 msg);
+            void update();
+            int getData();
 
             const std::string topic_name;
 

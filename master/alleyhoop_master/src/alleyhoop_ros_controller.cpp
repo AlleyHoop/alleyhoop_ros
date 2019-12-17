@@ -1,5 +1,4 @@
 #include "alleyhoop_ros/alleyhoop_ros_controller.h"
-#include "alleyhoop_ros_sensors/alleyhoop_ros_ultrasoon.h"
 #include <sstream>
 #include <iostream>
 
@@ -10,7 +9,7 @@ namespace AlleyHoopROS
 	: AlleyHoopMVC::Controller(v), nh(*_nh)
     {
         //setup sensors
-        AlleyHoopROSSensors::AlleyHoopUltrasoon* ultrasoon_sensor = new AlleyHoopROSSensors::AlleyHoopUltrasoon("ultrasoon_sensor", _nh, "ultrasoon_sensor_topic");
+        ultrasoon_sensor = new AlleyHoopROSSensors::AlleyHoopUltrasoon("ultrasoon_sensor", _nh, "ultrasoon_sensor_topic");
         addSensor(ultrasoon_sensor);
     }
 
@@ -19,9 +18,9 @@ namespace AlleyHoopROS
         if (ros::ok())
         {
             // print text
-            std::stringstream ss;
-            ss << "controller running..";
-            ROS_INFO("%s", ss.str().c_str());
+            
+            
+            updateSensors(); //used for conventional implementation // for ros the following line, 'spinOnce()' is called instead 
             ros::spinOnce();
             return true;
         }

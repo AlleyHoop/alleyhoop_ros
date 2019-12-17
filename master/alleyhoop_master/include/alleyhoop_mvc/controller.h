@@ -11,13 +11,22 @@ namespace AlleyHoopMVC
     {
         public:
             virtual bool update() = 0;
-            virtual ~Controller()
+            ~Controller()
             {
                 for (std::map<std::string, Sensor*>::iterator it = sensors.begin(); it != sensors.end(); it++)
                 {
                     delete it->second;
                 }
-            }      
+            } 
+
+            void updateSensors()
+            {
+                for (std::map<std::string, Sensor*>::iterator it = sensors.begin(); it != sensors.end(); it++)
+                {
+                    it->second->update();
+                }
+            }
+
             bool addSensor(Sensor* s) 
             {
                 if(sensors.find(s->name) == sensors.end())

@@ -9,8 +9,10 @@ namespace AlleyHoopMVC
     {
         public:
             virtual ~Sensor() = default;
+            virtual void update() = 0;
 
             const std::string name; 
+            
 
 	    protected:
 	        Sensor(std::string n) : name(n)  {};

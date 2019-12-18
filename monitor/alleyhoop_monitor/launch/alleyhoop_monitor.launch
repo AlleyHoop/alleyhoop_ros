@@ -1,16 +1,7 @@
 <launch>
-    <!--launch args-->
-    <arg name="viz_lidar" default="false"/>
-
-    <!-- viz lidar-->
-    <group if="$(arg viz_lidar)">
-        <node name="broadcast_lidar_frames" pkg="alleyhoop_monitor" type="tf_broadcaster.py" />
-    </group>
-
     <!--launch rviz-->
     <param name="robot_description" textfile="$(find alleyhoop_monitor)/urdf/alleyhoop.urdf" />
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"></node>
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find alleyhoop_monitor)/rviz/demo.rviz" />
-
 </launch>

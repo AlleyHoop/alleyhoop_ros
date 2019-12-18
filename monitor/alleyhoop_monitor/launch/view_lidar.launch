@@ -1,4 +1,0 @@
-<launch>
-  <node name="broadcast_lidar_frames" pkg="environment_monitor" type="tf_broadcaster.py" />
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find rplidar_ros)/rviz/rplidar.rviz" />
-</launch>

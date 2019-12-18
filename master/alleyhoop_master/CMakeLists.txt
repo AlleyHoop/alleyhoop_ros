@@ -3,8 +3,12 @@ project(alleyhoop_master)
 
 add_compile_options(-std=c++11)
 
+find_package(OpenCV REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  sensor_msgs
+  std_msgs
+  cv_bridge
   rospy
   tf
 )
@@ -18,19 +22,23 @@ catkin_package(
 
 include_directories(include
    ${catkin_INCLUDE_DIRS}
+   ${OpenCV_INCLUDE_DIRS}
 )
 
-add_library(alleyhoop_ros src/alleyhoop_ros_controller.cpp
-                             src/alleyhoop_ros_vehicle.cpp
-                             src/alleyhoop_ros_feature_finder.cpp
+add_library(alleyhoop_ros  src/alleyhoop_ros_controller.cpp
+                           src/alleyhoop_ros_vehicle.cpp
+                           src/alleyhoop_ros_feature_finder.cpp
 )
 target_link_libraries(alleyhoop_ros 
    ${catkin_LIBRARIES}
 )
 
-add_library(alleyhoop_ros_sensors src/alleyhoop_ros_ultrasoon.cpp)
+add_library(alleyhoop_ros_sensors src/alleyhoop_ros_ultrasoon.cpp
+                                  src/alleyhoop_ros_mono_camera.cpp
+)
 target_link_libraries(alleyhoop_ros_sensors 
    ${catkin_LIBRARIES}
+   ${OpenCV_LIBS}
 )
 
 add_library(alleyhoop_ros_actuators src/alleyhoop_ros_led.cpp)

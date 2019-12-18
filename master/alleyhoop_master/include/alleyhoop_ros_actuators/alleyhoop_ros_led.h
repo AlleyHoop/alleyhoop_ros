@@ -1,11 +1,14 @@
 #ifndef ALLEYHOOPROSLED_H_
 #define ALLEYHOOPROSLED_H_
 
+#include <ros/ros.h>
+
 #include "alleyhoop_mvc/actuator.h"
-#include "ros/ros.h"
+
 #include <chrono>
 #include <cstdint>
 #include <iostream>
+#include <std_msgs/Bool.h>
 
 namespace AlleyHoopROSActuators
 {

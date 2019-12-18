@@ -1,9 +1,10 @@
 #ifndef ALLEYHOOPVEHICLE_H_
 #define ALLEYHOOPVEHICLE_H_
 
+#include <ros/ros.h>
+
 #include "alleyhoop_mvc/vehicle.h"
 #include "alleyhoop_ros_actuators/alleyhoop_ros_led.h"
-#include "ros/ros.h"
 
 
 namespace AlleyHoopROS

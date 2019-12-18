@@ -1,9 +1,12 @@
 #ifndef ALLEYHOOPROSULTRASOON_H_
 #define ALLEYHOOPROSULTRASOON_H_
 
+#include <ros/ros.h>
+
 #include "alleyhoop_mvc/sensor.h"
-#include "std_msgs/UInt8.h"
-#include "ros/ros.h"
+
+#include <std_msgs/UInt8.h>
+
 
 
 namespace AlleyHoopROSSensors

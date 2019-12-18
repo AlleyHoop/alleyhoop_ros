@@ -1,5 +1,4 @@
 #include "alleyhoop_ros_actuators/alleyhoop_ros_led.h"
-#include "std_msgs/Bool.h"
 
 
 namespace AlleyHoopROSActuators

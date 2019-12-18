@@ -1,9 +1,9 @@
 #ifndef  ALLEYHOOPROSFEATUREFINDER_H_
 #define  ALLEYHOOPROSFEATUREFINDER_H_
 
-#include "alleyhoop_mvc/model.h"
-#include "ros/ros.h"
+#include <ros/ros.h>
 
+#include "alleyhoop_mvc/model.h"
 
 namespace AlleyHoopROS
 {

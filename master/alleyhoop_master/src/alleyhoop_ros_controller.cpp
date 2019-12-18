@@ -1,5 +1,6 @@
 #include "alleyhoop_ros/alleyhoop_ros_controller.h"
 #include "alleyhoop_ros/alleyhoop_ros_vehicle.h"
+
 #include <sstream>
 #include <iostream>
 
@@ -12,6 +13,8 @@ namespace AlleyHoopROS
         //setup sensors
         ultrasoon_sensor = new AlleyHoopROSSensors::AlleyHoopUltrasoon("ultrasoon_sensor", _nh, "/arduino_slave/ultrasoon_sensor");
         addSensor(ultrasoon_sensor);
+        mono_camera_1 = new AlleyHoopROSSensors::AlleyHoopMonoCamera("mono_camera_1", _nh, "/mono_camera_1/image", "/mono_camera_1/camera_info");
+        addSensor(mono_camera_1);
     }
 
     bool AlleyHoopController::update()

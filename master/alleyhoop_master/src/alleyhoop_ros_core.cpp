@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 
     AlleyHoopMVC::Vehicle* vehicle = new AlleyHoopROS::AlleyHoopVehicle(&nodeHandle);
     AlleyHoopMVC::Controller* controller = new AlleyHoopROS::AlleyHoopController(&nodeHandle, vehicle);
-    AlleyHoopMVC::Model* model = new AlleyHoopROS::AlleyHoopFeatureFinder(&nodeHandle);
+    //AlleyHoopMVC::Model* model = new AlleyHoopROS::AlleyHoopFeatureFinder(&nodeHandle);
 
     bool state = true;
     while(state)
@@ -21,6 +21,6 @@ int main(int argc, char **argv)
 
     delete controller;
     delete vehicle;
-    delete model;
+    //delete model;
     return 0;
 }

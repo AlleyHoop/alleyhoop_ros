@@ -1,4 +1,5 @@
 #include "alleyhoop_ros/alleyhoop_ros_feature_finder.h"
+
 #include <sstream>
 #include <iostream>
 
@@ -22,7 +23,7 @@ namespace AlleyHoopROS
             return true;
         }
 
-        std::cout << "roscore was not running!" << std::endl;
+        std::cout << "program terminated" << std::endl;
         return false;
     }
 

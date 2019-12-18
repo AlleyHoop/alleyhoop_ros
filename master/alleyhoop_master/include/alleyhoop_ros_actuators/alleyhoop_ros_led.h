@@ -3,7 +3,9 @@
 
 #include "alleyhoop_mvc/actuator.h"
 #include "ros/ros.h"
-
+#include <chrono>
+#include <cstdint>
+#include <iostream>
 
 namespace AlleyHoopROSActuators
 {
@@ -18,6 +20,9 @@ namespace AlleyHoopROSActuators
             bool getState();
             void update();
 
+            static uint64_t timeMillis();
+
+
             const std::string topic_name;
 
         protected:
@@ -26,6 +31,7 @@ namespace AlleyHoopROSActuators
 
         private:
             bool state;
+            double pub_time;
     };
 
 }

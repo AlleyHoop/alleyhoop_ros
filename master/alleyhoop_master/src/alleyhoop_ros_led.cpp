@@ -1,13 +1,18 @@
 #include "alleyhoop_ros_actuators/alleyhoop_ros_led.h"
 #include "std_msgs/Bool.h"
-#include <sstream>
-#include <iostream>
+
 
 namespace AlleyHoopROSActuators
 {
+    uint64_t timeMillis() 
+    {
+        using namespace std::chrono;
+        return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+    }
+
 
     AlleyHoopLed::AlleyHoopLed(std::string _name, ros::NodeHandle* _nh, std::string _topic)
-	    : AlleyHoopMVC::Actuator(_name), nh(*_nh), topic_name(_topic), state(false)
+	    : AlleyHoopMVC::Actuator(_name), nh(*_nh), topic_name(_topic), state(false), pub_time(timeMillis() + 250)
     {
         pub = nh.advertise<std_msgs::Bool>(topic_name, 1);
     }
@@ -24,9 +29,12 @@ namespace AlleyHoopROSActuators
 
     void AlleyHoopLed::update()
     {
-        std_msgs::Bool msg;
-        msg.data = state;
-        pub.publish(msg);
+        if(timeMillis() > pub_time)
+        {
+            std_msgs::Bool msg;
+            msg.data = state;
+            pub.publish(msg);
+            pub_time = timeMillis() + 250;
+        }
     }
-
 }

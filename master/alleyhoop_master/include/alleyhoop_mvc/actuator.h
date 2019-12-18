@@ -15,6 +15,7 @@ namespace AlleyHoopMVC
 
 	    protected:
 	        Actuator(std::string n) : name(n)  {};
+            
     };
 }
 

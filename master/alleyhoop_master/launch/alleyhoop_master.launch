@@ -1,0 +1,25 @@
+<launch>
+    <!--launch args-->
+    <arg name="enable_arduino_slave" default="true"/>
+    <arg name="enable_pi_camera" default="false"/>
+    <arg name="enable_lidar" default="false"/>
+
+    <!--launch slave communication-->
+    <group if="$(arg enable_arduino_slave)">
+        <node name="arduino_slave" pkg="rosserial_python" type="serial_node.py" args="/dev/ttyACM0"/>
+    </group>
+
+    <!--launch pi camera-->
+    <group if="$(arg enable_pi_camera)">
+        <node name="pi_camera" pkg="raspi_utils" type="raspi_camera.py"/>
+    </group>
+
+    <!--launch lidar-->
+    <group if="$(arg enable_lidar)">
+        <node name="pi_camera" pkg="raspi_utils" type="raspi_camera.py"/>
+    </group>
+
+    <!--launch core node-->
+    <node name="alleyhoop_ros_master" pkg="alleyhoop_master" type="alleyhoop_ros_master"/>
+    
+</launch>

@@ -13,7 +13,7 @@ namespace AlleyHoopROS
         //setup sensors
         ultrasoon_sensor = new AlleyHoopROSSensors::AlleyHoopUltrasoon("ultrasoon_sensor", _nh, "/arduino_slave/ultrasoon_sensor");
         addSensor(ultrasoon_sensor);
-        mono_camera_1 = new AlleyHoopROSSensors::AlleyHoopMonoCamera("mono_camera_1", _nh, "/mono_camera_1/image", "/mono_camera_1/camera_info");
+        mono_camera_1 = new AlleyHoopROSSensors::AlleyHoopMonoCamera("mono_camera_1", _nh, "/raspi_camera/image", "/raspi_camera/camera_info");
         addSensor(mono_camera_1);
     }
 

@@ -31,7 +31,9 @@ namespace AlleyHoopROSActuators
 
         private:
             bool state;
+            double pub_rate;
             double pub_time;
+            
     };
 
 }

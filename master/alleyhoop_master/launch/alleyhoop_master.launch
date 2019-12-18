@@ -20,6 +20,6 @@
     </group>
 
     <!--launch core node-->
-    <node name="alleyhoop_ros_master" pkg="alleyhoop_master" type="alleyhoop_ros_master"/>
+    <node name="alleyhoop_ros_master" pkg="alleyhoop_master" type="alleyhoop_ros_node"/>
     
 </launch>

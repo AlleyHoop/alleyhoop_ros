@@ -16,7 +16,7 @@
 
     <!--launch lidar-->
     <group if="$(arg enable_lidar)">
-        <node name="pi_camera" pkg="raspi_utils" type="raspi_camera.py"/>
+        <node name="lidar_node" pkg="rplidar_ros" type="rplidar_ros"/>
     </group>
 
     <!--launch core node-->

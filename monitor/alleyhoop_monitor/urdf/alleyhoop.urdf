@@ -2,14 +2,22 @@
   <robot name="alleyhoop">
     <link name="base_link">
       <visual>
+        <origin rpy="1.57 0 0" xyz="-1 0.5 0"/>
         <geometry>
-          <box size="1 .5 .5"/>
+          <mesh filename="package://alleyhoop_monitor/meshes/AlleyHoopBaseLink.stl" scale="0.0005 0.0005 0.0005"/>
         </geometry>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
         <material name="white">
           <color rgba="1 1 1 1"/>
         </material>
       </visual>
+      <collision>
+      <geometry>
+        <mesh filename="package://alleyhoop_monitor/meshes/AlleyHoopBaseLink.stl" scale="0.0005 0.0005 0.0005"/>
+      </geometry>
+      <material name="yellow">
+        <color rgba="0 1 1 1"/>
+      </material>
+    </collision>
     </link>
 
     <link name="lidar_link">
@@ -27,6 +35,6 @@
     <joint name="base_to_lidar" type="fixed">
       <parent link="base_link"/>
       <child link="lidar_link"/>
-      <origin xyz="0 0 0.4"/>
+      <origin xyz="0 0 1"/>
     </joint>
 </robot>

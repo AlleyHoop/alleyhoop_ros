@@ -6,6 +6,7 @@
 #include "alleyhoop_mvc/controller.h"
 #include "alleyhoop_ros_sensors/alleyhoop_ros_ultrasoon.h"
 #include "alleyhoop_ros_sensors/alleyhoop_ros_mono_camera.h" 
+#include "alleyhoop_ros_sensors/alleyhoop_ros_lidar.h"
 
 
 namespace AlleyHoopROS
@@ -24,6 +25,7 @@ namespace AlleyHoopROS
             //sensors
             AlleyHoopROSSensors::AlleyHoopUltrasoon* ultrasoon_sensor;
             AlleyHoopROSSensors::AlleyHoopMonoCamera* mono_camera_1;
+            AlleyHoopROSSensors::AlleyHoopLidar* lidar1;
     };
 
 }

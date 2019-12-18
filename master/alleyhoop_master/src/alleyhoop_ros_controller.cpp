@@ -10,11 +10,15 @@ namespace AlleyHoopROS
     AlleyHoopController::AlleyHoopController(ros::NodeHandle* _nh, AlleyHoopMVC::Vehicle* v)
 	: AlleyHoopMVC::Controller(v), nh(*_nh)
     {
-        //setup sensors
+        //setup sensors, add to controller base class for life line managing and update routine
         ultrasoon_sensor = new AlleyHoopROSSensors::AlleyHoopUltrasoon("ultrasoon_sensor", _nh, "/arduino_slave/ultrasoon_sensor");
         addSensor(ultrasoon_sensor);
+
         mono_camera_1 = new AlleyHoopROSSensors::AlleyHoopMonoCamera("mono_camera_1", _nh, "/raspi_camera/image", "/raspi_camera/camera_info");
         addSensor(mono_camera_1);
+
+        lidar1 = new AlleyHoopROSSensors::AlleyHoopLidar("lidar1", _nh, "/scan");
+        addSensor(lidar1);
     }
 
     bool AlleyHoopController::update()

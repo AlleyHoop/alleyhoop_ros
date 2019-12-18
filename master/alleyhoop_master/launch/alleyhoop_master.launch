@@ -16,7 +16,7 @@
 
     <!--launch lidar-->
     <group if="$(arg enable_lidar)">
-        <node name="lidar_node" pkg="rplidar_ros" type="rplidar_ros"/>
+        <include file="$(find rplidar_ros)/launch/rplidar.launch"/>
     </group>
 
     <!--launch core node-->

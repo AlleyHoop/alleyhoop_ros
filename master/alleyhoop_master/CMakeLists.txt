@@ -35,6 +35,7 @@ target_link_libraries(alleyhoop_ros
 
 add_library(alleyhoop_ros_sensors src/alleyhoop_ros_ultrasoon.cpp
                                   src/alleyhoop_ros_mono_camera.cpp
+                                  src/alleyhoop_ros_lidar.cpp
 )
 target_link_libraries(alleyhoop_ros_sensors 
    ${catkin_LIBRARIES}

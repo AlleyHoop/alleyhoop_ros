@@ -1,8 +1,5 @@
 #include "alleyhoop_ros_sensors/alleyhoop_ros_mono_camera.h"
 
-#include <sstream>
-#include <iostream>
-
 namespace AlleyHoopROSSensors
 {
     AlleyHoopMonoCamera::AlleyHoopMonoCamera(std::string _name, ros::NodeHandle* _nh, std::string _image_topic, std::string _camera_info_topic)

@@ -5,6 +5,7 @@
 
 #include "alleyhoop_mvc/vehicle.h"
 #include "alleyhoop_ros_actuators/alleyhoop_ros_led.h"
+#include "alleyhoop_ros_actuators/alleyhoop_ros_motor.h"
 
 
 namespace AlleyHoopROS
@@ -19,6 +20,8 @@ namespace AlleyHoopROS
 
             //actuators
             AlleyHoopROSActuators::AlleyHoopLed* led1;
+            AlleyHoopROSActuators::AlleyHoopMotor* steering_motor;
+            AlleyHoopROSActuators::AlleyHoopMotor* velocity_motor;
 
         protected:
             //ros

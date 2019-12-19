@@ -7,7 +7,6 @@
 
 #include <chrono>
 #include <cstdint>
-#include <iostream>
 #include <std_msgs/Bool.h>
 
 namespace AlleyHoopROSActuators

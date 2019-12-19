@@ -1,8 +1,5 @@
 #include "alleyhoop_ros_sensors/alleyhoop_ros_ultrasoon.h"
 
-#include <sstream>
-#include <iostream>
-
 namespace AlleyHoopROSSensors
 {
     AlleyHoopUltrasoon::AlleyHoopUltrasoon(std::string _name, ros::NodeHandle* _nh, std::string _topic)

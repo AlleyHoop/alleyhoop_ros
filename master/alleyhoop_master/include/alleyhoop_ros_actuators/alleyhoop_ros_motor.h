@@ -4,6 +4,8 @@
 #include <ros/ros.h>
 
 #include "alleyhoop_mvc/actuator.h"
+#include <chrono>
+#include <cstdint>
 #include <std_msgs/UInt8.h>
 
 namespace AlleyHoopROSActuators
@@ -16,7 +18,7 @@ namespace AlleyHoopROSActuators
             virtual ~AlleyHoopMotor() = default;
 
             void setPercentage(int p);
-            bool getPercentage();
+            int getPercentage();
             void update();
 
             static uint64_t timeMillis();

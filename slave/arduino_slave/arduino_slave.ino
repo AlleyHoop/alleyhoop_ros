@@ -10,7 +10,7 @@ struct CarConfig
 //motors
 Servo                myservo;
 Servo                    esc;
-long pause_timer ;
+long pause_timer;
 bool pause_brake = false;
 
 //ultrasoon

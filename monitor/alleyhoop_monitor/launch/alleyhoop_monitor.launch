@@ -1,7 +1,9 @@
 <launch>
     <!--launch rviz-->
-    <param name="robot_description" textfile="$(find alleyhoop_monitor)/urdf/alleyhoop.urdf" />
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"></node>
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+    <param name="robot_description" textfile="$(find alleyhoop_monitor)/urdf/alleyhoop.urdf"/>
+
+    <node name="alleyhoop_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+    <node name="alleyhoop_frame_broadcaster" pkg="alleyhoop_monitor" type="alleyhoop_frame_broadcaster.py"/>
+
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find alleyhoop_monitor)/rviz/demo.rviz" />
 </launch>

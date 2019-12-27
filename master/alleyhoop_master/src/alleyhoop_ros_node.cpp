@@ -1,6 +1,6 @@
 #include "alleyhoop_ros_core/alleyhoop_ros_controller.h"
 #include "alleyhoop_ros_core/alleyhoop_ros_vehicle.h"
-#include "alleyhoop_ros_core/alleyhoop_ros_feature_finder.h"
+
 
 int main(int argc, char **argv)
 {

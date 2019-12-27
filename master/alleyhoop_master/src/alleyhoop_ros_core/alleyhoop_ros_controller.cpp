@@ -8,7 +8,7 @@ namespace AlleyHoopROS
 {
 
     AlleyHoopController::AlleyHoopController(ros::NodeHandle* _nh, AlleyHoopMVC::Vehicle* v)
-	: AlleyHoopMVC::Controller(v), nh(*_nh)
+	: AlleyHoopMVC::Controller(v), nh(*_nh), imageFeatureFinder(_nh)
     {
         //setup sensors, add to controller base class for life line managing and update routine
         ultrasoon_sensor = new AlleyHoopROSSensors::AlleyHoopUltrasoon("ultrasoon_sensor", _nh, "/arduino_slave/ultrasoon_sensor");

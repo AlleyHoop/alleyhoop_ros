@@ -24,7 +24,11 @@ namespace AlleyHoopROS
     {
         if (ros::ok())
         {
+            //update actuators
             updateActuators();
+
+            //update view
+            
             return true;
         }
 

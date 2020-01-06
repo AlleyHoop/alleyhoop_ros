@@ -1,6 +1,6 @@
 <launch>
     <!--launch args-->
-    <arg name="enable_arduino_slave" default="true"/>
+    <arg name="enable_arduino_slave" default="false"/>
     <arg name="enable_pi_camera" default="false"/>
     <arg name="enable_lidar" default="false"/>
 

@@ -1,8 +1,12 @@
 #include "alleyhoop_ros_core/alleyhoop_ros_controller.h"
 #include "alleyhoop_ros_core/alleyhoop_ros_vehicle.h"
+#include "alleyhoop_ros_utils/alleyhoop_ros_feature.h"
 
 #include <sstream>
 #include <iostream>
+#include <cv_bridge/cv_bridge.h>
+
+
 
 namespace AlleyHoopROS
 {
@@ -25,10 +29,24 @@ namespace AlleyHoopROS
     {
         if (ros::ok())
         {
-            // make decisions
+            //update routinely
+            updateSensors(); //used for conventional implementation // for ros the following line, 'spinOnce()' is called instead 
+            ros::spinOnce();
+
+            //get sensors data
+            int ultrasoon_data = ultrasoon_sensor->getData();
+            cv_bridge::CvImagePtr image_data = mono_camera_1->getData();
+
+            //find features
+            AlleyHoopROSUtils::AlleyHoopFeature* feature = imageFeatureFinder.findFeatures(image_data);
+
+            //make desicions based on features
+
+
+            // control the actuators
             if(AlleyHoopROS::AlleyHoopVehicle* ah_vehicle = dynamic_cast<AlleyHoopROS::AlleyHoopVehicle*>(vehicle))
             {
-                int ultrasoon_data = ultrasoon_sensor->getData();
+                //turn on led
                 if(ultrasoon_data < 30 && ultrasoon_data > 0)
                 {
                     ah_vehicle->led1->setState(true);
@@ -39,9 +57,7 @@ namespace AlleyHoopROS
                 }
             }
 
-            //update routinely
-            updateSensors(); //used for conventional implementation // for ros the following line, 'spinOnce()' is called instead 
-            ros::spinOnce();
+            //only if ros was still running
             return true;
         }
 

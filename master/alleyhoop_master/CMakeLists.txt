@@ -25,6 +25,11 @@ include_directories(include
    ${OpenCV_INCLUDE_DIRS}
 )
 
+add_library(alleyhoop_ros_utils src/alleyhoop_ros_utils/alleyhoop_ros_feature.cpp)
+target_link_libraries(alleyhoop_ros_utils 
+   ${catkin_LIBRARIES}
+)
+
 add_library(alleyhoop_ros_core  src/alleyhoop_ros_core/alleyhoop_ros_controller.cpp
                            src/alleyhoop_ros_core/alleyhoop_ros_vehicle.cpp
                            src/alleyhoop_ros_core/alleyhoop_ros_image_feature_finder.cpp
@@ -50,7 +55,7 @@ target_link_libraries(alleyhoop_ros_actuators
 )
 
 add_executable(alleyhoop_ros_node src/alleyhoop_ros_node.cpp)
-target_link_libraries(alleyhoop_ros_node alleyhoop_ros_core alleyhoop_ros_sensors alleyhoop_ros_actuators
+target_link_libraries(alleyhoop_ros_node alleyhoop_ros_core alleyhoop_ros_sensors alleyhoop_ros_actuators alleyhoop_ros_utils
    ${catkin_LIBRARIES}
 )
 
@@ -60,6 +65,7 @@ install(TARGETS
    alleyhoop_ros_core
    alleyhoop_ros_sensors
    alleyhoop_ros_actuators
+   alleyhoop_ros_utils
    alleyhoop_ros_node
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}

@@ -29,7 +29,7 @@ namespace AlleyHoopROS
         
         if(imagePtr == nullptr)
         {
-            return new AlleyHoopROSUtils::AlleyHoopFeature();
+            return nullptr;
         }
 
         Mat grayImage;
@@ -47,7 +47,7 @@ namespace AlleyHoopROS
         cvWaitKey(0);
         grayImage.release();
 
-        return new AlleyHoopROSUtils::AlleyHoopFeature();
+        return nullptr;
     }
 
 }

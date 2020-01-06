@@ -24,11 +24,12 @@ def main(args):
     # create cv2 bridge
     bridge = CvBridge()
 
+    pth = os.path.join(os.getcwd(), 'anwbw760.jpeg')
+    cv_image = cv2.imread(pth)
+    print("reading image from " + pth)
+
     # loop
     while not rospy.is_shutdown():
-        pth = os.path.join(os.getcwd(), 'src', 'raspi_utils', 'scripts', 'anwbw760.jpeg')
-        print("reading image from " + pth)
-        cv_image = cv2.imread(pth)
         image = bridge.cv2_to_imgmsg(cv_image, "bgr8")
         pub.publish(image)
         rate.sleep()

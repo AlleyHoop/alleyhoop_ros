@@ -6,15 +6,15 @@ import sys
 import rospy
 import time
 import cv2
-import io
 import numpy as np
+import os
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 
 # img pub
 def main(args):
-    print("starting raspi cam image publisher on topic /raspi_camera/image_raw")
+    print("starting fake raspi cam image publisher on topic /raspi_camera/image_raw")
 
     # init ros
     rospy.init_node('raspi_camera', anonymous=True)
@@ -26,4 +26,14 @@ def main(args):
 
     # loop
     while not rospy.is_shutdown():
-        
+        pth = os.path.join(os.getcwd(), 'src', 'raspi_utils', 'scripts', 'anwbw760.jpeg')
+        print("reading image from " + pth)
+        cv_image = cv2.imread(pth)
+        image = bridge.cv2_to_imgmsg(cv_image, "bgr8")
+        pub.publish(image)
+        rate.sleep()
+    
+
+if __name__ == '__main__':
+    main(sys.argv)
+    sys.exit()

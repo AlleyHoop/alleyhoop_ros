@@ -19,6 +19,7 @@ namespace AlleyHoopROS
             AlleyHoopImageFeatureFinder(ros::NodeHandle* _nh);
             ~AlleyHoopImageFeatureFinder() = default;
             bool update();
+            
             AlleyHoopROSUtils::AlleyHoopFeature* findFeatures(cv_bridge::CvImagePtr imagePtr);
             
         protected:

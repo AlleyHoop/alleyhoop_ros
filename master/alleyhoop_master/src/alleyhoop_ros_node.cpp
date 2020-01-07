@@ -1,7 +1,6 @@
 #include "alleyhoop_ros_core/alleyhoop_ros_controller.h"
 #include "alleyhoop_ros_core/alleyhoop_ros_vehicle.h"
 
-
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "alleyhoop_master");
@@ -9,7 +8,6 @@ int main(int argc, char **argv)
 
     AlleyHoopMVC::Vehicle* vehicle = new AlleyHoopROS::AlleyHoopVehicle(&nodeHandle);
     AlleyHoopMVC::Controller* controller = new AlleyHoopROS::AlleyHoopController(&nodeHandle, vehicle);
-    //AlleyHoopMVC::Model* model = new AlleyHoopROS::AlleyHoopFeatureFinder(&nodeHandle);
 
     bool state = true;
     while(state)
@@ -21,6 +19,5 @@ int main(int argc, char **argv)
 
     delete controller;
     delete vehicle;
-    //delete model;
     return 0;
 }

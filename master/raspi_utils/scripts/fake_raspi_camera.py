@@ -25,11 +25,11 @@ def main(args):
     bridge = CvBridge()
 
     pth = os.path.join(os.getcwd(), 'anwbw760.jpeg')
-    cv_image = cv2.imread(pth)
     print("reading image from " + pth)
 
     # loop
     while not rospy.is_shutdown():
+        cv_image = cv2.imread(pth)
         image = bridge.cv2_to_imgmsg(cv_image, "bgr8")
         pub.publish(image)
         rate.sleep()

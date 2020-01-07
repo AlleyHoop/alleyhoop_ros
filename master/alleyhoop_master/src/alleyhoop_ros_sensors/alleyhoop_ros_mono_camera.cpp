@@ -1,4 +1,5 @@
 #include "alleyhoop_ros_sensors/alleyhoop_ros_mono_camera.h"
+#include <iostream>
 
 namespace AlleyHoopROSSensors
 {

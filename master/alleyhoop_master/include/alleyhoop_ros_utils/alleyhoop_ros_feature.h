@@ -11,7 +11,7 @@ namespace AlleyHoopROSUtils
     class AlleyHoopFeature
     {
         public:
-            AlleyHoopFeature();
+            AlleyHoopFeature(int type);
             ~AlleyHoopFeature() = default;
             AlleyHoopROSUtils::AlleyHoopTransform transform;
             int featureType;

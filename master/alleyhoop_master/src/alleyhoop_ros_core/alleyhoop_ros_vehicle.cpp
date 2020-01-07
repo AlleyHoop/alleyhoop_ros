@@ -5,6 +5,8 @@
 
 namespace AlleyHoopROS
 {
+    bool AlleyHoopVehicle::verboseDisplay = false;
+    bool AlleyHoopVehicle::verboseLog = false;
 
     AlleyHoopVehicle::AlleyHoopVehicle(ros::NodeHandle* _nh)
 	: AlleyHoopMVC::Vehicle(), nh(*_nh)

@@ -7,6 +7,7 @@
 #include "alleyhoop_ros_utils/alleyhoop_ros_feature.h"
 
 #include <cv_bridge/cv_bridge.h>
+#include <list>
 
 
 
@@ -19,9 +20,11 @@ namespace AlleyHoopROS
             AlleyHoopImageFeatureFinder(ros::NodeHandle* _nh);
             ~AlleyHoopImageFeatureFinder() = default;
             bool update();
+            std::list<AlleyHoopROSUtils::AlleyHoopFeature*>  findFeatures(cv_bridge::CvImagePtr imagePtr);
             
-            AlleyHoopROSUtils::AlleyHoopFeature* findFeatures(cv_bridge::CvImagePtr imagePtr);
-            
+            static bool verboseDisplay;
+            static bool verboseLog;
+
         protected:
             //ros
             ros::NodeHandle nh;

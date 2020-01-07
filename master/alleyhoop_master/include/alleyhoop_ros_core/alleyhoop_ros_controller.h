@@ -21,6 +21,9 @@ namespace AlleyHoopROS
             ~AlleyHoopController() = default;
             bool update();
 
+            static bool verboseDisplay;
+            static bool verboseLog;
+
         protected:
             //ros
             ros::NodeHandle nh;

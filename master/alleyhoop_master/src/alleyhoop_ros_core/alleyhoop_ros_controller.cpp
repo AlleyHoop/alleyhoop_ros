@@ -4,12 +4,15 @@
 
 #include <sstream>
 #include <iostream>
+#include <list>
 #include <cv_bridge/cv_bridge.h>
 
 
 
 namespace AlleyHoopROS
 {
+    bool AlleyHoopController::verboseDisplay = false;
+    bool AlleyHoopController::verboseLog = false;
 
     AlleyHoopController::AlleyHoopController(ros::NodeHandle* _nh, AlleyHoopMVC::Vehicle* v)
 	: AlleyHoopMVC::Controller(v), nh(*_nh), imageFeatureFinder(_nh)
@@ -38,9 +41,16 @@ namespace AlleyHoopROS
             cv_bridge::CvImagePtr image_data = mono_camera_1->getData();
 
             //find features
-            AlleyHoopROSUtils::AlleyHoopFeature* feature = imageFeatureFinder.findFeatures(image_data);
+            std::list<AlleyHoopROSUtils::AlleyHoopFeature*> features = imageFeatureFinder.findFeatures(image_data);
 
             //make desicions based on features
+            for(std::list<AlleyHoopROSUtils::AlleyHoopFeature*>::iterator feature_iter = features.begin(); feature_iter != features.end(); feature_iter++)
+            {
+                if(verboseLog)
+                {
+                    std::cout << "found a feature with type " + std::to_string((*feature_iter)->featureType) << std::endl;
+                }
+            }
 
             // control the actuators
             if(AlleyHoopROS::AlleyHoopVehicle* ah_vehicle = dynamic_cast<AlleyHoopROS::AlleyHoopVehicle*>(vehicle))
@@ -56,7 +66,12 @@ namespace AlleyHoopROS
                 }
             }
 
-            //only if ros was still running
+            //save and cleanup
+            for(std::list<AlleyHoopROSUtils::AlleyHoopFeature*>::iterator feature_iter = features.begin(); feature_iter != features.end(); feature_iter++)
+            {
+                delete (*feature_iter);
+            }
+
             return true;
         }
 

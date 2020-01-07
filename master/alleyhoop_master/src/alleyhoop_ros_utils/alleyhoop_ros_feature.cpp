@@ -3,8 +3,8 @@
 namespace AlleyHoopROSUtils
 {
 
-    AlleyHoopFeature::AlleyHoopFeature()
-        : featureType(FeatureTypes::None)
+    AlleyHoopFeature::AlleyHoopFeature(int type)
+        : featureType(type)
     {
 
     }

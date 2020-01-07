@@ -9,6 +9,8 @@
 
 namespace AlleyHoopROS
 {
+    bool AlleyHoopImageFeatureFinder::verboseDisplay = false;
+    bool AlleyHoopImageFeatureFinder::verboseLog = false;
 
     AlleyHoopImageFeatureFinder::AlleyHoopImageFeatureFinder(ros::NodeHandle* _nh)
 	: AlleyHoopMVC::Model(), nh(*_nh)
@@ -26,20 +28,21 @@ namespace AlleyHoopROS
         return false;
     }
 
-    AlleyHoopROSUtils::AlleyHoopFeature* AlleyHoopImageFeatureFinder::findFeatures(cv_bridge::CvImagePtr imagePtr)
+    std::list<AlleyHoopROSUtils::AlleyHoopFeature*> AlleyHoopImageFeatureFinder::findFeatures(cv_bridge::CvImagePtr imagePtr)
     {   
         using namespace cv;
+        std::list<AlleyHoopROSUtils::AlleyHoopFeature*> features;
         
         //ensure actual values where passed
         if(imagePtr == nullptr)
         {
-            return nullptr;
+            return features;
         }
 
         if(imagePtr->image.empty())
         {
             std::cout << "image was empty" << std::endl;
-            return nullptr;
+            return features;
         }
 
         //source image
@@ -57,7 +60,7 @@ namespace AlleyHoopROS
         cvtColor(srcImage, hsvImage, CV_BGR2HSV);
 
         //draw the circle on a black canvas
-        Mat blankImage(height, width, CV_8UC3, Scalar(0,0,0));
+        Mat blankImage(height, width, CV_8UC1, Scalar(0,0,0));
 
         //find circles in image
         std::vector<Vec3f> circles;
@@ -80,37 +83,53 @@ namespace AlleyHoopROS
                 Mat circleImage = blankImage.clone();
                 circle( circleImage, center, radius, Scalar(255,255,255), CV_FILLED, 8, 0);
 
-                // high contrast black and white
-                Mat hsvThreshold;
+                // get mask for color red
+                Mat hsvMask1;
                 inRange(hsvImage,
-                    Scalar(255, 255, 118),
-                    Scalar(0, 0, 74),
-                    hsvThreshold);
+                     Scalar(0, 70, 50), Scalar(10, 255, 255),
+                    hsvMask1);
+                Mat hsvMask2;
+                inRange(hsvImage,
+                     Scalar(170, 70, 50), Scalar(180, 255, 255),
+                    hsvMask1);
+                Mat hsvMask = hsvMask1 | hsvMask2;
+
+                //resulting image
+                Mat resImage;
+                bitwise_and(circleImage, hsvMask, resImage);
 
                 //for each white point on the blankImage check add up the color from the original image
-                /*std::vector<Point> points;
-                cv::findNonZero(blankImage, points);
+                std::vector<Point> points;
+                cv::findNonZero(resImage, points);
 
-                //get average color
-                for(std::vector<Point>::iterator pnt_iter = points.begin(); pnt_iter != points.end(); pnt_iter++)
+                //add the feature (TODO, actually decide the feature and make features usefull for the controller)
+                if(points.size() > 100)
+                    features.push_back(new AlleyHoopROSUtils::AlleyHoopFeature(AlleyHoopROSUtils::FeatureTypes::SpecificObject));
+
+                //show images
+                if(verboseDisplay)
                 {
-                    Scalar colour = drawing.at<Vec3b>(*pnt_iter);
-                }*/
+                    imshow("hsv combined mask", hsvMask);
+                    imshow("detected circles", circleImage);
+                    imshow("bitwise and", resImage);
+                    waitKey(0);
+                }
 
-                imshow("thesh", hsvThreshold);
-                imshow("detected circles", circleImage);
-
+                //release open cv images
                 circleImage.release();
-                hsvThreshold.release();
+                hsvMask.release();
+                hsvMask1.release();
+                hsvMask2.release();
+                resImage.release();
             }
         }
-        imshow("original image", imagePtr->image);
-        waitKey(0);
+
+        //release open cv images
         srcImage.release();
         grayImage.release();
         blankImage.release();
         hsvImage.release();
-        return nullptr;
+        return features;
     }
 
 }

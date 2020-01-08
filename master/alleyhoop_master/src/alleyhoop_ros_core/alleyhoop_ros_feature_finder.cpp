@@ -1,4 +1,4 @@
-#include "alleyhoop_ros_core/alleyhoop_ros_image_feature_finder.h"
+#include "alleyhoop_ros_core/alleyhoop_ros_feature_finder.h"
 
 #include <sstream>
 #include <iostream>
@@ -9,15 +9,15 @@
 
 namespace AlleyHoopROSCore
 {
-    bool ImageFeatureFinder::verboseDisplay = false;
-    bool ImageFeatureFinder::verboseLog = false;
+    bool FeatureFinder::verboseDisplay = false;
+    bool FeatureFinder::verboseLog = false;
 
-    ImageFeatureFinder::ImageFeatureFinder(ros::NodeHandle* _nh)
+    FeatureFinder::FeatureFinder(ros::NodeHandle* _nh)
 	: AlleyHoopMVC::Model(), nh(*_nh)
     {
     }
 
-    bool ImageFeatureFinder::update()
+    bool FeatureFinder::update()
     {
         if (ros::ok())
         {
@@ -28,7 +28,7 @@ namespace AlleyHoopROSCore
         return false;
     }
 
-    std::list<AlleyHoopROSUtils::Feature*> ImageFeatureFinder::findFeatures(cv_bridge::CvImagePtr imagePtr)
+    std::list<AlleyHoopROSUtils::Feature*> FeatureFinder::findFeaturesOnImage(cv_bridge::CvImagePtr imagePtr)
     {   
         using namespace cv;
         std::list<AlleyHoopROSUtils::Feature*> features;
@@ -69,7 +69,7 @@ namespace AlleyHoopROSCore
                     200, 100, 20, 50 // change the last two parameters
         );
 
-        //identify features within found circles
+        //identify features within found circles (traffic signs)
         if(circles.size() > 0)
         {
             for( size_t i = 0; i < circles.size(); i++ )

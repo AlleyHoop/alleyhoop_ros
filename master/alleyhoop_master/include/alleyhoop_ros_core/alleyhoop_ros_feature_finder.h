@@ -1,5 +1,5 @@
-#ifndef  ALLEYHOOPROSIMAGEFEATUREFINDER_H_
-#define  ALLEYHOOPROSIMAGEFEATUREFINDER_H_
+#ifndef  ALLEYHOOPROSFEATUREFINDER_H_
+#define  ALLEYHOOPROSFEATUREFINDER_H_
 
 #include <ros/ros.h>
 
@@ -14,13 +14,13 @@
 namespace AlleyHoopROSCore
 {
 
-    class ImageFeatureFinder : public AlleyHoopMVC::Model
+    class FeatureFinder : public AlleyHoopMVC::Model
     {
         public:
-            ImageFeatureFinder(ros::NodeHandle* _nh);
-            ~ImageFeatureFinder() = default;
+            FeatureFinder(ros::NodeHandle* _nh);
+            ~FeatureFinder() = default;
             bool update();
-            std::list<AlleyHoopROSUtils::Feature*>  findFeatures(cv_bridge::CvImagePtr imagePtr);
+            std::list<AlleyHoopROSUtils::Feature*>  findFeaturesOnImage(cv_bridge::CvImagePtr imagePtr);
             
             static bool verboseDisplay;
             static bool verboseLog;
@@ -32,4 +32,4 @@ namespace AlleyHoopROSCore
 
 }
 
-#endif //!  ALLEYHOOPROSIMAGEFEATUREFINDER_H_
+#endif //!  ALLEYHOOPROSFEATUREFINDER_H_

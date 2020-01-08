@@ -4,6 +4,7 @@
 #include <map>
 #include "alleyhoop_mvc/vehicle.h"
 #include "alleyhoop_mvc/sensor.h"
+#include <iostream>
 
 namespace AlleyHoopMVC
 {
@@ -11,10 +12,11 @@ namespace AlleyHoopMVC
     {
         public:
             virtual bool update() = 0;
-            ~Controller()
+            virtual ~Controller()
             {
                 for (std::map<std::string, Sensor*>::iterator it = sensors.begin(); it != sensors.end(); it++)
                 {
+                    std::cout << "deleted sensor " + it->second->name << std::endl;
                     delete it->second;
                 }
             } 
@@ -31,6 +33,7 @@ namespace AlleyHoopMVC
             {
                 if(sensors.find(s->name) == sensors.end())
                 {
+                    std::cout << "added sensor " + s->name << std::endl;
                     sensors.insert({s->name, s});
                     return true;
                 }
@@ -40,7 +43,10 @@ namespace AlleyHoopMVC
             {
                 if(sensors.find(n) != sensors.end())
                 {
+                    std::cout << "removed and deleted sensor " + n << std::endl;
+                    Sensor* s = sensors.find(n)->second;
                     sensors.erase(n);
+                    delete s;
                     return true;
                 }
                 return false;

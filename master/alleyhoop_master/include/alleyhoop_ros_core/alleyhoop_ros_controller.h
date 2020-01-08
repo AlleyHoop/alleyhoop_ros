@@ -5,8 +5,6 @@
 
 #include "alleyhoop_mvc/controller.h"
 
-#include "alleyhoop_ros_core/alleyhoop_ros_image_feature_finder.h"
-
 #include "alleyhoop_ros_sensors/alleyhoop_ros_ultrasonic_sensor.h"
 #include "alleyhoop_ros_sensors/alleyhoop_ros_mono_camera.h" 
 #include "alleyhoop_ros_sensors/alleyhoop_ros_lidar.h"
@@ -14,11 +12,14 @@
 
 namespace AlleyHoopROSCore
 {
+    class FeatureFinder;
+
     class Controller : public AlleyHoopMVC::Controller
     {
+
         public:
             Controller(ros::NodeHandle* _nh, AlleyHoopMVC::Vehicle* v);
-            ~Controller() = default;
+            ~Controller();
             bool update();
 
             static bool verboseDisplay;
@@ -34,7 +35,7 @@ namespace AlleyHoopROSCore
             AlleyHoopROSSensors::Lidar* lidar1;
 
             //finder
-            ImageFeatureFinder imageFeatureFinder;
+            FeatureFinder* featureFinder;
     };
 
 }

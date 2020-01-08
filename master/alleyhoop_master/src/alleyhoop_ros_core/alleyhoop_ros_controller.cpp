@@ -1,6 +1,7 @@
 #include "alleyhoop_ros_core/alleyhoop_ros_controller.h"
 #include "alleyhoop_ros_core/alleyhoop_ros_vehicle.h"
 #include "alleyhoop_ros_utils/alleyhoop_ros_feature.h"
+#include "alleyhoop_ros_core/alleyhoop_ros_feature_finder.h"
 
 #include <sstream>
 #include <iostream>
@@ -14,7 +15,7 @@ namespace AlleyHoopROSCore
     bool Controller::verboseLog = false;
 
     Controller::Controller(ros::NodeHandle* _nh, AlleyHoopMVC::Vehicle* v)
-	: AlleyHoopMVC::Controller(v), nh(*_nh), imageFeatureFinder(_nh)
+	: AlleyHoopMVC::Controller(v), nh(*_nh)
     {
         //setup sensors, add to controller base class for life line managing and update routine
         ultrasonic_sensor_1 = new AlleyHoopROSSensors::UltrasonicSensor("ultrasoon_sensor", _nh, "/arduino_slave/ultrasoon_sensor");
@@ -25,6 +26,18 @@ namespace AlleyHoopROSCore
 
         lidar1 = new AlleyHoopROSSensors::Lidar("lidar1", _nh, "/scan");
         addSensor(lidar1);
+
+        //setup feature finders
+        featureFinder = new FeatureFinder(_nh);
+    }
+
+    Controller::~Controller()
+    {
+        if(featureFinder != nullptr)
+        {
+            std::cout << "deleted finder" << std::endl;
+            delete featureFinder;
+        }
     }
 
     bool Controller::update()
@@ -40,7 +53,7 @@ namespace AlleyHoopROSCore
             cv_bridge::CvImagePtr image_data = mono_camera_1->getData();
 
             //find features
-            std::list<AlleyHoopROSUtils::Feature*> features = imageFeatureFinder.findFeatures(image_data);
+            std::list<AlleyHoopROSUtils::Feature*> features = featureFinder->findFeaturesOnImage(image_data);
 
             //make desicions based on features
             for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = features.begin(); feature_iter != features.end(); feature_iter++)

@@ -12,10 +12,11 @@ namespace AlleyHoopMVC
         public:
             virtual bool update() = 0;
 
-            ~Vehicle()
+            virtual ~Vehicle()
             {
                 for (std::map<std::string, Actuator*>::iterator it = actuators.begin(); it != actuators.end(); it++)
                 {
+                    std::cout << "deleted actuator " + it->second->name << std::endl;
                     delete it->second;
                 }
             }
@@ -32,6 +33,7 @@ namespace AlleyHoopMVC
             {
                 if(actuators.find(s->name) == actuators.end())
                 {
+                    std::cout << "added actuator " + s->name << std::endl;
                     actuators.insert({s->name, s});
                     return true;
                 }
@@ -41,7 +43,10 @@ namespace AlleyHoopMVC
             {
                 if(actuators.find(n) != actuators.end())
                 {
+                    std::cout << "removed and deleted actuator " + n << std::endl;
+                    Actuator* s = actuators.find(n)->second;
                     actuators.erase(n);
+                    delete s;
                     return true;
                 }
                 return false;

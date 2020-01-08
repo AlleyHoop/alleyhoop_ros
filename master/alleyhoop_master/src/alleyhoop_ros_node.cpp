@@ -1,6 +1,6 @@
 #include "alleyhoop_ros_core/alleyhoop_ros_controller.h"
 #include "alleyhoop_ros_core/alleyhoop_ros_vehicle.h"
-#include "alleyhoop_ros_core/alleyhoop_ros_image_feature_finder.h"
+#include "alleyhoop_ros_core/alleyhoop_ros_feature_finder.h"
 
 int main(int argc, char **argv)
 {
@@ -19,13 +19,13 @@ int main(int argc, char **argv)
         {
             AlleyHoopROSCore::Vehicle::verboseDisplay = true;
             AlleyHoopROSCore::Controller::verboseDisplay = true;
-            AlleyHoopROSCore::ImageFeatureFinder::verboseDisplay = true;
+            AlleyHoopROSCore::FeatureFinder::verboseDisplay = true;
         }
         if(verbose_param == "log" || verbose_param == "full_verbose")
         {
             AlleyHoopROSCore::Vehicle::verboseLog = true;
             AlleyHoopROSCore::Controller::verboseLog = true;
-            AlleyHoopROSCore::ImageFeatureFinder::verboseLog = true;
+            AlleyHoopROSCore::FeatureFinder::verboseLog = true;
         }
 
     //start routine

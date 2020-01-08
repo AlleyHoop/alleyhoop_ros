@@ -11,11 +11,11 @@
 namespace AlleyHoopROSActuators
 {
 
-    class AlleyHoopMotor : public AlleyHoopMVC::Actuator
+    class Motor : public AlleyHoopMVC::Actuator
     {
         public:      
-            AlleyHoopMotor(std::string _name, ros::NodeHandle* _nh, std::string _topic);
-            virtual ~AlleyHoopMotor() = default;
+            Motor(std::string _name, ros::NodeHandle* _nh, std::string _topic);
+            virtual ~Motor() = default;
 
             void setPercentage(int p);
             int getPercentage();

@@ -12,11 +12,11 @@
 namespace AlleyHoopROSActuators
 {
 
-    class AlleyHoopLed : public AlleyHoopMVC::Actuator
+    class Led : public AlleyHoopMVC::Actuator
     {
         public:      
-            AlleyHoopLed(std::string _name, ros::NodeHandle* _nh, std::string _topic);
-            virtual ~AlleyHoopLed() = default;
+            Led(std::string _name, ros::NodeHandle* _nh, std::string _topic);
+            virtual ~Led() = default;
 
             void setState(bool s);
             bool getState();

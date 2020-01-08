@@ -3,30 +3,30 @@
 
 namespace AlleyHoopROSActuators
 {
-    uint64_t AlleyHoopMotor::timeMillis() 
+    uint64_t Motor::timeMillis() 
     {
         using namespace std::chrono;
         return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
     }
 
 
-    AlleyHoopMotor::AlleyHoopMotor(std::string _name, ros::NodeHandle* _nh, std::string _topic)
+    Motor::Motor(std::string _name, ros::NodeHandle* _nh, std::string _topic)
 	    : AlleyHoopMVC::Actuator(_name), nh(*_nh), topic_name(_topic), percentage(50), pub_rate(250), pub_time(timeMillis() + pub_rate)
     {
         pub = nh.advertise<std_msgs::UInt8>(topic_name, 1);
     }
 
-    int AlleyHoopMotor::getPercentage()
+    int Motor::getPercentage()
     {
         return percentage;
     }
 
-    void AlleyHoopMotor::setPercentage(int p)
+    void Motor::setPercentage(int p)
     {
         percentage = p;
     }
 
-    void AlleyHoopMotor::update()
+    void Motor::update()
     {
         if(timeMillis() > pub_time)
         {

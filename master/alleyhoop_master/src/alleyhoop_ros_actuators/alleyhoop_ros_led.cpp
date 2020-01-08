@@ -3,30 +3,30 @@
 
 namespace AlleyHoopROSActuators
 {
-    uint64_t AlleyHoopLed::timeMillis() 
+    uint64_t Led::timeMillis() 
     {
         using namespace std::chrono;
         return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
     }
 
 
-    AlleyHoopLed::AlleyHoopLed(std::string _name, ros::NodeHandle* _nh, std::string _topic)
+    Led::Led(std::string _name, ros::NodeHandle* _nh, std::string _topic)
 	    : AlleyHoopMVC::Actuator(_name), nh(*_nh), topic_name(_topic), state(false), pub_rate(250), pub_time(timeMillis() + pub_rate)
     {
         pub = nh.advertise<std_msgs::Bool>(topic_name, 1);
     }
 
-    bool AlleyHoopLed::getState()
+    bool Led::getState()
     {
         return state;
     }
 
-    void AlleyHoopLed::setState(bool s)
+    void Led::setState(bool s)
     {
         state = s;
     }
 
-    void AlleyHoopLed::update()
+    void Led::update()
     {
         if(timeMillis() > pub_time)
         {

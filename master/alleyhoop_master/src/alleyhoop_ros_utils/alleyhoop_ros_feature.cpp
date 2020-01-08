@@ -3,7 +3,7 @@
 namespace AlleyHoopROSUtils
 {
 
-    AlleyHoopFeature::AlleyHoopFeature(int type)
+    Feature::Feature(int type)
         : featureType(type)
     {
 

@@ -1,5 +1,5 @@
-#ifndef ALLEYHOOPVEHICLE_H_
-#define ALLEYHOOPVEHICLE_H_
+#ifndef ALLEYHOOPROSVEHICLE_H_
+#define ALLEYHOOPROSVEHICLE_H_
 
 #include <ros/ros.h>
 
@@ -8,20 +8,20 @@
 #include "alleyhoop_ros_actuators/alleyhoop_ros_motor.h"
 
 
-namespace AlleyHoopROS
+namespace AlleyHoopROSCore
 {
 
-    class AlleyHoopVehicle : public AlleyHoopMVC::Vehicle
+    class Vehicle : public AlleyHoopMVC::Vehicle
     {
         public:
-            AlleyHoopVehicle(ros::NodeHandle* _nh);
-            ~AlleyHoopVehicle() = default;
+            Vehicle(ros::NodeHandle* _nh);
+            ~Vehicle() = default;
             bool update();
 
             //actuators
-            AlleyHoopROSActuators::AlleyHoopLed* led1;
-            AlleyHoopROSActuators::AlleyHoopMotor* steering_motor;
-            AlleyHoopROSActuators::AlleyHoopMotor* velocity_motor;
+            AlleyHoopROSActuators::Led* led1;
+            AlleyHoopROSActuators::Motor* steering_motor;
+            AlleyHoopROSActuators::Motor* velocity_motor;
 
             static bool verboseDisplay;
             static bool verboseLog;

@@ -9,23 +9,23 @@ int main(int argc, char **argv)
     ros::NodeHandle nodeHandle;
 
     //setup core
-    AlleyHoopMVC::Vehicle* vehicle = new AlleyHoopROS::AlleyHoopVehicle(&nodeHandle);
-    AlleyHoopMVC::Controller* controller = new AlleyHoopROS::AlleyHoopController(&nodeHandle, vehicle);
+    AlleyHoopMVC::Vehicle* vehicle = new AlleyHoopROSCore::Vehicle(&nodeHandle);
+    AlleyHoopMVC::Controller* controller = new AlleyHoopROSCore::Controller(&nodeHandle, vehicle);
 
     //setup params
     std::string verbose_param = "none";
     if(nodeHandle.getParam("AlleyhoopVerboseMode",verbose_param))
         if(verbose_param == "display" || verbose_param == "full_verbose")
         {
-            AlleyHoopROS::AlleyHoopVehicle::verboseDisplay = true;
-            AlleyHoopROS::AlleyHoopController::verboseDisplay = true;
-            AlleyHoopROS::AlleyHoopImageFeatureFinder::verboseDisplay = true;
+            AlleyHoopROSCore::Vehicle::verboseDisplay = true;
+            AlleyHoopROSCore::Controller::verboseDisplay = true;
+            AlleyHoopROSCore::ImageFeatureFinder::verboseDisplay = true;
         }
         if(verbose_param == "log" || verbose_param == "full_verbose")
         {
-            AlleyHoopROS::AlleyHoopVehicle::verboseLog = true;
-            AlleyHoopROS::AlleyHoopController::verboseLog = true;
-            AlleyHoopROS::AlleyHoopImageFeatureFinder::verboseLog = true;
+            AlleyHoopROSCore::Vehicle::verboseLog = true;
+            AlleyHoopROSCore::Controller::verboseLog = true;
+            AlleyHoopROSCore::ImageFeatureFinder::verboseLog = true;
         }
 
     //start routine

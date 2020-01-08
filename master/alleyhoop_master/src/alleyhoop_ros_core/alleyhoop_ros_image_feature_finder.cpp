@@ -7,17 +7,17 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
-namespace AlleyHoopROS
+namespace AlleyHoopROSCore
 {
-    bool AlleyHoopImageFeatureFinder::verboseDisplay = false;
-    bool AlleyHoopImageFeatureFinder::verboseLog = false;
+    bool ImageFeatureFinder::verboseDisplay = false;
+    bool ImageFeatureFinder::verboseLog = false;
 
-    AlleyHoopImageFeatureFinder::AlleyHoopImageFeatureFinder(ros::NodeHandle* _nh)
+    ImageFeatureFinder::ImageFeatureFinder(ros::NodeHandle* _nh)
 	: AlleyHoopMVC::Model(), nh(*_nh)
     {
     }
 
-    bool AlleyHoopImageFeatureFinder::update()
+    bool ImageFeatureFinder::update()
     {
         if (ros::ok())
         {
@@ -28,10 +28,10 @@ namespace AlleyHoopROS
         return false;
     }
 
-    std::list<AlleyHoopROSUtils::AlleyHoopFeature*> AlleyHoopImageFeatureFinder::findFeatures(cv_bridge::CvImagePtr imagePtr)
+    std::list<AlleyHoopROSUtils::Feature*> ImageFeatureFinder::findFeatures(cv_bridge::CvImagePtr imagePtr)
     {   
         using namespace cv;
-        std::list<AlleyHoopROSUtils::AlleyHoopFeature*> features;
+        std::list<AlleyHoopROSUtils::Feature*> features;
         
         //ensure actual values where passed
         if(imagePtr == nullptr)
@@ -104,7 +104,7 @@ namespace AlleyHoopROS
 
                 //add the feature (TODO, actually decide the feature and make features usefull for the controller)
                 if(points.size() > 100)
-                    features.push_back(new AlleyHoopROSUtils::AlleyHoopFeature(AlleyHoopROSUtils::FeatureTypes::SpecificObject));
+                    features.push_back(new AlleyHoopROSUtils::Feature(AlleyHoopROSUtils::FeatureTypes::SpecificObject));
 
                 //show images
                 if(verboseDisplay)

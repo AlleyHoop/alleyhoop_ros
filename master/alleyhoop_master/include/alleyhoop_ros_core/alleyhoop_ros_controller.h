@@ -7,18 +7,18 @@
 
 #include "alleyhoop_ros_core/alleyhoop_ros_image_feature_finder.h"
 
-#include "alleyhoop_ros_sensors/alleyhoop_ros_ultrasoon.h"
+#include "alleyhoop_ros_sensors/alleyhoop_ros_ultrasonic_sensor.h"
 #include "alleyhoop_ros_sensors/alleyhoop_ros_mono_camera.h" 
 #include "alleyhoop_ros_sensors/alleyhoop_ros_lidar.h"
 
 
-namespace AlleyHoopROS
+namespace AlleyHoopROSCore
 {
-    class AlleyHoopController : public AlleyHoopMVC::Controller
+    class Controller : public AlleyHoopMVC::Controller
     {
         public:
-            AlleyHoopController(ros::NodeHandle* _nh, AlleyHoopMVC::Vehicle* v);
-            ~AlleyHoopController() = default;
+            Controller(ros::NodeHandle* _nh, AlleyHoopMVC::Vehicle* v);
+            ~Controller() = default;
             bool update();
 
             static bool verboseDisplay;
@@ -29,12 +29,12 @@ namespace AlleyHoopROS
             ros::NodeHandle nh;
 
             //sensors
-            AlleyHoopROSSensors::AlleyHoopUltrasoon* ultrasoon_sensor;
-            AlleyHoopROSSensors::AlleyHoopMonoCamera* mono_camera_1;
-            AlleyHoopROSSensors::AlleyHoopLidar* lidar1;
+            AlleyHoopROSSensors::UltrasonicSensor* ultrasonic_sensor_1;
+            AlleyHoopROSSensors::MonoCamera* mono_camera_1;
+            AlleyHoopROSSensors::Lidar* lidar1;
 
             //finder
-            AlleyHoopImageFeatureFinder imageFeatureFinder;
+            ImageFeatureFinder imageFeatureFinder;
     };
 
 }

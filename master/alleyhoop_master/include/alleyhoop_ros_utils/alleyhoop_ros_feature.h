@@ -8,12 +8,12 @@ namespace AlleyHoopROSUtils
 {
     enum FeatureTypes {None=0, StaticObject=1, SpecificObject=2, MovingObject=3};
 
-    class AlleyHoopFeature
+    class Feature
     {
         public:
-            AlleyHoopFeature(int type);
-            ~AlleyHoopFeature() = default;
-            AlleyHoopROSUtils::AlleyHoopTransform transform;
+            Feature(int type);
+            ~Feature() = default;
+            AlleyHoopROSUtils::Transform transform;
             int featureType;
     };
 

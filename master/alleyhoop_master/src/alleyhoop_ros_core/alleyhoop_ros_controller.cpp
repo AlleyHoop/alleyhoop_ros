@@ -8,27 +8,26 @@
 #include <cv_bridge/cv_bridge.h>
 
 
-
-namespace AlleyHoopROS
+namespace AlleyHoopROSCore
 {
-    bool AlleyHoopController::verboseDisplay = false;
-    bool AlleyHoopController::verboseLog = false;
+    bool Controller::verboseDisplay = false;
+    bool Controller::verboseLog = false;
 
-    AlleyHoopController::AlleyHoopController(ros::NodeHandle* _nh, AlleyHoopMVC::Vehicle* v)
+    Controller::Controller(ros::NodeHandle* _nh, AlleyHoopMVC::Vehicle* v)
 	: AlleyHoopMVC::Controller(v), nh(*_nh), imageFeatureFinder(_nh)
     {
         //setup sensors, add to controller base class for life line managing and update routine
-        ultrasoon_sensor = new AlleyHoopROSSensors::AlleyHoopUltrasoon("ultrasoon_sensor", _nh, "/arduino_slave/ultrasoon_sensor");
-        addSensor(ultrasoon_sensor);
+        ultrasonic_sensor_1 = new AlleyHoopROSSensors::UltrasonicSensor("ultrasoon_sensor", _nh, "/arduino_slave/ultrasoon_sensor");
+        addSensor(ultrasonic_sensor_1);
 
-        mono_camera_1 = new AlleyHoopROSSensors::AlleyHoopMonoCamera("mono_camera_1", _nh, "/raspi_camera/image_raw", "/raspi_camera/camera_info");
+        mono_camera_1 = new AlleyHoopROSSensors::MonoCamera("mono_camera_1", _nh, "/raspi_camera/image_raw", "/raspi_camera/camera_info");
         addSensor(mono_camera_1);
 
-        lidar1 = new AlleyHoopROSSensors::AlleyHoopLidar("lidar1", _nh, "/scan");
+        lidar1 = new AlleyHoopROSSensors::Lidar("lidar1", _nh, "/scan");
         addSensor(lidar1);
     }
 
-    bool AlleyHoopController::update()
+    bool Controller::update()
     {
         if (ros::ok())
         {
@@ -37,14 +36,14 @@ namespace AlleyHoopROS
             ros::spinOnce();
 
             //get sensors data
-            int ultrasoon_data = ultrasoon_sensor->getData();
+            int ultrasoon_data = ultrasonic_sensor_1->getData();
             cv_bridge::CvImagePtr image_data = mono_camera_1->getData();
 
             //find features
-            std::list<AlleyHoopROSUtils::AlleyHoopFeature*> features = imageFeatureFinder.findFeatures(image_data);
+            std::list<AlleyHoopROSUtils::Feature*> features = imageFeatureFinder.findFeatures(image_data);
 
             //make desicions based on features
-            for(std::list<AlleyHoopROSUtils::AlleyHoopFeature*>::iterator feature_iter = features.begin(); feature_iter != features.end(); feature_iter++)
+            for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = features.begin(); feature_iter != features.end(); feature_iter++)
             {
                 if(verboseLog)
                 {
@@ -53,7 +52,7 @@ namespace AlleyHoopROS
             }
 
             // control the actuators
-            if(AlleyHoopROS::AlleyHoopVehicle* ah_vehicle = dynamic_cast<AlleyHoopROS::AlleyHoopVehicle*>(vehicle))
+            if(AlleyHoopROSCore::Vehicle* ah_vehicle = dynamic_cast<AlleyHoopROSCore::Vehicle*>(vehicle))
             {
                 //turn on led
                 if(ultrasoon_data < 30 && ultrasoon_data > 0)
@@ -67,7 +66,7 @@ namespace AlleyHoopROS
             }
 
             //save and cleanup
-            for(std::list<AlleyHoopROSUtils::AlleyHoopFeature*>::iterator feature_iter = features.begin(); feature_iter != features.end(); feature_iter++)
+            for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = features.begin(); feature_iter != features.end(); feature_iter++)
             {
                 delete (*feature_iter);
             }

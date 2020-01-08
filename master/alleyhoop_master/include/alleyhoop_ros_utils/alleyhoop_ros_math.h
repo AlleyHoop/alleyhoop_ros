@@ -4,14 +4,14 @@
 namespace AlleyHoopROSUtils
 {
 
-    class AlleyHoopVector3
+    class Vector3
     {
         public:
-            AlleyHoopVector3()
+            Vector3()
                 : x(0.0f), y(0.0f), z(0.0f) {};
-            AlleyHoopVector3(float _x, float _y, float _z)
+            Vector3(float _x, float _y, float _z)
                 : x(_x), y(_y), z(_z) {};
-            ~AlleyHoopVector3() = default;
+            ~Vector3() = default;
 
             float x;
             float y;
@@ -19,14 +19,14 @@ namespace AlleyHoopROSUtils
             
     };
 
-    class AlleyHoopTransform
+    class Transform
     {
         public:
-            AlleyHoopTransform(){};
-            ~AlleyHoopTransform() = default;
-            AlleyHoopVector3 position;
-            AlleyHoopVector3 rotation;
-            AlleyHoopVector3 scale;
+            Transform(){};
+            ~Transform() = default;
+            Vector3 position;
+            Vector3 rotation;
+            Vector3 scale;
     };
 
 

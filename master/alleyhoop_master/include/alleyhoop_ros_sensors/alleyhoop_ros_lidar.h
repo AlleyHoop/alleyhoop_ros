@@ -11,11 +11,11 @@
 
 namespace AlleyHoopROSSensors
 {
-    class AlleyHoopLidar : public AlleyHoopMVC::Sensor
+    class Lidar : public AlleyHoopMVC::Sensor
     {
         public:      
-            AlleyHoopLidar(std::string _name, ros::NodeHandle* _nh, std::string _laser_scan_topic);
-            virtual ~AlleyHoopLidar() = default;
+            Lidar(std::string _name, ros::NodeHandle* _nh, std::string _laser_scan_topic);
+            virtual ~Lidar() = default;
 
             void callBack(const sensor_msgs::LaserScan::ConstPtr& scan);
             void update();

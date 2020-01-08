@@ -12,11 +12,11 @@
 namespace AlleyHoopROSSensors
 {
 
-    class AlleyHoopUltrasoon : public AlleyHoopMVC::Sensor
+    class UltrasonicSensor : public AlleyHoopMVC::Sensor
     {
         public:      
-            AlleyHoopUltrasoon(std::string _name, ros::NodeHandle* _nh, std::string _topic);
-            virtual ~AlleyHoopUltrasoon() = default;
+            UltrasonicSensor(std::string _name, ros::NodeHandle* _nh, std::string _topic);
+            virtual ~UltrasonicSensor() = default;
 
             void callBack(const std_msgs::UInt8 msg);
             void update();

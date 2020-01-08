@@ -5,23 +5,23 @@
 
 namespace AlleyHoopROSSensors
 {
-    AlleyHoopLidar::AlleyHoopLidar(std::string _name, ros::NodeHandle* _nh, std::string _laser_scan_topic)
+    Lidar::Lidar(std::string _name, ros::NodeHandle* _nh, std::string _laser_scan_topic)
 	    : AlleyHoopMVC::Sensor(_name), nh(*_nh), laser_scan_topic_name(_laser_scan_topic)
     {
-        sub = nh.subscribe(laser_scan_topic_name, 1000, &AlleyHoopLidar::callBack, this);
+        sub = nh.subscribe(laser_scan_topic_name, 1000, &Lidar::callBack, this);
     }
 
-    void AlleyHoopLidar::update()
+    void Lidar::update()
     {
         //nothing for ros sensor // rosspin() is called from the controller
     }
 
-    void AlleyHoopLidar::getData()
+    void Lidar::getData()
     {
         
     }
 
-    void AlleyHoopLidar::callBack(const sensor_msgs::LaserScan::ConstPtr& scan)
+    void Lidar::callBack(const sensor_msgs::LaserScan::ConstPtr& scan)
     {
         int count = scan->scan_time / scan->time_increment;
         ROS_INFO("I heard a laser scan %s[%d]:", scan->header.frame_id.c_str(), count);

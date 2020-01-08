@@ -13,11 +13,11 @@
 namespace AlleyHoopROSSensors
 {
 
-    class AlleyHoopMonoCamera : public AlleyHoopMVC::Sensor
+    class MonoCamera : public AlleyHoopMVC::Sensor
     {
         public:      
-            AlleyHoopMonoCamera(std::string _name, ros::NodeHandle* _nh, std::string _image_topic, std::string _camera_info_topic);
-            virtual ~AlleyHoopMonoCamera() = default;
+            MonoCamera(std::string _name, ros::NodeHandle* _nh, std::string _image_topic, std::string _camera_info_topic);
+            virtual ~MonoCamera() = default;
 
             void callBack(const sensor_msgs::ImageConstPtr& msg);
             void update();

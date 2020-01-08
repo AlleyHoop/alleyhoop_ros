@@ -11,16 +11,16 @@
 
 
 
-namespace AlleyHoopROS
+namespace AlleyHoopROSCore
 {
 
-    class AlleyHoopImageFeatureFinder : public AlleyHoopMVC::Model
+    class ImageFeatureFinder : public AlleyHoopMVC::Model
     {
         public:
-            AlleyHoopImageFeatureFinder(ros::NodeHandle* _nh);
-            ~AlleyHoopImageFeatureFinder() = default;
+            ImageFeatureFinder(ros::NodeHandle* _nh);
+            ~ImageFeatureFinder() = default;
             bool update();
-            std::list<AlleyHoopROSUtils::AlleyHoopFeature*>  findFeatures(cv_bridge::CvImagePtr imagePtr);
+            std::list<AlleyHoopROSUtils::Feature*>  findFeatures(cv_bridge::CvImagePtr imagePtr);
             
             static bool verboseDisplay;
             static bool verboseLog;

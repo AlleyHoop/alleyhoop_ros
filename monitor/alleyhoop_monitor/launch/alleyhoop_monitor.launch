@@ -1,9 +1,26 @@
 <launch>
-    <!--launch rviz-->
+
+
+    <!--args-->
+    <arg name="enable_lidar" default="false"/>
+
+    <!--robot discription for rviz -->
     <param name="robot_description" textfile="$(find alleyhoop_monitor)/urdf/alleyhoop.urdf"/>
 
+    <!-- publish tf frames between links-->
     <node name="alleyhoop_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
     <node name="alleyhoop_frame_broadcaster" pkg="alleyhoop_monitor" type="alleyhoop_frame_broadcaster.py"/>
 
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find alleyhoop_monitor)/rviz/demo.rviz" />
+    <!-- launch hector mapping if lidar enabled-->
+    <group if="$(arg enable_lidar)">
+        <arg name="geotiff_map_file_path" default="$(find hector_geotiff)/maps"/>
+        <include file="$(find hector_mapping)/launch/mapping_default.launch"/>
+        <include file="$(find hector_geotiff)/launch/geotiff_mapper.launch">
+            <arg name="trajectory_source_frame_name" value="scanmatcher_frame"/>
+            <arg name="map_file_path" value="$(arg geotiff_map_file_path)"/>
+        </include>
+    <group/>
+
+    <!--launch rviz-->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find alleyhoop_monitor)/rviz/demo.rviz" />    
 </launch>

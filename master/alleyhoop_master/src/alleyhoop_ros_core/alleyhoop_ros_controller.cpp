@@ -36,7 +36,7 @@ namespace AlleyHoopROSCore
             ros::spinOnce();
 
             //get sensors data
-            int ultrasoon_data = ultrasonic_sensor_1->getData();
+            int ultrasonic_sensor_data = ultrasonic_sensor_1->getData();
             cv_bridge::CvImagePtr image_data = mono_camera_1->getData();
 
             //find features
@@ -55,7 +55,7 @@ namespace AlleyHoopROSCore
             if(AlleyHoopROSCore::Vehicle* ah_vehicle = dynamic_cast<AlleyHoopROSCore::Vehicle*>(vehicle))
             {
                 //turn on led
-                if(ultrasoon_data < 30 && ultrasoon_data > 0)
+                if(ultrasonic_sensor_data < 30 && ultrasonic_sensor_data > 0)
                 {
                     ah_vehicle->led1->setState(true);
                 }

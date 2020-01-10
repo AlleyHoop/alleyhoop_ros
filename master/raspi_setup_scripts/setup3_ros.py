@@ -39,7 +39,7 @@ arg_ros_distribution = "ros-kinetic-desktop-full"
 if not (os.path.exists(pth_ros_distribution)):
     # setup sources
     subprocess.call(["sh", "-c", arg_ros_sources])
-    subprocess.call(["apt-key", "adv", "--keyserver", arg_keyp1, '--recv-key', arg_keyp2, "-y"])
+    subprocess.call(["apt-key", "adv", "--keyserver", arg_keyp1, '--recv-key', arg_keyp2])
     subprocess.call(["apt-get", "update", "-y"])
     log.append("setup sources for " + arg_ros_distribution)
 

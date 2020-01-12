@@ -11,7 +11,7 @@ if os.geteuid() != 0:
     print("please run with sudo!!!")
     sys.exit()
 
-print(" 1. will download image https://ubuntu-mate.org/raspberry-pi/ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img.xz to current directory")
+print(" 1. will download image https://ubiquity-pi-image.sfo2.cdn.digitaloceanspaces.com/2019-06-19-ubiquity-xenial-lxde-raspberry-pi.img.xz to current directory")
 print(" 2. Will extract download as ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img")
 print(" 3. Will install image to /dev/sdb as default")
 
@@ -41,10 +41,10 @@ interfaces_config_pth = sysarg_current_dir + "/config_files/interfaces"
 # user args
 userarg_target_sd = "sdb"
 userarg_target_sd_pth = "/dev/" + userarg_target_sd
-userarg_image_url = "https://ubuntu-mate.org/raspberry-pi/ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img.xz"
-userarg_image_archive = "ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img.xz"
+userarg_image_url = "https://ubiquity-pi-image.sfo2.cdn.digitaloceanspaces.com/2019-06-19-ubiquity-xenial-lxde-raspberry-pi.img.xz"
+userarg_image_archive = "2019-06-19-ubiquity-xenial-lxde-raspberry-pi.img.xz"
 userarg_image_archive_pth = sysarg_current_dir +  "/" + userarg_image_archive
-userarg_image = "ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img"
+userarg_image = "2019-06-19-ubiquity-xenial-lxde-raspberry-pi.img"
 userarg_image_pth = sysarg_current_dir +  "/" + userarg_image
 
 # read args

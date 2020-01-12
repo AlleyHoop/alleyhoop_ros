@@ -43,11 +43,9 @@ if not (os.path.exists("/tmp/librealsense")):
 
 # (re)install librealsense if in /tmp/
 if (os.path.exists("/tmp/librealsense")):
-    subprocess.call(["./scripts/setup_udev_rules.sh"], cwd="/tmp/librealsense/")
-    subprocess.call(["./scripts/patch-ubuntu-kernel-4.16.sh"], cwd="/tmp/librealsense/")
     subprocess.call(["mkdir", "build"], cwd="/tmp/librealsense/")
     subprocess.call(["cmake", "../"], cwd="/tmp/librealsense/build/")
     subprocess.call(["make", "uninstall"], cwd="/tmp/librealsense/build/")
     subprocess.call(["make", "clean"], cwd="/tmp/librealsense/build/")
-    subprocess.call(["make", "-j1"], cwd="/tmp/librealsense/build/")
+    subprocess.call(["make", "-j4"], cwd="/tmp/librealsense/build/")
     subprocess.call(["make", "install"], cwd="/tmp/librealsense/build/")

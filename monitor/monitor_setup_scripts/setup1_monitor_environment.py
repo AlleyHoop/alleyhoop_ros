@@ -71,7 +71,7 @@ log.append("installed arduino package for linux")
 
 # install code
 subprocess.call(["wget", "-O", "code_installer.deb", "https://az764295.vo.msecnd.net/stable/26076a4de974ead31f97692a0d32f90d735645c0/code_1.41.1-1576681836_amd64.deb"], cwd="/tmp/")
-subprocess.call(["apt", "install", "code_installer.deb"], cwd="/tmp/")
+subprocess.call(["apt", "install", "/tmp/code_installer.deb"])
 log.append("installed Visual code editor. Launch it with command : code <directory>")
 
 print_log()

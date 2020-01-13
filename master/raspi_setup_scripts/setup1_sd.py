@@ -11,11 +11,6 @@ if os.geteuid() != 0:
     print("please run with sudo!!!")
     sys.exit()
 
-print(" 1. will download image https://ubiquity-pi-image.sfo2.cdn.digitaloceanspaces.com/2019-06-19-ubiquity-xenial-lxde-raspberry-pi.img.xz to current directory")
-print(" 2. Will extract download as ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img")
-print(" 3. Will install image to /dev/sdb as default")
-
-
 # list with logs
 log = []
 
@@ -29,29 +24,54 @@ def print_log():
         for entry in log:
             count += 1
             print("\n"+str(count)+") "+entry)
+    
+# download args
+os_to_download = "ubuntu-mate-desktop-16.04.2-armhf"
 
 # system args
 sysarg_user = getpass.getuser()
 sysarg_user_home = "/home/"+sysarg_user+"/"
 sysarg_current_dir = os.getcwd() 
-
-# interfaces config
-interfaces_config_pth = sysarg_current_dir + "/config_files/interfaces"
+sysarg_download_dir = "/tmp"
 
 # user args
 userarg_target_sd = "sdb"
 userarg_target_sd_pth = "/dev/" + userarg_target_sd
-userarg_image_url = "https://ubiquity-pi-image.sfo2.cdn.digitaloceanspaces.com/2019-06-19-ubiquity-xenial-lxde-raspberry-pi.img.xz"
-userarg_image_archive = "2019-06-19-ubiquity-xenial-lxde-raspberry-pi.img.xz"
-userarg_image_archive_pth = sysarg_current_dir +  "/" + userarg_image_archive
-userarg_image = "2019-06-19-ubiquity-xenial-lxde-raspberry-pi.img"
-userarg_image_pth = sysarg_current_dir +  "/" + userarg_image
 
-# read args
-for arg in sys.argv:
-    if(re.match("sd=",arg)):
-        userarg_target_sd = re.sub("sd=", "", arg)
-        userarg_target_sd_pth = "/dev/"+userarg_target_sd
+# ask which download to do
+input_done = False
+while not input_done:
+    print("Please choose image type 1 or 2\n 1: ubuntu mate desktop 16.04.2 armhf  (" + download_url_1 + ")\n 2: ubuntu xenial server 16.04.4 armhf (" + download_url_2 + ")")
+    in_txt = input()
+    if(in_txt == "1"):
+        os_to_download = "ubuntu-mate-desktop-16.04.2-armhf"
+        input_done = True
+    if(in_txt == "2"):
+        os_to_download = "ubuntu-xenial-server-16.04.4-armhf"
+        input_done = True
+    if not (input_done):
+        print("there is no choice for input + " + in_txt)
+
+# image args
+if(os_to_download == "ubuntu-mate-desktop-16.04.2-armhf"):
+    userarg_image_url = "https://ubuntu-mate.org/raspberry-pi/ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img.xz"
+else:
+    userarg_image_url = "https://www.finnie.org/software/raspberrypi/ubuntu-rpi3/ubuntu-16.04-preinstalled-server-armhf+raspi3.img.xz"
+    
+userarg_image_archive = os_to_download + ".img.xz"
+userarg_image_archive_pth = sysarg_download_dir +  "/" + userarg_image_archive
+userarg_image = os_to_download + ".img"
+userarg_image_pth = sysarg_download_dir +  "/" + userarg_image
+     
+# print messages    
+print(" 1. will download image ubuntu mate to current directory")
+print(" 2. Will extract download as "+os_to_download+".img in /tmp/ by default")
+print(" 3. Will install image to /dev/sdb as default")
+
+# comfirm
+print(" press y to accept")
+if(input() != "y"):
+    print("denied, exiting")
 
 # ensure download tools installed
 subprocess.call(["apt-get", "install", "gddrescue"])
@@ -60,7 +80,7 @@ subprocess.call(["apt-get", "install", "wget"])
 # download image if not existing in current dir
 if not (os.path.exists(userarg_image_archive_pth)):
     print("1. downloading " + userarg_image_archive + "...")
-    subprocess.call(["wget", userarg_image_url])
+    subprocess.call(["wget", "-O", userarg_image_archive_pth, userarg_image_url])
     log.append("downloaded : " + userarg_image_archive_pth)
 else:
     print("1. skipped download for " + userarg_image_archive + "...")

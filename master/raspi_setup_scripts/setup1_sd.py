@@ -66,12 +66,13 @@ userarg_image = os_to_download + ".img"
 userarg_image_pth = sysarg_download_dir +  "/" + userarg_image
      
 # print messages    
-print(" 1. will download image ubuntu mate to current directory")
+print(" 1. will download image ubuntu mate to /tmp/")
 print(" 2. Will extract download as "+os_to_download+".img in /tmp/ by default")
 print(" 3. Will install image to /dev/sdb as default")
 
 # comfirm
-if(str(input("press y to accept : ")) != str("y")):
+in_txt = input("press y to accept : ")
+if(str(in_txt) != str("y")):
     print("denied, exiting")
 
 # ensure download tools installed

@@ -109,7 +109,7 @@ else:
 if (os.path.exists(userarg_target_sd_pth)):
     if (os.path.exists(userarg_image_pth)):
         print("3. writing image to disk " + userarg_image_archive + "...")
-        subprocess.call(["ddrescue", "-d", "-D", "--force", userarg_image, userarg_target_sd_pth])
+        subprocess.call(["ddrescue", "-d", "-D", "--force", userarg_image_pth, userarg_target_sd_pth])
         log.append("succesfully installed image " + userarg_image + " to " + userarg_target_sd_pth)
     else:
         log.append("could not install image, could not find " + userarg_target_sd_pth)

@@ -72,9 +72,11 @@ print(" 3. Will install image to /dev/sdb as default")
 
 # comfirm
 in_txt = input("press y to accept : ")
-if(str(in_txt) != str("y")):
+if(str(in_txt) == str("y")):
+    print("confirmed, continuing")
+else:
     print("denied, exiting")
-
+    
 # ensure download tools installed
 subprocess.call(["apt-get", "install", "gddrescue"])
 subprocess.call(["apt-get", "install", "wget"])

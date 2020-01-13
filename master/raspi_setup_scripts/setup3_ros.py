@@ -25,12 +25,8 @@ def print_log():
             count += 1
             print("\n"+str(count)+") "+entry)
 
-# system args
-sysarg_project_folder_dir = "/home/"+getpass.getuser()+"/"
-
 # ROS args
 pth_ros_distribution = "/opt/ros/kinetic/setup.bash"
-pth_bashrc = sysarg_project_folder_dir + ".bashrc"
 arg_ros_sources = 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 arg_keyp1 = 'hkp://keyserver.ubuntu.com:80'
 arg_keyp2 = 'C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654'
@@ -49,12 +45,16 @@ if not (os.path.exists(pth_ros_distribution)):
     subprocess.call(["apt", "install", "python-rosdep", "-y"])
     subprocess.call(["rosdep", "init"])
     subprocess.call(["rosdep", "update"])
-    subprocess.call(["echo", '"source /opt/ros/kinetic/setup.bash"', ">>", pth_bashrc])
     log.append("installed " + arg_ros_distribution)
 
     # fix permissions so that no sudo needed
     subprocess.call(["rosdep", "fix-permissions"])
     log.append("fixed permissions for ros")
+    
+    # install dynamic reconfiqure
+    subprocess.call(["apt-get", "update", "-y"])
+    subprocess.call(["apt-get", "install", "ros-kinetic-ddynamic-reconfigure", "-y"])
+    log.append("ros succesfully installed. Please run: \n source /opt/ros/kinetic/setup.bash >> ~/.bashrc\n and then : \n source ~/.bashrc \n first command to setup ROS when starting up new shell and second command for current shell")
 else:
     log.append("ros-kinetic already installed!")
 

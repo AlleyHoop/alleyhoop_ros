@@ -44,15 +44,15 @@ userarg_target_sd_pth = "/dev/" + userarg_target_sd
 input_done = False
 while not input_done:
     print("Please choose image type 1 or 2\n 1: ubuntu mate desktop 16.04.2 armhf  (" + download_url_1 + ")\n 2: ubuntu xenial server 16.04.4 armhf (" + download_url_2 + ")")
-    in_txt = input()
-    if(in_txt == "1"):
+    in_txt = input("choice : ")
+    if(str(in_txt) == "1"):
         os_to_download = "ubuntu-mate-desktop-16.04.2-armhf"
         input_done = True
-    if(in_txt == "2"):
+    if(str(in_txt) == "2"):
         os_to_download = "ubuntu-xenial-server-16.04.4-armhf"
         input_done = True
     if not (input_done):
-        print("there is no choice for input + " + in_txt)
+        print("there is no choice for input " + str(in_txt))
 
 # image args
 if(os_to_download == "ubuntu-mate-desktop-16.04.2-armhf"):

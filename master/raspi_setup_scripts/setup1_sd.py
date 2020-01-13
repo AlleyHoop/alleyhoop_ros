@@ -71,8 +71,7 @@ print(" 2. Will extract download as "+os_to_download+".img in /tmp/ by default")
 print(" 3. Will install image to /dev/sdb as default")
 
 # comfirm
-print(" press y to accept")
-if(input() != "y"):
+if(str(input("press y to accept : ")) != str("y")):
     print("denied, exiting")
 
 # ensure download tools installed

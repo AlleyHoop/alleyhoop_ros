@@ -71,7 +71,7 @@ print(" 2. Will extract download as "+os_to_download+".img in /tmp/ by default")
 print(" 3. Will install image to /dev/sdb as default")
 
 # comfirm
-in_txt = input("press y to accept : ")
+in_txt = raw_input("press y to accept : ")
 if(str(in_txt) == str("y")):
     print("confirmed, continuing")
 else:

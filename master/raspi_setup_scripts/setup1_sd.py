@@ -76,6 +76,7 @@ if(str(in_txt) == str("y")):
     print("confirmed, continuing")
 else:
     print("denied, exiting")
+    sys.exit()
     
 # ensure download tools installed
 subprocess.call(["apt-get", "install", "gddrescue"])

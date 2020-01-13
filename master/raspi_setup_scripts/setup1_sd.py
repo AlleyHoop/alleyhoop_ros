@@ -27,6 +27,8 @@ def print_log():
     
 # download args
 os_to_download = "ubuntu-mate-desktop-16.04.2-armhf"
+download_url_1 = "https://ubuntu-mate.org/raspberry-pi/ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img.xz"
+download_url_2 = "https://www.finnie.org/software/raspberrypi/ubuntu-rpi3/ubuntu-16.04-preinstalled-server-armhf+raspi3.img.xz"
 
 # system args
 sysarg_user = getpass.getuser()
@@ -54,9 +56,9 @@ while not input_done:
 
 # image args
 if(os_to_download == "ubuntu-mate-desktop-16.04.2-armhf"):
-    userarg_image_url = "https://ubuntu-mate.org/raspberry-pi/ubuntu-mate-16.04.2-desktop-armhf-raspberry-pi.img.xz"
+    userarg_image_url = download_url_1
 else:
-    userarg_image_url = "https://www.finnie.org/software/raspberrypi/ubuntu-rpi3/ubuntu-16.04-preinstalled-server-armhf+raspi3.img.xz"
+    userarg_image_url = download_url_2
     
 userarg_image_archive = os_to_download + ".img.xz"
 userarg_image_archive_pth = sysarg_download_dir +  "/" + userarg_image_archive

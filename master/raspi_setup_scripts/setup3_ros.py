@@ -54,6 +54,7 @@ if not (os.path.exists(pth_ros_distribution)):
     # install dynamic reconfiqure
     subprocess.call(["apt-get", "update", "-y"])
     subprocess.call(["apt-get", "install", "ros-kinetic-ddynamic-reconfigure", "-y"])
+    subprocess.call(["apt-get", "install", " ros-kinetic-rgbd-launch", "-y"])
     log.append("ros succesfully installed. Please run: \n source /opt/ros/kinetic/setup.bash >> ~/.bashrc\n and then : \n source ~/.bashrc \n first command to setup ROS when starting up new shell and second command for current shell")
 else:
     log.append("ros-kinetic already installed!")

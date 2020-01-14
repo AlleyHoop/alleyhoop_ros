@@ -53,7 +53,7 @@ void update_sensors()
     update_imu();
 
     //publish data
-    imu_msg.orientation.x = 0; //!!! TODO
+    imu_msg.header.frame_id = 0;
     millis();
     imu_pub.publish( &imu_msg );
     imu_pub_timer = millis() + 1000;

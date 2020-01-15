@@ -1,25 +1,44 @@
+//make sure to include ros
 #include <ros/ros.h>
+
+//libraries to process image
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
+
+//import the service
+#include "alleyhoop_ros_msgs/FindFeaturesOnImage.h"
 #include <cv_bridge/cv_bridge.h>
+
+//others
 #include <iostream>
+#include <vector>
 
+using namespace cv;
 
-void findFeaturesOnImage(cv_bridge::CvImagePtr imagePtr)
-{   
-    using namespace cv;
-    
+//process image function
+bool findFeaturesOnImage(alleyhoop_ros_msgs::FindFeaturesOnImage::Request &req,
+                         alleyhoop_ros_msgs::FindFeaturesOnImage::Response &res)
+{    
+    //convert the image
+    cv_bridge::CvImagePtr imagePtr = cv_bridge::toCvCopy(req.image, sensor_msgs::image_encodings::BGR8);
+
     //ensure actual values where passed
     if(imagePtr == nullptr)
     {
+        std::cout << "image ptr was empty" << std::endl;
+        return false;
     }
 
     if(imagePtr->image.empty())
     {
         std::cout << "image was empty" << std::endl;
+        return false;
     }
+
+    //to return data
+    std::vector<uint32_t> features;
 
     //source image
     Mat srcImage = imagePtr->image.clone();
@@ -78,17 +97,20 @@ void findFeaturesOnImage(cv_bridge::CvImagePtr imagePtr)
             std::vector<Point> points;
             cv::findNonZero(resImage, points);
 
-            //add the feature (TODO, actually decide the feature and make features usefull for the controller)
+            //add the feature the center x , y , w, h means that every four elements is one feature
             if(points.size() > 100)
             {
-                //do somethin;
+                features.push_back(c[0]); //x
+                features.push_back(c[1]); //y
+                features.push_back(c[2]);  //w == r
+                features.push_back(c[2]);  //h == r
             }
 
             //show images
-            imshow("hsv combined mask", hsvMask);
-            imshow("detected circles", circleImage);
-            imshow("bitwise and", resImage);
-            waitKey(0);
+            //imshow("hsv combined mask", hsvMask);
+            //imshow("detected circles", circleImage);
+            //imshow("bitwise and", resImage);
+            //waitKey(0);
 
             //release open cv images
             circleImage.release();
@@ -99,23 +121,34 @@ void findFeaturesOnImage(cv_bridge::CvImagePtr imagePtr)
         }
     }
 
+    //set result
+    res.step = 4;
+    res.features = features;
+
     //release open cv images
     srcImage.release();
     grayImage.release();
     blankImage.release();
     hsvImage.release();
+
+    return true;
 }
 
-
+//the ros service server
 int main(int argc, char **argv)
 {
-    std::string service_name = "/example_feature_finder";
+    //print msg
+    std::string service_name = "example_feature_finder";
     std::cout << "feature finder server is starting with service name: "<< service_name << std::endl;
     
-    while (ros::ok())
-    {
-        
-    }
+    //init ros
+    ros::init(argc, argv, "add_two_ints_server");
+    ros::NodeHandle nh;
+
+    //init ros service and process incoming images
+    ros::ServiceServer feature_finder_service = nh.advertiseService(service_name, findFeaturesOnImage);
+    std::cout << "Ready to find features on image" << std::endl;
+    ros::spin();
 
     return 0;
 }

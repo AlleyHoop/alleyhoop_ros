@@ -1,5 +1,6 @@
 <launch>
     <!--launch args-->
+    <arg name="enable_example_feature_finder" default="false"/>
     <arg name="enable_arduino_slave" default="false"/>
     <arg name="enable_pi_camera" default="false"/>
     <arg name="enable_fake_pi_camera" default="false"/>
@@ -22,6 +23,11 @@
     <!--launch fake pi camera-->
     <group if="$(arg enable_fake_pi_camera)">
         <node name="pi_camera" pkg="raspi_utils" type="fake_raspi_camera.py" output="screen" cwd="node"/>
+    </group>
+
+    <!--launch feature finder-->
+    <group if="$(arg enable_example_feature_finder)">
+        <node name="example_feature_finder" pkg="example_feature_finder" type="example_feature_finder" output="screen"/>
     </group>
 
     <!--launch core node-->

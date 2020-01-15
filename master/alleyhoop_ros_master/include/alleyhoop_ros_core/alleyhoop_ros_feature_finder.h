@@ -28,6 +28,9 @@ namespace AlleyHoopROSCore
         protected:
             //ros
             ros::NodeHandle nh;
+
+            //finder clients
+            ros::ServiceClient image_feature_finder_client;
     };
 
 }

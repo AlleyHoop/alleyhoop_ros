@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   std_msgs
+  alleyhoop_ros_msgs
   cv_bridge
   rospy
   tf

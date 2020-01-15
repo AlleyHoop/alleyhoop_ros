@@ -1,0 +1,21 @@
+<launch>
+    <!--launch args-->
+    <arg name="enable_lidar" default="false"/>
+    <arg name="enable_realsense_camera" default="false"/>
+
+    <!--launch lidar-->
+    <group if="$(arg enable_lidar)">
+        <include file="$(find rplidar_ros)/launch/rplidar.launch" output="screen"/>
+    </group>
+
+    <!--launch realsense camera-->
+    <group if="$(arg enable_lidar)">
+        <include file="$(find realsense2_camera)/launch/rs_camera.launch" output="screen">
+            <arg name="camera" value="camera"/>
+            <arg name="filters" value="pointcloud"/>
+            <arg name="enable_infra1" value="false"/>
+            <arg name="enable_infra2" value="false"/>
+        </include>
+    </group>
+
+</launch>

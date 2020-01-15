@@ -16,7 +16,7 @@ log = []
 
 # print log list
 def print_log():
-    print("\n Master environment setup script Log and Error list:")
+    print("\n Slave environment setup script Log and Error list:")
     if not log:
         print("No entries in script log found.")
     else:
@@ -58,33 +58,28 @@ if not (os.path.exists(pth_ros_distribution)):
 else:
     log.append("ros-kinetic already installed!")    
 
-#install arduino package
+# libs realsense2 camera
 subprocess.call(["apt-get", "update", "-y"])
-subprocess.call(["apt-get", "install", "arduino", "-y"])
-log.append("installed arduino package for linux")
+subprocess.call(["apt-get", "install", "ros-kinetic-ddynamic-reconfigure", "-y"])
+subprocess.call(["apt-get", "install", " ros-kinetic-rgbd-launch", "-y"])
+subprocess.call(["apt-get", "install", "git", "libssl-dev", "libusb-1.0-0-dev", "pkg-config", "libgtk-3-dev","-y"])
+subprocess.call(["apt-get", "install", "libglfw3-dev", "-y"])
+log.append("installed some ros extra libs for realsense camera")
 
-# install arduino
-subprocess.call(["apt-get", "install", "ros-kinetic-rosserial-arduino", "-y"])
-subprocess.call(["apt-get", "install", "ros-kinetic-rosserial", "-y"])
-log.append("installed rosserial libs")
+# check if already cloned
+if not (os.path.exists("/tmp/librealsense")):
+    subprocess.call(["git", "clone", "https://github.com/IntelRealSense/librealsense.git"], cwd="/tmp/")
 
-# install arduino IDE
-if not (os.path.exists("/opt/arduino-1.8.10")):
-    if not (os.path.exists("/tmp/arduino-1.8.10-linuxarm.tar.xz")):
-        print("downloading arduino-1.8.10-linuxarm.tar.xz")
-        subprocess.call(["wget", "https://downloads.arduino.cc/arduino-1.8.10-linuxarm.tar.xz"], cwd="/tmp/")
-        log.append("downloaded file /tmp/arduino-1.8.10-linuxarm.tar.xz")
-    if not (os.path.exists("/tmp/arduino-1.8.10")):
-        print("extracting arduino-1.8.10-linuxarm.tar.xz")
-        subprocess.call(["tar", "-xf", "arduino-1.8.10-linuxarm.tar.xz"], cwd="/tmp/")
-        log.append("extracted file /tmp/arduino-1.8.10-linuxarm.tar.xz to /tmp/arduino-1.8.10")
-    if not (os.path.exists("/opt/arduino-1.8.10")):
-        subprocess.call(["mv", "arduino-1.8.10", "/opt"], cwd="/tmp/")
-        subprocess.call(["/opt/arduino-1.8.10/install.sh"])
-        log.append("moved file /tmp/arduino-1.8.10 to /opt/arduino-1.8.10")
-    log.append("to use the libraries in arduino IDE run the following commands\n    a. rosrun rosserial_arduino make_libraries.py ./ && sudo mv ./ros_lib /opt/arduino-1.8.10/libraries/")
-else:
-    log.append("Did not downloa and install arduino IDE, IDE arduino-1.8.10 already installed")
+# (re)install librealsense if not in /tmp/
+if (os.path.exists("/tmp/librealsense")):
+    subprocess.call(["./scripts/patch-realsense-ubuntu-lts.sh"], cwd="/tmp/librealsense/")
+    subprocess.call(["mkdir", "build"], cwd="/tmp/librealsense/")
+    subprocess.call(["cmake", "../"], cwd="/tmp/librealsense/build/")
+    subprocess.call(["make", "uninstall"], cwd="/tmp/librealsense/build/")
+    subprocess.call(["make", "clean"], cwd="/tmp/librealsense/build/")
+    subprocess.call(["make"], cwd="/tmp/librealsense/build/")
+    subprocess.call(["make", "install"], cwd="/tmp/librealsense/build/")
+
 
 print_log()
 sys.exit()

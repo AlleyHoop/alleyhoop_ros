@@ -3,7 +3,6 @@
     <arg name="enable_arduino_slave" default="false"/>
     <arg name="enable_pi_camera" default="false"/>
     <arg name="enable_fake_pi_camera" default="false"/>
-    <arg name="enable_lidar" default="false"/>
 
     <arg name="verbose_mode" default="none"/>
 
@@ -25,12 +24,7 @@
         <node name="pi_camera" pkg="raspi_utils" type="fake_raspi_camera.py" output="screen" cwd="node"/>
     </group>
 
-    <!--launch lidar-->
-    <group if="$(arg enable_lidar)">
-        <include file="$(find rplidar_ros)/launch/rplidar.launch" output="screen"/>
-    </group>
-
     <!--launch core node-->
-    <node name="alleyhoop_ros_master" pkg="alleyhoop_master" type="alleyhoop_ros_node" output="screen"/>
+    <node name="alleyhoop_ros_master" pkg="alleyhoop_ros_master" type="alleyhoop_ros_node" output="screen"/>
     
 </launch>

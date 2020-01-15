@@ -16,7 +16,7 @@ log = []
 
 # print log list
 def print_log():
-    print("\n Master environment setup script Log and Error list:")
+    print("\n Monitor environment setup script Log and Error list:")
     if not log:
         print("No entries in script log found.")
     else:

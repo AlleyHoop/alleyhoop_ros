@@ -12,7 +12,7 @@ namespace AlleyHoopROSCore
     FeatureFinder::FeatureFinder(ros::NodeHandle* _nh)
 	: AlleyHoopMVC::Model(), nh(*_nh)
     {
-        image_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>("example_feature_finder");
+        image_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>("haarcascade_feature_finder");
     }
 
     bool FeatureFinder::update()
@@ -41,7 +41,7 @@ namespace AlleyHoopROSCore
         //call to client with msg
         if (!image_feature_finder_client.call(srv))
         {
-            ROS_ERROR("Failed to call service example_feature_finder");
+            ROS_ERROR("Failed to call service cascade feature finder");
             return std::list<AlleyHoopROSUtils::Feature*>();
         }
 

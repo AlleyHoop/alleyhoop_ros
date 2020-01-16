@@ -88,10 +88,13 @@ namespace AlleyHoopROSCore
 
             //get sensors data
             int ultrasonic_sensor_data = ultrasonic_sensor_1->getData();
-            cv_bridge::CvImagePtr image_data = mono_camera_1->getData();
+            cv_bridge::CvImagePtr image_data_1 = mono_camera_1->getData();
+            cv_bridge::CvImagePtr image_data_2 = depth_camera_1->getData();
 
             //find features
-            std::list<AlleyHoopROSUtils::Feature*> features = featureFinder->findFeaturesOnImage(image_data);
+            std::list<AlleyHoopROSUtils::Feature*> features;
+            featureFinder->findFeaturesOnImage(features, image_data_1);
+            featureFinder->findFeaturesOnImage(features, image_data_2);
 
             //make desicions based on features
             for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = features.begin(); feature_iter != features.end(); feature_iter++)
@@ -105,13 +108,15 @@ namespace AlleyHoopROSCore
             // control the actuators
             if(AlleyHoopROSCore::Vehicle* ah_vehicle = dynamic_cast<AlleyHoopROSCore::Vehicle*>(vehicle))
             {
-                //turn on led
+                
                 if(ultrasonic_sensor_data < 30 && ultrasonic_sensor_data > 0)
                 {
+                    //turn on led
                     ah_vehicle->led1->setState(true);
                 }
                 else
                 {
+                    //turn on led
                     ah_vehicle->led1->setState(false);
                 }
             }

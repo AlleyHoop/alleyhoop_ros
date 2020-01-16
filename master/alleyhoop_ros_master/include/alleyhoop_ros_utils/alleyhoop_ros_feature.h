@@ -6,7 +6,7 @@
 
 namespace AlleyHoopROSUtils
 {
-    enum FeatureTypes {None=0, StaticObject=1, SpecificObject=2, MovingObject=3};
+    enum FeatureTypes {None=0, StaticObject=1, MovingObject=2};
 
     class Feature
     {
@@ -14,6 +14,7 @@ namespace AlleyHoopROSUtils
             Feature(int type);
             ~Feature() = default;
             AlleyHoopROSUtils::Transform transform;
+            AlleyHoopROSUtils::Vector3 halfExtents;
             int featureType;
     };
 

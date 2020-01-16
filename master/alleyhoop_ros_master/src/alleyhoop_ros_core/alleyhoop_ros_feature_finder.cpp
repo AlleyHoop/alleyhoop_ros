@@ -32,12 +32,12 @@ namespace AlleyHoopROSCore
         return false;
     }
 
-    std::list<AlleyHoopROSUtils::Feature*> FeatureFinder::findFeaturesOnImage(cv_bridge::CvImagePtr imagePtr)
+    bool FeatureFinder::findFeaturesOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr imagePtr)
     {   
         //ensure an image was sent
         if(imagePtr == nullptr)
         {
-            return std::list<AlleyHoopROSUtils::Feature*>();
+            return false;
         }
 
         //create service msg
@@ -47,28 +47,42 @@ namespace AlleyHoopROSCore
         //call to client with msg
         if (!image_feature_finder_client.call(srv))
         {
-            ROS_ERROR("Failed to call service cascade feature finder");
-            return std::list<AlleyHoopROSUtils::Feature*>();
+            ROS_ERROR("Failed to call service for findFeaturesOnImage");
+            return false;
         }
 
         //read responce
         if(srv.response.step < 1)
         {
             ROS_ERROR("no feauters were found");
-            return std::list<AlleyHoopROSUtils::Feature*>();
+            return false;
         }
         else
         {
             for(int i = 0; i < srv.response.features.size(); i+srv.response.step)
             {
                 if(verboseMode)
+                {
                     std::cout << "found feature at (" << srv.response.features[i] << "," << srv.response.features[i+1] << "," << srv.response.features[i+2] << "," << srv.response.features[i+3] << ")" << std::endl;
-                //convert to features
-                //TODO!!!!!!!!!!!!
+                }
+
+                AlleyHoopROSUtils::Feature* f = new AlleyHoopROSUtils::Feature(AlleyHoopROSUtils::FeatureTypes::StaticObject);
+                f->transform.position.x = srv.response.features[i];
+                f->transform.position.y = srv.response.features[i+1];
+                //TODO estimate position z value
+
+                //TODO estimate rotational values
+
+                f->halfExtents.x = srv.response.features[i+2];
+                f->halfExtents.y = srv.response.features[i+3];
+                //TODO estimate z half extents value
+
+                //add the feature
+                features.push_back(f);
             }
         }
         
-        return std::list<AlleyHoopROSUtils::Feature*>();
+        return true;
     }
 
 }

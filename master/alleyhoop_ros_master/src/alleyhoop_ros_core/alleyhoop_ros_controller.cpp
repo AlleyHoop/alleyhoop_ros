@@ -18,22 +18,37 @@ namespace AlleyHoopROSCore
     {
         //read params, if fail set a default value
         std::string ultrasonic_sensor_topic_name;
-        if(!nodeHandle.getParam("AlleyHoop_Sensors/UltrasonicSensor_TopicName",ultrasonic_sensor_topic_name))
+        if(!nh.getParam("AlleyHoop_Sensors/UltrasonicSensor_TopicName",ultrasonic_sensor_topic_name))
             ultrasonic_sensor_topic_name = "/arduino_slave/ultrasonic_sensor";
         
         std::string mono_camera_image_raw_topic_name;
-        if(!nodeHandle.getParam("AlleyHoop_Sensors/MonoCameraImageRaw_TopicName",mono_camera_image_raw_topic_name))
+        if(!nh.getParam("AlleyHoop_Sensors/MonoCameraImageRaw_TopicName",mono_camera_image_raw_topic_name))
             mono_camera_image_raw_topic_name = "/raspi_camera/image_raw";
 
         std::string mono_camera_info_topic_name;
-        if(!nodeHandle.getParam("AlleyHoop_Sensors/MonoCameraInfo_TopicName",mono_camera_info_topic_name))
+        if(!nh.getParam("AlleyHoop_Sensors/MonoCameraInfo_TopicName",mono_camera_info_topic_name))
             mono_camera_info_topic_name = "/raspi_camera/camera_info";
 
         std::string lidar_topic_name;
-        if(!nodeHandle.getParam("AlleyHoop_Sensors/Lidar_TopicName",lidar_topic_name))
+        if(!nh.getParam("AlleyHoop_Sensors/Lidar_TopicName",lidar_topic_name))
             lidar_topic_name = "/scan";
 
+        std::string depth_camera_image_raw_topic_name;
+        if(!nh.getParam("AlleyHoop_Sensors/DepthCameraImageRaw_TopicName",depth_camera_image_raw_topic_name))
+            depth_camera_image_raw_topic_name = "/depth_camera/image_raw";
 
+        std::string depth_camera_info_topic_name;
+        if(!nh.getParam("AlleyHoop_Sensors/DepthCameraInfo_TopicName",depth_camera_info_topic_name))
+            depth_camera_info_topic_name = "/depth_camera/camera_info";
+
+        std::string depth_camera_pcl_topic_name;
+        if(!nh.getParam("AlleyHoop_Sensors/DepthCameraPcl_TopicName",depth_camera_pcl_topic_name))
+            depth_camera_pcl_topic_name = "/depth_camera/points";
+
+        std::string imu_topic_name;
+        if(!nh.getParam("AlleyHoop_Sensors/ImuSensor_TopicName",imu_topic_name))
+            imu_topic_name = "/arduino_slave/imu_sensor";
+        
         //setup sensors, add to controller base class for life line managing and update routine
         ultrasonic_sensor_1 = new AlleyHoopROSSensors::UltrasonicSensor("ultrasonic_sensor", _nh, ultrasonic_sensor_topic_name);
         addSensor(ultrasonic_sensor_1);
@@ -43,6 +58,12 @@ namespace AlleyHoopROSCore
 
         lidar1 = new AlleyHoopROSSensors::Lidar("lidar1", _nh, lidar_topic_name);
         addSensor(lidar1);
+
+        depth_camera_1 = new AlleyHoopROSSensors::DepthCamera("depth_camera_1", _nh, depth_camera_image_raw_topic_name, depth_camera_pcl_topic_name, depth_camera_info_topic_name);
+        addSensor(depth_camera_1);
+
+        imu = new AlleyHoopROSSensors::Imu("imu", _nh, imu_topic_name);
+        addSensor(imu);
 
         //setup feature finders
         featureFinder = new FeatureFinder(_nh);

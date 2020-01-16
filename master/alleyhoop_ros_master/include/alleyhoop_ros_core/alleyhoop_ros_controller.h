@@ -8,6 +8,8 @@
 #include "alleyhoop_ros_sensors/alleyhoop_ros_ultrasonic_sensor.h"
 #include "alleyhoop_ros_sensors/alleyhoop_ros_mono_camera.h" 
 #include "alleyhoop_ros_sensors/alleyhoop_ros_lidar.h"
+#include "alleyhoop_ros_sensors/alleyhoop_ros_depth_camera.h"
+#include "alleyhoop_ros_sensors/alleyhoop_ros_imu.h"
 
 
 namespace AlleyHoopROSCore
@@ -31,7 +33,9 @@ namespace AlleyHoopROSCore
             //sensors
             AlleyHoopROSSensors::UltrasonicSensor* ultrasonic_sensor_1;
             AlleyHoopROSSensors::MonoCamera* mono_camera_1;
+            AlleyHoopROSSensors::DepthCamera* depth_camera_1;
             AlleyHoopROSSensors::Lidar* lidar1;
+            AlleyHoopROSSensors::Imu* imu;
 
             //finder
             FeatureFinder* featureFinder;

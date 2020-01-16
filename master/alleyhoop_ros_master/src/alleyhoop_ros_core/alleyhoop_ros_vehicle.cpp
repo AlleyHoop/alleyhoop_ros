@@ -12,15 +12,15 @@ namespace AlleyHoopROSCore
     {
         //read params, if fail set a default value
         std::string led1_topic_name;
-        if(!nodeHandle.getParam("AlleyHoop_Actuators/Led1_TopicName",led1_topic_name))
+        if(!nh.getParam("AlleyHoop_Actuators/Led1_TopicName",led1_topic_name))
             led1_topic_name = "/arduino_slave/led1_actuator";
         
         std::string steering_motor_topic_name;
-        if(!nodeHandle.getParam("AlleyHoop_Actuators/SteeringMotor_TopicName",steering_motor_topic_name))
+        if(!nh.getParam("AlleyHoop_Actuators/SteeringMotor_TopicName",steering_motor_topic_name))
             steering_motor_topic_name = "/arduino_slave/servo";
 
         std::string velocity_motor_topic_name;
-        if(!nodeHandle.getParam("AlleyHoop_Actuators/VelocityMotor_TopicName",velocity_motor_topic_name))
+        if(!nh.getParam("AlleyHoop_Actuators/VelocityMotor_TopicName",velocity_motor_topic_name))
             velocity_motor_topic_name = "/arduino_slave/esc";
 
         //setup sensors

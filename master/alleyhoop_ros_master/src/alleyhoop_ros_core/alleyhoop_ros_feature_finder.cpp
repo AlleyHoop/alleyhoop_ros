@@ -14,8 +14,8 @@ namespace AlleyHoopROSCore
     {
         //read params, if fail set a default value
         std::string image_feature_finder_service;
-        if(!nodeHandle.getParam("AlleyHoop_Models/FindFeaturesOnImage_ServiceName",image_feature_finder_service))
-            image_feature_finder_service = "example_feature_finder"
+        if(!nh.getParam("AlleyHoop_Models/FindFeaturesOnImage_ServiceName",image_feature_finder_service))
+            image_feature_finder_service = "example_feature_finder";
 
         //setup feature finder
         image_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>(image_feature_finder_service);

@@ -1,0 +1,18 @@
+Alleyhoop_VerboseMode: "log"
+
+AlleyHoop_Sensors: {
+    UltrasonicSensor_TopicName: "/arduino_slave/ultrasonic_sensor",
+    MonoCameraImageRaw_TopicName: "/arduino_slave/image_raw",
+    MonoCameraInfo_TopicName: "/arduino_slave/camera_info",
+    Lidar_TopicName: "/scan",
+}
+
+AlleyHoop_Actuators: {
+    Led1_TopicName: "/arduino_slave/led1_actuator",
+    SteeringMotor_TopicName: "/arduino_slave/servo",
+    VelocityMotor_TopicName: "/arduino_slave/esc",
+}
+
+AlleyHoop_Models: {
+  FindFeaturesOnImage_ServiceName: "example_feature_finder",
+}

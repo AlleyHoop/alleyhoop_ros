@@ -22,8 +22,7 @@ namespace AlleyHoopROSCore
             ~Controller();
             bool update();
 
-            static bool verboseDisplay;
-            static bool verboseLog;
+            static bool verboseMode;
 
         protected:
             //ros

@@ -30,6 +30,9 @@
         <node name="example_feature_finder" pkg="example_feature_finder" type="example_feature_finder" output="screen"/>
     </group>
 
+    <!-- load parameters-->
+    <rosparam file="$(find alleyhoop_ros_master)/config/alleyhoop_device_configuration.yaml" />
+
     <!--launch core node-->
     <node name="alleyhoop_ros_master" pkg="alleyhoop_ros_master" type="alleyhoop_ros_node" output="screen"/>
     

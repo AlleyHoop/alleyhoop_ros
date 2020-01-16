@@ -11,20 +11,37 @@
 
 namespace AlleyHoopROSCore
 {
-    bool Controller::verboseDisplay = false;
-    bool Controller::verboseLog = false;
+    bool Controller::verboseMode = false;
 
     Controller::Controller(ros::NodeHandle* _nh, AlleyHoopMVC::Vehicle* v)
 	: AlleyHoopMVC::Controller(v), nh(*_nh)
     {
+        //read params, if fail set a default value
+        std::string ultrasonic_sensor_topic_name;
+        if(!nodeHandle.getParam("AlleyHoop_Sensors/UltrasonicSensor_TopicName",ultrasonic_sensor_topic_name))
+            ultrasonic_sensor_topic_name = "/arduino_slave/ultrasonic_sensor";
+        
+        std::string mono_camera_image_raw_topic_name;
+        if(!nodeHandle.getParam("AlleyHoop_Sensors/MonoCameraImageRaw_TopicName",mono_camera_image_raw_topic_name))
+            mono_camera_image_raw_topic_name = "/raspi_camera/image_raw";
+
+        std::string mono_camera_info_topic_name;
+        if(!nodeHandle.getParam("AlleyHoop_Sensors/MonoCameraInfo_TopicName",mono_camera_info_topic_name))
+            mono_camera_info_topic_name = "/raspi_camera/camera_info";
+
+        std::string lidar_topic_name;
+        if(!nodeHandle.getParam("AlleyHoop_Sensors/Lidar_TopicName",lidar_topic_name))
+            lidar_topic_name = "/scan";
+
+
         //setup sensors, add to controller base class for life line managing and update routine
-        ultrasonic_sensor_1 = new AlleyHoopROSSensors::UltrasonicSensor("ultrasoon_sensor", _nh, "/arduino_slave/ultrasoon_sensor");
+        ultrasonic_sensor_1 = new AlleyHoopROSSensors::UltrasonicSensor("ultrasonic_sensor", _nh, ultrasonic_sensor_topic_name);
         addSensor(ultrasonic_sensor_1);
 
-        mono_camera_1 = new AlleyHoopROSSensors::MonoCamera("mono_camera_1", _nh, "/raspi_camera/image_raw", "/raspi_camera/camera_info");
+        mono_camera_1 = new AlleyHoopROSSensors::MonoCamera("mono_camera_1", _nh, mono_camera_image_raw_topic_name, mono_camera_info_topic_name);
         addSensor(mono_camera_1);
 
-        lidar1 = new AlleyHoopROSSensors::Lidar("lidar1", _nh, "/scan");
+        lidar1 = new AlleyHoopROSSensors::Lidar("lidar1", _nh, lidar_topic_name);
         addSensor(lidar1);
 
         //setup feature finders
@@ -58,7 +75,7 @@ namespace AlleyHoopROSCore
             //make desicions based on features
             for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = features.begin(); feature_iter != features.end(); feature_iter++)
             {
-                if(verboseLog)
+                if(verboseMode)
                 {
                     std::cout << "found a feature with type " + std::to_string((*feature_iter)->featureType) << std::endl;
                 }

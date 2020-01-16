@@ -22,8 +22,7 @@ namespace AlleyHoopROSCore
             bool update();
             std::list<AlleyHoopROSUtils::Feature*>  findFeaturesOnImage(cv_bridge::CvImagePtr imagePtr);
             
-            static bool verboseDisplay;
-            static bool verboseLog;
+            static bool verboseMode;
 
         protected:
             //ros

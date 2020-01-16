@@ -23,8 +23,7 @@ namespace AlleyHoopROSCore
             AlleyHoopROSActuators::Motor* steering_motor;
             AlleyHoopROSActuators::Motor* velocity_motor;
 
-            static bool verboseDisplay;
-            static bool verboseLog;
+            static bool verboseMode;
 
         protected:
             //ros

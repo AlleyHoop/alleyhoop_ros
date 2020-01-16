@@ -1,18 +1,24 @@
 #include "alleyhoop_ros_core/alleyhoop_ros_feature_finder.h"
 #include "alleyhoop_ros_msgs/FindFeaturesOnImage.h"
 
+#include <string>
 #include <sstream>
 #include <iostream>
 
 namespace AlleyHoopROSCore
 {
-    bool FeatureFinder::verboseDisplay = false;
-    bool FeatureFinder::verboseLog = false;
+    bool FeatureFinder::verboseMode = false;
 
     FeatureFinder::FeatureFinder(ros::NodeHandle* _nh)
 	: AlleyHoopMVC::Model(), nh(*_nh)
     {
-        image_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>("haarcascade_feature_finder");
+        //read params, if fail set a default value
+        std::string image_feature_finder_service;
+        if(!nodeHandle.getParam("AlleyHoop_Models/FindFeaturesOnImage_ServiceName",image_feature_finder_service))
+            image_feature_finder_service = "example_feature_finder"
+
+        //setup feature finder
+        image_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>(image_feature_finder_service);
     }
 
     bool FeatureFinder::update()
@@ -48,14 +54,14 @@ namespace AlleyHoopROSCore
         //read responce
         if(srv.response.step < 1)
         {
-            ROS_ERROR("no feautes were found");
+            ROS_ERROR("no feauters were found");
             return std::list<AlleyHoopROSUtils::Feature*>();
         }
         else
         {
             for(int i = 0; i < srv.response.features.size(); i+srv.response.step)
             {
-                if(verboseLog)
+                if(verboseMode)
                     std::cout << "found feature at (" << srv.response.features[i] << "," << srv.response.features[i+1] << "," << srv.response.features[i+2] << "," << srv.response.features[i+3] << ")" << std::endl;
                 //convert to features
                 //TODO!!!!!!!!!!!!

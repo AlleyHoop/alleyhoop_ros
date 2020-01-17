@@ -29,7 +29,9 @@ namespace AlleyHoopROSCore
             ros::NodeHandle nh;
 
             //finder clients
-            ros::ServiceClient image_feature_finder_client;
+            ros::ServiceClient traffic_rules_feature_finder_client;
+            ros::ServiceClient road_feature_finder_client;
+            ros::ServiceClient object_feature_finder_client;
     };
 
 }

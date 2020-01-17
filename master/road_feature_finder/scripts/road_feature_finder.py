@@ -2,7 +2,7 @@
 
 # ros required libs
 import roslib
-roslib.load_manifest('haarcascade_feature_finder')
+roslib.load_manifest('road_feature_finder')
 import rospy
 
 # libs for processing
@@ -63,7 +63,7 @@ def findFeatures(request):
 
 def main(args):
     # init ros
-    service_name = "haarcascade_feature_finder"
+    service_name = "road_feature_finder"
     print("starting haarcascade feature finder service at " + service_name)
     rospy.init_node(service_name + '_server')
 

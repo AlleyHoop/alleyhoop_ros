@@ -3,6 +3,7 @@
 
 #include <ros/ros.h>
 #include "alleyhoop_ros_utils/alleyhoop_ros_math.h"
+#include <string>
 
 namespace AlleyHoopROSUtils
 {
@@ -16,6 +17,7 @@ namespace AlleyHoopROSUtils
             AlleyHoopROSUtils::Transform transform;
             AlleyHoopROSUtils::Vector3 halfExtents;
             int featureType;
+            std::string label_name;
     };
 
 }

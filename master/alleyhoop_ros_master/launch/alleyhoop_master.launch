@@ -1,14 +1,11 @@
 <launch>
     <!--launch args-->
-    <arg name="enable_example_feature_finder" default="false"/>
+    <arg name="enable_traffic_rules_feature_finder" default="false"/>
+    <arg name="enable_object_feature_finder" default="false"/>
+    <arg name="enable_road_feature_finder" default="false"/>
     <arg name="enable_arduino_slave" default="false"/>
     <arg name="enable_pi_camera" default="false"/>
     <arg name="enable_fake_pi_camera" default="false"/>
-
-    <arg name="verbose_mode" default="none"/>
-
-    <!-- setup parameters-->
-    <param name="AlleyhoopVerboseMode" value="$(arg verbose_mode)" />
 
     <!--launch slave communication-->
     <group if="$(arg enable_arduino_slave)">
@@ -26,8 +23,18 @@
     </group>
 
     <!--launch feature finder-->
-    <group if="$(arg enable_example_feature_finder)">
-        <node name="example_feature_finder" pkg="example_feature_finder" type="example_feature_finder" output="screen"/>
+    <group if="$(arg enable_traffic_rules_feature_finder)">
+        <node name="traffic_rules_feature_finder" pkg="traffic_rules_feature_finder" type="traffic_rules_feature_finder_server" output="screen"/>
+    </group>
+
+    <!--launch feature finder-->
+    <group if="$(arg enable_object_feature_finder)">
+        <node name="object_feature_finder" pkg="object_feature_finder" type="object_feature_finder_server" output="screen"/>
+    </group>
+
+    <!--launch feature finder-->
+    <group if="$(arg enable_road_feature_finder)">
+        <node name="road_feature_finder" pkg="road_feature_finder" type="road_feature_finder_server" output="screen"/>
     </group>
 
     <!-- load parameters-->

@@ -24,7 +24,7 @@ def main(args):
     # create cv2 bridge
     bridge = CvBridge()
 
-    pth = os.path.join(os.getcwd(), 'anwbw760.jpeg')
+    pth = os.path.join(os.getcwd(), 'M25_motorway_2004-04-25.jpg')
     print("reading image from " + pth)
 
     # loop

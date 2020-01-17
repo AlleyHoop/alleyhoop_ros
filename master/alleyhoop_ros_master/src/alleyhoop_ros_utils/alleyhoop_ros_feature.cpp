@@ -4,7 +4,7 @@ namespace AlleyHoopROSUtils
 {
 
     Feature::Feature(int type)
-        : featureType(type)
+        : featureType(type), label_name("none")
     {
 
     }

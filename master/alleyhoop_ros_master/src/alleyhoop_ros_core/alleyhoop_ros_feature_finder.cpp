@@ -13,12 +13,22 @@ namespace AlleyHoopROSCore
 	: AlleyHoopMVC::Model(), nh(*_nh)
     {
         //read params, if fail set a default value
-        std::string image_feature_finder_service;
-        if(!nh.getParam("AlleyHoop_Models/FindFeaturesOnImage_ServiceName",image_feature_finder_service))
-            image_feature_finder_service = "example_feature_finder";
+        std::string traffic_rules_feature_finder_service;
+        if(!nh.getParam("AlleyHoop_Models/TrafficRulesFeaturesOnImage_ServiceName",traffic_rules_feature_finder_service))
+            traffic_rules_feature_finder_service = "example_feature_finder";
+
+        std::string object_feature_finder_service;
+        if(!nh.getParam("AlleyHoop_Models/ObjectFeaturesOnImage_ServiceName",object_feature_finder_service))
+            object_feature_finder_service = "example_feature_finder";
+
+        std::string road_feature_finder_service;
+        if(!nh.getParam("AlleyHoop_Models/RoadFeaturesOnImage_ServiceName",road_feature_finder_service))
+            road_feature_finder_service = "example_feature_finder";
 
         //setup feature finder
-        image_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>(image_feature_finder_service);
+        traffic_rules_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>(traffic_rules_feature_finder_service);
+        object_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>(object_feature_finder_service);
+        road_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>(road_feature_finder_service);
     }
 
     bool FeatureFinder::update()
@@ -45,9 +55,9 @@ namespace AlleyHoopROSCore
         imagePtr->toImageMsg(srv.request.image);
 
         //call to client with msg
-        if (!image_feature_finder_client.call(srv))
+        if (!object_feature_finder_client.call(srv))
         {
-            ROS_ERROR("Failed to call service for findFeaturesOnImage");
+            //ROS_ERROR("Failed to call service for findFeaturesOnImage");
             return false;
         }
 

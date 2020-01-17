@@ -138,11 +138,11 @@ bool findFeaturesOnImage(alleyhoop_ros_msgs::FindFeaturesOnImage::Request &req,
 int main(int argc, char **argv)
 {
     //print msg
-    std::string service_name = "example_feature_finder";
+    std::string service_name = "traffic_rules_feature_finder";
     std::cout << "feature finder server is starting with service name: "<< service_name << std::endl;
     
     //init ros
-    ros::init(argc, argv, "add_two_ints_server");
+    ros::init(argc, argv, "traffic_rules_feature_finder_server");
     ros::NodeHandle nh;
 
     //init ros service and process incoming images

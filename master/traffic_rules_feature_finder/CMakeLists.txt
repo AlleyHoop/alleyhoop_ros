@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(haarcascade_feature_finder)
+project(traffic_rules_feature_finder)
 
 add_compile_options(-std=c++11)
 
@@ -26,9 +26,16 @@ include_directories(include
    ${OpenCV_INCLUDE_DIRS}
 )
 
+add_executable(traffic_rules_feature_finder_server src/feature_finder_server.cpp)
+target_link_libraries(traffic_rules_feature_finder_server
+   ${catkin_LIBRARIES}
+   ${OpenCV_LIBS}
+)
+
 install(DIRECTORY include/ DESTINATION include)
 
 install(TARGETS
+   traffic_rules_feature_finder_server
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

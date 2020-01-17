@@ -1,0 +1,16 @@
+<launch>
+  
+  <!-- Use YOLOv3 -->
+  <arg name="network_param_file" default="$(find darknet_ros)/config/yolov3.yaml"/>
+  <arg name="image_topic" default="/raspi_camera/image_raw" />
+
+  <!-- launch darknet ros node -->
+  <include file="$(find darknet_ros)/launch/darknet_ros.launch">
+    <arg name="network_param_file"    value="$(arg network_param_file)"/>
+    <arg name="image" value="$(arg image_topic)" />
+  </include>
+
+  <!-- launch feature finder service server -->
+  <node name="object_feature_finder" pkg="object_feature_finder" type="object_feature_finder_server.py" output="screen"/>
+
+</launch>

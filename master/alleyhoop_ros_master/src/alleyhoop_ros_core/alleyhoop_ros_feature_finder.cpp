@@ -42,7 +42,22 @@ namespace AlleyHoopROSCore
         return false;
     }
 
-    bool FeatureFinder::findFeaturesOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr imagePtr)
+    bool FeatureFinder::processDepthDataOnFeatures(std::list<AlleyHoopROSUtils::Feature*>& features, sensor_msgs::PointCloud2& pcl)
+    { 
+        return true;
+    }
+
+    bool FeatureFinder::findTrafficRulesOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr)
+    { 
+        return true;
+    }
+
+    bool FeatureFinder::findRoadOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr)
+    { 
+        return true;
+    }
+
+    bool FeatureFinder::findObjectsOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr)
     {   
         //ensure an image was sent
         if(imagePtr == nullptr)

@@ -29,7 +29,9 @@
 
     <!--launch feature finder-->
     <group if="$(arg enable_object_feature_finder)">
-        <node name="object_feature_finder" pkg="object_feature_finder" type="object_feature_finder_server" output="screen"/>
+        <include file="$(find object_feature_finder)/launch/nodes.launch">
+               <arg name="image_topic" value="/raspi_camera/image_raw" /> 
+        </include>
     </group>
 
     <!--launch feature finder-->

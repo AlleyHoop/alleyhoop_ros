@@ -24,7 +24,8 @@ namespace AlleyHoopROSSensors
             void cameraInfoCallBack(const sensor_msgs::CameraInfo& msg);
             void pointCloudCallBack(const sensor_msgs::PointCloud2& msg);
             void update();
-            cv_bridge::CvImagePtr getData();
+            cv_bridge::CvImagePtr getImageData();
+            sensor_msgs::PointCloud2 getDepthData();
 
             const std::string image_topic_name;
             const std::string camera_info_topic_name;
@@ -38,6 +39,7 @@ namespace AlleyHoopROSSensors
 
         private:
             cv_bridge::CvImagePtr currentImagePtr;
+            sensor_msgs::PointCloud2 currentPcl;
     };
 
 }

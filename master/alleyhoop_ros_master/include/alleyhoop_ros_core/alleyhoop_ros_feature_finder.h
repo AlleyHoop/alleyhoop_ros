@@ -7,6 +7,7 @@
 #include "alleyhoop_ros_utils/alleyhoop_ros_feature.h"
 
 #include <cv_bridge/cv_bridge.h>
+#include <sensor_msgs/PointCloud2.h>
 #include <list>
 
 
@@ -20,8 +21,10 @@ namespace AlleyHoopROSCore
             FeatureFinder(ros::NodeHandle* _nh);
             ~FeatureFinder() = default;
             bool update();
-            bool findFeaturesOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr imagePtr);
-            
+            bool findObjectsOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr);
+            bool findTrafficRulesOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr);
+            bool findRoadOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr);
+            bool processDepthDataOnFeatures(std::list<AlleyHoopROSUtils::Feature*>& features, sensor_msgs::PointCloud2& pcl);
             static bool verboseMode;
 
         protected:

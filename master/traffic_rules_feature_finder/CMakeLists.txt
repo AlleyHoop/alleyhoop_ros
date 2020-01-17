@@ -27,6 +27,7 @@ include_directories(include
 )
 
 add_executable(traffic_rules_feature_finder_server src/feature_finder_server.cpp)
+add_dependencies(traffic_rules_feature_finder_server alleyhoop_ros_msgs_generate_messages_cpp)
 target_link_libraries(traffic_rules_feature_finder_server
    ${catkin_LIBRARIES}
    ${OpenCV_LIBS}

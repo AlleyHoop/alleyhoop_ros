@@ -19,11 +19,9 @@ from alleyhoop_ros_msgs.srv import FindFeaturesOnImage,FindFeaturesOnImageRespon
 # needed for yolo
 from darknet_ros_msgs.msg import BoundingBoxes,BoundingBox
 currentBoundingBoxes = None
-newBoundingBoxes = False
 
 def boundingBoxesCallback(data):
     currentBoundingBoxes = data
-    newBoundingBoxes = True
 
 # the function
 def findFeatures(request):
@@ -37,6 +35,11 @@ def findFeatures(request):
         response.step = 4
 
         # write response
+        width = abs(bb.xmin - bb.xmax)
+        height = abs(bb.ymin - bb.ymax)
+        center_x = width/2 + bb.xmin
+        center_y = height/2 + bb.ymin
+
         for bb in currentBoundingBoxes.bounding_boxes:
             response.features.append(bb.xmin)
             response.features.append(bb.ymin)

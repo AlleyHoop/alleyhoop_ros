@@ -16,9 +16,14 @@ namespace AlleyHoopROSSensors
         //nothing for ros sensor // rosspin() is called from the controller
     }
 
-    cv_bridge::CvImagePtr DepthCamera::getData()
+    cv_bridge::CvImagePtr DepthCamera::getImageData()
     {
         return currentImagePtr;
+    }
+
+    sensor_msgs::PointCloud2 DepthCamera::getDepthData()
+    {
+        return currentPcl;
     }
 
     void DepthCamera::imageCallBack(const sensor_msgs::ImageConstPtr& msg)
@@ -28,8 +33,10 @@ namespace AlleyHoopROSSensors
 
     void DepthCamera::pointCloudCallBack(const sensor_msgs::PointCloud2& msg)
     {
-     
+        currentPcl = msg;
     }
+
+    
 
     void DepthCamera::cameraInfoCallBack(const sensor_msgs::CameraInfo& msg)
     {

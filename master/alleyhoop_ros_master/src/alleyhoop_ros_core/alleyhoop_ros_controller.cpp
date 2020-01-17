@@ -7,6 +7,7 @@
 #include <iostream>
 #include <list>
 #include <cv_bridge/cv_bridge.h>
+#include <sensor_msgs/PointCloud2.h>
 
 
 namespace AlleyHoopROSCore
@@ -89,19 +90,29 @@ namespace AlleyHoopROSCore
             //get sensors data
             int ultrasonic_sensor_data = ultrasonic_sensor_1->getData();
             cv_bridge::CvImagePtr image_data_1 = mono_camera_1->getData();
-            cv_bridge::CvImagePtr image_data_2 = depth_camera_1->getData();
+            cv_bridge::CvImagePtr image_data_2 = depth_camera_1->getImageData();
+            sensor_msgs::PointCloud2 pcl = depth_camera_1->getDepthData();
 
-            //find features
-            std::list<AlleyHoopROSUtils::Feature*> features;
-            featureFinder->findFeaturesOnImage(features, image_data_1);
-            featureFinder->findFeaturesOnImage(features, image_data_2);
+            //find objects
+            std::list<AlleyHoopROSUtils::Feature*> objects;
+            featureFinder->findObjectsOnImage(objects, image_data_1);
+            featureFinder->processDepthDataOnFeatures(objects, pcl);
+
+            //TODO base the signs on cropped versions of the found objects
+            std::list<AlleyHoopROSUtils::Feature*> trafficSigns;
+            featureFinder->findTrafficRulesOnImage(trafficSigns, image_data_1);
+
+            //find the road
+            std::list<AlleyHoopROSUtils::Feature*> roadFeatures;
+            featureFinder->findRoadOnImage(roadFeatures, image_data_1);
+            
 
             //make desicions based on features
-            for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = features.begin(); feature_iter != features.end(); feature_iter++)
+            for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = objects.begin(); feature_iter != objects.end(); feature_iter++)
             {
                 if(verboseMode)
                 {
-                    std::cout << "found a feature with type " + std::to_string((*feature_iter)->featureType) << std::endl;
+                    std::cout << "found an object with type " + std::to_string((*feature_iter)->featureType) << std::endl;
                 }
             }
 
@@ -121,8 +132,16 @@ namespace AlleyHoopROSCore
                 }
             }
 
-            //save and cleanup
-            for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = features.begin(); feature_iter != features.end(); feature_iter++)
+            //cleanup
+            for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = objects.begin(); feature_iter != objects.end(); feature_iter++)
+            {
+                delete (*feature_iter);
+            }
+            for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = roadFeatures.begin(); feature_iter != objects.end(); feature_iter++)
+            {
+                delete (*feature_iter);
+            }
+            for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = trafficSigns.begin(); feature_iter != objects.end(); feature_iter++)
             {
                 delete (*feature_iter);
             }

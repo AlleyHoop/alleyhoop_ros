@@ -35,6 +35,7 @@ add_library(alleyhoop_ros_core  src/alleyhoop_ros_core/alleyhoop_ros_controller.
                            src/alleyhoop_ros_core/alleyhoop_ros_vehicle.cpp
                            src/alleyhoop_ros_core/alleyhoop_ros_feature_finder.cpp
 )
+add_dependencies(alleyhoop_ros_core alleyhoop_ros_msgs_generate_messages_cpp)
 target_link_libraries(alleyhoop_ros_core 
    ${catkin_LIBRARIES}
 )
@@ -60,6 +61,7 @@ add_executable(alleyhoop_ros_node src/alleyhoop_ros_node.cpp)
 target_link_libraries(alleyhoop_ros_node alleyhoop_ros_core alleyhoop_ros_sensors alleyhoop_ros_actuators alleyhoop_ros_utils
    ${catkin_LIBRARIES}
 )
+
 
 install(DIRECTORY include/ DESTINATION include)
 

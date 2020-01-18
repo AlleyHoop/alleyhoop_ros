@@ -15,6 +15,7 @@
 namespace AlleyHoopROSCore
 {
     class FeatureFinder;
+    class PathFinder;
 
     class Controller : public AlleyHoopMVC::Controller
     {
@@ -30,6 +31,9 @@ namespace AlleyHoopROSCore
             //ros
             ros::NodeHandle nh;
 
+            //other
+            AlleyHoopROSUtils::Feature vehicleFeatures;
+
             //sensors
             AlleyHoopROSSensors::UltrasonicSensor* ultrasonic_sensor_1;
             AlleyHoopROSSensors::MonoCamera* mono_camera_1;
@@ -39,6 +43,7 @@ namespace AlleyHoopROSCore
 
             //finder
             FeatureFinder* featureFinder;
+            PathFinder* pathFinder;
     };
 
 }

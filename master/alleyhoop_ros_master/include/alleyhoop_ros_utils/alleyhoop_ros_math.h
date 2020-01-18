@@ -23,6 +23,9 @@ namespace AlleyHoopROSUtils
     {
         public:
             Transform(){};
+            Transform(Vector3 _position, Vector3 _rotation, Vector3 _scale)
+                : position(_position), rotation(_rotation), scale(_scale)
+            {};
             ~Transform() = default;
             Vector3 position;
             Vector3 rotation;

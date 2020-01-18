@@ -31,17 +31,6 @@ namespace AlleyHoopROSCore
         road_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>(road_feature_finder_service);
     }
 
-    bool FeatureFinder::update()
-    {
-        if (ros::ok())
-        {
-            return true;
-        }
-
-        std::cout << "program terminated" << std::endl;
-        return false;
-    }
-
     bool FeatureFinder::processDepthDataOnFeatures(std::list<AlleyHoopROSUtils::Feature*>& features, sensor_msgs::PointCloud2& pcl)
     { 
         return true;
@@ -79,10 +68,13 @@ namespace AlleyHoopROSCore
         //read responce
         if(srv.response.step < 1)
         {
-            ROS_ERROR("no feauters were found");
+            if(verboseMode)
+            {
+                std::cout << "no features found" << std::endl;
+            }
             return false;
         }
-        else
+        else if(srv.response.step == 4)
         {
             for(int i = 0; i < srv.response.features.size(); i+srv.response.step)
             {

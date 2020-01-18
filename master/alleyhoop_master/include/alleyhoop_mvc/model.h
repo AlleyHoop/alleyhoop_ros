@@ -8,7 +8,6 @@ namespace AlleyHoopMVC
     {
         public:
             virtual ~Model() = default;
-            virtual bool update() = 0;
 
 	    protected:
 	        Model() {};

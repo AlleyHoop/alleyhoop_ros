@@ -34,6 +34,7 @@ target_link_libraries(alleyhoop_ros_utils
 add_library(alleyhoop_ros_core  src/alleyhoop_ros_core/alleyhoop_ros_controller.cpp
                            src/alleyhoop_ros_core/alleyhoop_ros_vehicle.cpp
                            src/alleyhoop_ros_core/alleyhoop_ros_feature_finder.cpp
+                           src/alleyhoop_ros_core/alleyhoop_ros_path_finder.cpp
 )
 add_dependencies(alleyhoop_ros_core alleyhoop_ros_msgs_generate_messages_cpp)
 target_link_libraries(alleyhoop_ros_core 

@@ -6,7 +6,7 @@
 #include "alleyhoop_mvc/vehicle.h"
 #include "alleyhoop_ros_actuators/alleyhoop_ros_led.h"
 #include "alleyhoop_ros_actuators/alleyhoop_ros_motor.h"
-
+#include "alleyhoop_ros_utils/alleyhoop_ros_math.h"
 
 namespace AlleyHoopROSCore
 {
@@ -18,16 +18,28 @@ namespace AlleyHoopROSCore
             ~Vehicle() = default;
             bool update();
 
+            //positionning
+            bool setDestination(AlleyHoopROSUtils::Transform _destination);
+            const AlleyHoopROSUtils::Transform getDestination();
+
+            static bool verboseMode;
+
             //actuators
             AlleyHoopROSActuators::Led* led1;
             AlleyHoopROSActuators::Motor* steering_motor;
             AlleyHoopROSActuators::Motor* velocity_motor;
 
-            static bool verboseMode;
-
+            //positioning and movement
+            AlleyHoopROSUtils::Transform transform;
+            AlleyHoopROSUtils::Transform destination;
+            
         protected:
             //ros
             ros::NodeHandle nh;
+
+            int maxSpeed;
+            int currentSpeed;
+            
 
             
     };

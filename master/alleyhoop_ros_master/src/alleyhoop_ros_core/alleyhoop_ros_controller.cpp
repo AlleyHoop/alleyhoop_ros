@@ -2,6 +2,7 @@
 #include "alleyhoop_ros_core/alleyhoop_ros_vehicle.h"
 #include "alleyhoop_ros_utils/alleyhoop_ros_feature.h"
 #include "alleyhoop_ros_core/alleyhoop_ros_feature_finder.h"
+#include "alleyhoop_ros_core/alleyhoop_ros_path_finder.h"
 
 #include <sstream>
 #include <iostream>
@@ -68,6 +69,12 @@ namespace AlleyHoopROSCore
 
         //setup feature finders
         featureFinder = new FeatureFinder(_nh);
+
+        //setup path finders
+        vehicleFeatures.halfExtends.x = 2;
+        vehicleFeatures.halfExtends.y = 2;
+        vehicleFeatures.halfExtends.z = 2;
+        pathFinder = new PathFinder(_nh, vehicleFeatures);
     }
 
     Controller::~Controller()
@@ -95,7 +102,7 @@ namespace AlleyHoopROSCore
 
             //find objects
             std::list<AlleyHoopROSUtils::Feature*> objects;
-            featureFinder->findObjectsOnImage(objects, image_data_1);
+            featureFinder->findObjectsOnImage(objects, image_data_2);
             featureFinder->processDepthDataOnFeatures(objects, pcl);
 
             //TODO base the signs on cropped versions of the found objects
@@ -106,19 +113,24 @@ namespace AlleyHoopROSCore
             std::list<AlleyHoopROSUtils::Feature*> roadFeatures;
             featureFinder->findRoadOnImage(roadFeatures, image_data_1);
             
-
-            //make desicions based on features
-            for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = objects.begin(); feature_iter != objects.end(); feature_iter++)
-            {
-                if(verboseMode)
-                {
-                    std::cout << "found an object with type " + std::to_string((*feature_iter)->featureType) << std::endl;
-                }
-            }
-
-            // control the actuators
+            //make decisions
             if(AlleyHoopROSCore::Vehicle* ah_vehicle = dynamic_cast<AlleyHoopROSCore::Vehicle*>(vehicle))
             {
+
+                //fix feature transforms to reference not from the camera but from the center of the vehicle
+                for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = objects.begin(); feature_iter != objects.end(); feature_iter++)
+                {
+                    if(verboseMode)
+                    {
+                        std::cout << "found an object with type " + std::to_string((*feature_iter)->featureType) << std::endl;
+                    }
+                }
+  
+                //find path to target position
+                pathFinder->findPath(ah_vehicle->transform, ah_vehicle->destination, objects, roadFeatures);
+
+                //TODO read the path and translate to motion for the motor
+                //ah_vehicle->
                 
                 if(ultrasonic_sensor_data < 30 && ultrasonic_sensor_data > 0)
                 {

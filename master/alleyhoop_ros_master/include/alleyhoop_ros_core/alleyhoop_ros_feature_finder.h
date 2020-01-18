@@ -20,7 +20,6 @@ namespace AlleyHoopROSCore
         public:
             FeatureFinder(ros::NodeHandle* _nh);
             ~FeatureFinder() = default;
-            bool update();
             bool findObjectsOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr);
             bool findTrafficRulesOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr);
             bool findRoadOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr);

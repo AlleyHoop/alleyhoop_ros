@@ -30,6 +30,8 @@ namespace AlleyHoopROSCore
         object_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>(object_feature_finder_service);
         road_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>(road_feature_finder_service);
 
+        //print
+        std::cout << "created feature finder" << std::endl;
         if(verboseMode) std::cout <<  " feature finder subscribed to services: " << traffic_rules_feature_finder_service << " and " << object_feature_finder_service << " and " << road_feature_finder_service << std::endl;
     }
 
@@ -126,18 +128,17 @@ namespace AlleyHoopROSCore
         {
             if(verboseMode)
             {
-                std::cout << "no features found" << std::endl;
+                std::cout << "FeatureFinder: no features found" << std::endl;
             }
             return false;
         }
-
         else if(srv.response.step == 4)
         {
             for(int i = 0; i < srv.response.features.size(); i+srv.response.step)
             {
                 if(verboseMode)
                 {
-                    std::cout << "found feature at (" << srv.response.features[i] << "," << srv.response.features[i+1] << "," << srv.response.features[i+2] << "," << srv.response.features[i+3] << ")" << std::endl;
+                    std::cout << "FeatureFinder: found feature at (" << srv.response.features[i] << "," << srv.response.features[i+1] << "," << srv.response.features[i+2] << "," << srv.response.features[i+3] << ")" << std::endl;
                 }
 
                 AlleyHoopROSUtils::Feature* f = new AlleyHoopROSUtils::Feature(AlleyHoopROSUtils::FeatureTypes::StaticObject);
@@ -154,9 +155,11 @@ namespace AlleyHoopROSCore
                 //add the feature
                 features.push_back(f);
             }
+
+            return true;
         }
         
-        return true;
+        return false;
     }
 
 }

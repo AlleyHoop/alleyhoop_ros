@@ -9,4 +9,9 @@ namespace AlleyHoopROSUtils
 
     }
 
+    Feature::~Feature()
+    {
+
+    }
+
 }

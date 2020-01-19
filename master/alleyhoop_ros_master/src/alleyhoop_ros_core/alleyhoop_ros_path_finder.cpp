@@ -12,6 +12,7 @@ namespace AlleyHoopROSCore
     {
         AlleyHoopROSUtils::Node::updateNodeSizes(_nodeSizes);
         currentNode = getNode(_position);
+        std::cout << "created pathfinder" << std::endl;
     }
 
     PathFinder::~PathFinder()
@@ -41,6 +42,7 @@ namespace AlleyHoopROSCore
         //create new node and save if not existing
         AlleyHoopROSUtils::Node* node = new AlleyHoopROSUtils::Node(_position);
         map[node->nodeId] = node;
+        if(verboseMode) std::cout << " Pathfinder: created node " << node->nodeId << std::endl;
         return node;
     }
 
@@ -49,7 +51,10 @@ namespace AlleyHoopROSCore
         for (std::map<std::string, AlleyHoopROSUtils::Node*>::iterator node_iter = map.begin(); node_iter != map.end(); node_iter++)
         {
             if(node_iter->second != nullptr)
+            {
+                if(verboseMode) std::cout << " Pathfinder: deleted node " << node_iter->second->nodeId << std::endl;
                 delete node_iter->second;
+            }
         }
 
         map.clear();

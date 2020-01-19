@@ -78,6 +78,7 @@ namespace AlleyHoopROSCore
 
         //setup feature finders
         featureFinder = new FeatureFinder(_nh);
+        
 
         //setup path finders
         AlleyHoopROSUtils::Vector3 _startPosition;
@@ -105,6 +106,7 @@ namespace AlleyHoopROSCore
         if (ros::ok())
         {
             //update routinely
+            if(verboseMode) std::cout <<  "-------------" << "\nController updating sensors...." << std::endl;
             updateSensors(); //used for conventional implementation // for ros the following line, 'spinOnce()' is called instead 
             ros::spinOnce();
 
@@ -115,20 +117,13 @@ namespace AlleyHoopROSCore
             sensor_msgs::PointCloud2 pcl = depth_camera_1->getDepthData();
 
             //find objects
+            if(verboseMode) std::cout <<  "-------------" << "\nController finding features...." << std::endl;
             std::list<AlleyHoopROSUtils::Feature*> objects;
             if(featureFinder->findObjectsOnImage(objects, image_data_2))
             {
-                if(verboseMode)
-                {
-                    std::cout << "--------------------------------------------\nfound objects: " << std::endl;
-                    for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = objects.begin(); feature_iter != objects.end(); feature_iter++)
-                    {
-                        std::cout << "found an object with type " + std::to_string((*feature_iter)->featureType) << std::endl;
-                    }
-                }
+                featureFinder->processDepthDataOnFeatures(objects, pcl);
             }
-            featureFinder->processDepthDataOnFeatures(objects, pcl);
-
+            
             //TODO base the signs on cropped versions of the found objects
             std::list<AlleyHoopROSUtils::Feature*> trafficSigns;
             featureFinder->findTrafficRulesOnImage(trafficSigns, image_data_1);
@@ -138,21 +133,27 @@ namespace AlleyHoopROSCore
             featureFinder->findRoadOnImage(roadFeatures, image_data_1);
             
             //make decisions
+            if(verboseMode) std::cout <<  "-------------" << "\nController making desicions...." << std::endl;
             if(AlleyHoopROSCore::Vehicle* ah_vehicle = dynamic_cast<AlleyHoopROSCore::Vehicle*>(vehicle))
             {
 
-                //fix feature transforms to reference not from the camera but from the center of the vehicle
+                //fix feature transforms to reference from the center of the vehicle
                 for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = objects.begin(); feature_iter != objects.end(); feature_iter++)
                 {
 
                 }
+
+                //!!TODO convert trafficrules features to actuator actions such as speed limit
+
   
                 //find path to target position
+                if(verboseMode) std::cout <<  "-------------" << "\nController path...." << std::endl;
                 pathFinder->findPath(ah_vehicle->transform, ah_vehicle->destination, objects, roadFeatures);
 
-                //TODO read the path and translate to motion for the motor
+                //!!TODO read the path and translate to motion for the motor
                 //ah_vehicle->
                 
+                //Ultrasonic sensor example
                 if(ultrasonic_sensor_data < 30 && ultrasonic_sensor_data > 0)
                 {
                     //turn on led
@@ -165,24 +166,34 @@ namespace AlleyHoopROSCore
                 }
             }
 
+            //!!TODO save points of interest such us objects to track and merge them to list of features at the top
+
+
+
             //cleanup
+            if(verboseMode) std::cout <<  "-------------" << "\nController clearing features...." << std::endl;
             for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = objects.begin(); feature_iter != objects.end(); feature_iter++)
             {
+                if(verboseMode) std::cout <<  "-------------" << "\ndeleting feature...." << std::endl;
                 delete (*feature_iter);
             }
-            for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = roadFeatures.begin(); feature_iter != objects.end(); feature_iter++)
+            for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = roadFeatures.begin(); feature_iter != roadFeatures.end(); feature_iter++)
             {
                 delete (*feature_iter);
             }
-            for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = trafficSigns.begin(); feature_iter != objects.end(); feature_iter++)
+            for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = trafficSigns.begin(); feature_iter != trafficSigns.end(); feature_iter++)
             {
                 delete (*feature_iter);
             }
+            objects.clear();
+            roadFeatures.clear();
+            trafficSigns.clear();
 
+            if(verboseMode) std::cout <<  "-------------" << "\n Succesfully actions...." << std::endl;
             return true;
         }
 
-        std::cout << "program terminated" << std::endl;
+        std::cout <<  "-------------" << "Controller: program terminated" << std::endl;
         return false;
     }
 

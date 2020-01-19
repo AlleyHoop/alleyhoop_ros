@@ -1,6 +1,7 @@
 #include "alleyhoop_ros_core/alleyhoop_ros_controller.h"
 #include "alleyhoop_ros_core/alleyhoop_ros_vehicle.h"
 #include "alleyhoop_ros_core/alleyhoop_ros_feature_finder.h"
+#include "alleyhoop_ros_core/alleyhoop_ros_path_finder.h"
 
 int main(int argc, char **argv)
 {
@@ -22,6 +23,7 @@ int main(int argc, char **argv)
             AlleyHoopROSCore::Vehicle::verboseMode = true;
             AlleyHoopROSCore::Controller::verboseMode = true;
             AlleyHoopROSCore::FeatureFinder::verboseMode = true;
+            AlleyHoopROSCore::PathFinder::verboseMode = true;
         }
 
     //setup core
@@ -32,7 +34,6 @@ int main(int argc, char **argv)
     bool state = true;
     while(state)
     {
-        state = true;
         if(!controller->update()) state = false;
         if(!vehicle->update()) state = false;
     }

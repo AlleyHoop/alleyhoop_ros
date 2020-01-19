@@ -26,6 +26,7 @@ include_directories(include
    ${OpenCV_INCLUDE_DIRS}
 )
 
+
 install(DIRECTORY include/ DESTINATION include)
 
 install(TARGETS

@@ -13,7 +13,7 @@ namespace AlleyHoopROSUtils
     {
         public:
             Feature(int type);
-            ~Feature() = default;
+            virtual ~Feature();
             AlleyHoopROSUtils::Transform transform;
             AlleyHoopROSUtils::Vector3 halfExtents;
             int featureType;

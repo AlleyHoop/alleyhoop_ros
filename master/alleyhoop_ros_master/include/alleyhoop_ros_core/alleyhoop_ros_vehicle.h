@@ -18,10 +18,6 @@ namespace AlleyHoopROSCore
             ~Vehicle() = default;
             bool update();
 
-            //positionning
-            bool setDestination(AlleyHoopROSUtils::Transform _destination);
-            const AlleyHoopROSUtils::Transform getDestination();
-
             static bool verboseMode;
 
             //actuators

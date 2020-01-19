@@ -1,14 +1,18 @@
 #include "alleyhoop_ros_core/alleyhoop_ros_controller.h"
 #include "alleyhoop_ros_core/alleyhoop_ros_vehicle.h"
-#include "alleyhoop_ros_utils/alleyhoop_ros_feature.h"
+
 #include "alleyhoop_ros_core/alleyhoop_ros_feature_finder.h"
 #include "alleyhoop_ros_core/alleyhoop_ros_path_finder.h"
 
-#include <sstream>
-#include <iostream>
-#include <list>
+#include "alleyhoop_ros_utils/alleyhoop_ros_feature.h"
+#include "alleyhoop_ros_utils/alleyhoop_ros_math.h"
+
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/PointCloud2.h>
+
+//std
+#include <iostream>
+#include <list>
 
 
 namespace AlleyHoopROSCore
@@ -54,35 +58,45 @@ namespace AlleyHoopROSCore
         //setup sensors, add to controller base class for life line managing and update routine
         ultrasonic_sensor_1 = new AlleyHoopROSSensors::UltrasonicSensor("ultrasonic_sensor", _nh, ultrasonic_sensor_topic_name);
         addSensor(ultrasonic_sensor_1);
+        if(verboseMode) std::cout <<  " ultrasonic_sensor subscribed to " << ultrasonic_sensor_topic_name << std::endl;
 
         mono_camera_1 = new AlleyHoopROSSensors::MonoCamera("mono_camera_1", _nh, mono_camera_image_raw_topic_name, mono_camera_info_topic_name);
         addSensor(mono_camera_1);
+        if(verboseMode) std::cout <<  " mono_camera_1 subscribed to " << mono_camera_image_raw_topic_name << " and " << mono_camera_info_topic_name << std::endl;
 
         lidar1 = new AlleyHoopROSSensors::Lidar("lidar1", _nh, lidar_topic_name);
         addSensor(lidar1);
+        if(verboseMode) std::cout <<  " lidar1 subscribed to " << lidar_topic_name << std::endl;
 
         depth_camera_1 = new AlleyHoopROSSensors::DepthCamera("depth_camera_1", _nh, depth_camera_image_raw_topic_name, depth_camera_pcl_topic_name, depth_camera_info_topic_name);
         addSensor(depth_camera_1);
+        if(verboseMode) std::cout <<  " depth_camera_1 subscribed to " << depth_camera_image_raw_topic_name << " and " << depth_camera_pcl_topic_name << " and " << depth_camera_info_topic_name << std::endl;
 
         imu = new AlleyHoopROSSensors::Imu("imu", _nh, imu_topic_name);
         addSensor(imu);
+        if(verboseMode) std::cout <<  " imu subscribed to " << imu_topic_name << std::endl;
 
         //setup feature finders
         featureFinder = new FeatureFinder(_nh);
 
         //setup path finders
-        vehicleFeatures.halfExtends.x = 2;
-        vehicleFeatures.halfExtends.y = 2;
-        vehicleFeatures.halfExtends.z = 2;
-        pathFinder = new PathFinder(_nh, vehicleFeatures);
+        AlleyHoopROSUtils::Vector3 _startPosition;
+        AlleyHoopROSUtils::Vector3 _nodeSizes(2, 2, 2);
+        pathFinder = new PathFinder(_nh, _startPosition, _nodeSizes);
     }
 
     Controller::~Controller()
     {
         if(featureFinder != nullptr)
         {
-            std::cout << "deleted finder" << std::endl;
+            std::cout << "deleted feature finder" << std::endl;
             delete featureFinder;
+        }
+
+        if(pathFinder != nullptr)
+        {
+            std::cout << "deleted path finder" << std::endl;
+            delete pathFinder;
         }
     }
 
@@ -102,7 +116,17 @@ namespace AlleyHoopROSCore
 
             //find objects
             std::list<AlleyHoopROSUtils::Feature*> objects;
-            featureFinder->findObjectsOnImage(objects, image_data_2);
+            if(featureFinder->findObjectsOnImage(objects, image_data_2))
+            {
+                if(verboseMode)
+                {
+                    std::cout << "--------------------------------------------\nfound objects: " << std::endl;
+                    for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = objects.begin(); feature_iter != objects.end(); feature_iter++)
+                    {
+                        std::cout << "found an object with type " + std::to_string((*feature_iter)->featureType) << std::endl;
+                    }
+                }
+            }
             featureFinder->processDepthDataOnFeatures(objects, pcl);
 
             //TODO base the signs on cropped versions of the found objects
@@ -120,10 +144,7 @@ namespace AlleyHoopROSCore
                 //fix feature transforms to reference not from the camera but from the center of the vehicle
                 for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = objects.begin(); feature_iter != objects.end(); feature_iter++)
                 {
-                    if(verboseMode)
-                    {
-                        std::cout << "found an object with type " + std::to_string((*feature_iter)->featureType) << std::endl;
-                    }
+
                 }
   
                 //find path to target position

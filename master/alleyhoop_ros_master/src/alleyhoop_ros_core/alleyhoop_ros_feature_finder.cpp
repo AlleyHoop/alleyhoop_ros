@@ -29,16 +29,71 @@ namespace AlleyHoopROSCore
         traffic_rules_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>(traffic_rules_feature_finder_service);
         object_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>(object_feature_finder_service);
         road_feature_finder_client = nh.serviceClient<alleyhoop_ros_msgs::FindFeaturesOnImage>(road_feature_finder_service);
+
+        if(verboseMode) std::cout <<  " feature finder subscribed to services: " << traffic_rules_feature_finder_service << " and " << object_feature_finder_service << " and " << road_feature_finder_service << std::endl;
     }
 
     bool FeatureFinder::processDepthDataOnFeatures(std::list<AlleyHoopROSUtils::Feature*>& features, sensor_msgs::PointCloud2& pcl)
     { 
-        return true;
+        return false;
     }
 
     bool FeatureFinder::findTrafficRulesOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr)
     { 
+        //ensure an image was sent
+        if(imagePtr == nullptr)
+        {
+            return false;
+        }
+
+        //create service msg
+        alleyhoop_ros_msgs::FindFeaturesOnImage srv;
+        imagePtr->toImageMsg(srv.request.image);
+
+        //call to client with msg
+        if (!traffic_rules_feature_finder_client.call(srv))
+        {
+            if(verboseMode)
+                ROS_ERROR("Failed to call service for object feature finder");
+            return false;
+        }
+
+        //read responce
+        if(srv.response.step < 1)
+        {
+            if(verboseMode)
+            {
+                std::cout << "no features found" << std::endl;
+            }
+            return false;
+        }
+        else if(srv.response.step == 4)
+        {
+            for(int i = 0; i < srv.response.features.size(); i+srv.response.step)
+            {
+                if(verboseMode)
+                {
+                    std::cout << "found feature at (" << srv.response.features[i] << "," << srv.response.features[i+1] << "," << srv.response.features[i+2] << "," << srv.response.features[i+3] << ")" << std::endl;
+                }
+
+                AlleyHoopROSUtils::Feature* f = new AlleyHoopROSUtils::Feature(AlleyHoopROSUtils::FeatureTypes::StaticObject);
+                f->transform.position.x = srv.response.features[i];
+                f->transform.position.y = srv.response.features[i+1];
+                //TODO estimate position z value
+
+                //TODO estimate rotational values
+
+                f->halfExtents.x = srv.response.features[i+2];
+                f->halfExtents.y = srv.response.features[i+3];
+                //TODO estimate z half extents value
+
+                //add the feature
+                features.push_back(f);
+            }
+        }
+
         return true;
+        
     }
 
     bool FeatureFinder::findRoadOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr)
@@ -61,7 +116,8 @@ namespace AlleyHoopROSCore
         //call to client with msg
         if (!object_feature_finder_client.call(srv))
         {
-            //ROS_ERROR("Failed to call service for findFeaturesOnImage");
+            if(verboseMode)
+                ROS_ERROR("Failed to call service for object feature finder");
             return false;
         }
 
@@ -74,6 +130,7 @@ namespace AlleyHoopROSCore
             }
             return false;
         }
+
         else if(srv.response.step == 4)
         {
             for(int i = 0; i < srv.response.features.size(); i+srv.response.step)

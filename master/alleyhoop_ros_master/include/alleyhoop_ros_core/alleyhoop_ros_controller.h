@@ -1,10 +1,11 @@
 #ifndef  ALLEYHOOPROSCONTROLLER_H_
 #define  ALLEYHOOPROSCONTROLLER_H_
 
+//required includes
 #include <ros/ros.h>
-
 #include "alleyhoop_mvc/controller.h"
 
+//sensor headers
 #include "alleyhoop_ros_sensors/alleyhoop_ros_ultrasonic_sensor.h"
 #include "alleyhoop_ros_sensors/alleyhoop_ros_mono_camera.h" 
 #include "alleyhoop_ros_sensors/alleyhoop_ros_lidar.h"
@@ -30,9 +31,6 @@ namespace AlleyHoopROSCore
         protected:
             //ros
             ros::NodeHandle nh;
-
-            //other
-            AlleyHoopROSUtils::Feature vehicleFeatures;
 
             //sensors
             AlleyHoopROSSensors::UltrasonicSensor* ultrasonic_sensor_1;

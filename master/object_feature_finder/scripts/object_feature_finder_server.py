@@ -18,9 +18,11 @@ from alleyhoop_ros_msgs.srv import FindFeaturesOnImage,FindFeaturesOnImageRespon
 
 # needed for yolo
 from darknet_ros_msgs.msg import BoundingBoxes,BoundingBox
-currentBoundingBoxes = None
+
+global currentBoundingBoxes
 
 def boundingBoxesCallback(data):
+    global currentBoundingBoxes
     currentBoundingBoxes = data
 
 # the function
@@ -28,6 +30,7 @@ def findFeatures(request):
     # get the image
     bridge = CvBridge()
     img = bridge.imgmsg_to_cv2(request.image, "bgr8")
+    print( "object_feature_finder received request ")
 
     # setup features
     response = FindFeaturesOnImageResponse()
@@ -35,16 +38,13 @@ def findFeatures(request):
         response.step = 4
 
         # write response
-        width = abs(bb.xmin - bb.xmax)
-        height = abs(bb.ymin - bb.ymax)
-        center_x = width/2 + bb.xmin
-        center_y = height/2 + bb.ymin
-
+        global currentBoundingBoxes
         for bb in currentBoundingBoxes.bounding_boxes:
             response.features.append(bb.xmin)
             response.features.append(bb.ymin)
             response.features.append(bb.xmax)
             response.features.append(bb.ymax)
+            print( "added feature at x:", bb.xmin , " y:", bb.ymin )
     else:
         response.step = 0
 
@@ -59,7 +59,7 @@ def main(args):
     rospy.init_node(service_name + '_server')
 
     # init bounding box subscriber
-    boundingboxes_sub = rospy.Subscriber("yolo_feature_finder_bounding_boxes_sub", BoundingBoxes, boundingBoxesCallback)
+    boundingboxes_sub = rospy.Subscriber("/darknet_ros/bounding_boxes", BoundingBoxes, boundingBoxesCallback)
 
     # init service
     service = rospy.Service(service_name, FindFeaturesOnImage, findFeatures)

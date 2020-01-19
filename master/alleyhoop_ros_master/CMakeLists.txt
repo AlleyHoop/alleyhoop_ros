@@ -26,18 +26,21 @@ include_directories(include
    ${alleyhoop_master_INCLUDE_DIRS}
 )
 
-add_library(alleyhoop_ros_utils src/alleyhoop_ros_utils/alleyhoop_ros_feature.cpp)
+add_library(alleyhoop_ros_utils  src/alleyhoop_ros_utils/alleyhoop_ros_feature.cpp
+                                 src/alleyhoop_ros_utils/alleyhoop_ros_math.cpp
+                                 src/alleyhoop_ros_utils/alleyhoop_ros_mapping.cpp
+)
 target_link_libraries(alleyhoop_ros_utils 
    ${catkin_LIBRARIES}
 )
 
-add_library(alleyhoop_ros_core  src/alleyhoop_ros_core/alleyhoop_ros_controller.cpp
-                           src/alleyhoop_ros_core/alleyhoop_ros_vehicle.cpp
-                           src/alleyhoop_ros_core/alleyhoop_ros_feature_finder.cpp
-                           src/alleyhoop_ros_core/alleyhoop_ros_path_finder.cpp
+add_library(alleyhoop_ros_core   src/alleyhoop_ros_core/alleyhoop_ros_controller.cpp
+                                 src/alleyhoop_ros_core/alleyhoop_ros_vehicle.cpp
+                                 src/alleyhoop_ros_core/alleyhoop_ros_feature_finder.cpp
+                                 src/alleyhoop_ros_core/alleyhoop_ros_path_finder.cpp
 )
 add_dependencies(alleyhoop_ros_core alleyhoop_ros_msgs_generate_messages_cpp)
-target_link_libraries(alleyhoop_ros_core 
+target_link_libraries(alleyhoop_ros_core alleyhoop_ros_utils
    ${catkin_LIBRARIES}
 )
 

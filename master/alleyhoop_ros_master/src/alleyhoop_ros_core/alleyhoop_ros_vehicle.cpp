@@ -54,17 +54,4 @@ namespace AlleyHoopROSCore
         return false;
     }
 
-    bool Vehicle::setDestination(AlleyHoopROSUtils::Transform _destination)
-    {
-        //check if destination is not insane
-
-        //set the destination
-        destination = _destination;
-    }
-
-    AlleyHoopROSUtils::Transform Vehicle::getDestination()
-    {
-        return destination;
-    }
-
 }

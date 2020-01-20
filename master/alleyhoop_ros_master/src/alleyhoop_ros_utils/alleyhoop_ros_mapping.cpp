@@ -17,7 +17,7 @@ namespace AlleyHoopROSUtils
     std::string Node::convertPositionToNodeId(AlleyHoopROSUtils::Vector3& _position)
     {
         AlleyHoopROSUtils::Vector3 pos = averagePosition(_position);
-        std::string id = std::to_string(pos.x) + std::to_string(pos.y) + std::to_string(pos.z);
+        std::string id = std::to_string(pos.x) + "|" + std::to_string(pos.y) + "|" + std::to_string(pos.z);
         return id;
     }
 

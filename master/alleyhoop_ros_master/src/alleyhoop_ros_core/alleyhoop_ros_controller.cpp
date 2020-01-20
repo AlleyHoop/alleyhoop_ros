@@ -119,7 +119,7 @@ namespace AlleyHoopROSCore
             //find objects
             if(verboseMode) std::cout <<  "-------------" << "\nController: finding features...." << std::endl;
             std::list<AlleyHoopROSUtils::Feature*> objects;
-            if(featureFinder->findObjectsOnImage(objects, image_data_1))
+            if(featureFinder->findObjectsOnImage(objects, image_data_2))
             {
                 //featureFinder->processDepthDataOnFeatures(objects, pcl);
             }
@@ -128,7 +128,7 @@ namespace AlleyHoopROSCore
             std::list<AlleyHoopROSUtils::Feature*> trafficSigns;
             if(featureFinder->findTrafficRulesOnImage(trafficSigns, image_data_1))
             {
-                
+
             }
 
             //find the road

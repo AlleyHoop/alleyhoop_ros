@@ -2,6 +2,7 @@
 #include "alleyhoop_ros_msgs/FindFeaturesOnImage.h"
 
 #include <string>
+#include <vector>
 #include <sstream>
 #include <iostream>
 
@@ -56,27 +57,28 @@ namespace AlleyHoopROSCore
         if (!traffic_rules_feature_finder_client.call(srv))
         {
             if(verboseMode)
-                ROS_ERROR("Failed to call service for object feature finder");
+                ROS_ERROR("FeatureFinder: Failed to call service for traffic rules feature finder");
             return false;
         }
 
-        //read responce
+        //ensure that features were found
         if(srv.response.step < 1)
         {
             if(verboseMode)
             {
-                std::cout << "no features found" << std::endl;
+                std::cout << "FeatureFinder: no traffic features found" << std::endl;
             }
             return false;
         }
-        else if(srv.response.step == 4)
-        {
-            for(int i = 0; i < srv.response.features.size(); i+srv.response.step)
+        
+        //read response
+        if(verboseMode) std::cout << "FeatureFinder: found " << srv.response.features.size()/srv.response.step << " traffic features. Size: " << srv.response.features.size() << " Step: " << srv.response.step << std::endl;
+        if(srv.response.step == 4)
+        {   
+            for(size_t i = 0; i < srv.response.features.size(); i+=srv.response.step)
             {
-                if(verboseMode)
-                {
-                    std::cout << "found feature at (" << srv.response.features[i] << "," << srv.response.features[i+1] << "," << srv.response.features[i+2] << "," << srv.response.features[i+3] << ")" << std::endl;
-                }
+                
+                if(verboseMode) std::cout << "FeatureFinder: found traffic feature at (" << srv.response.features[i] << "," << srv.response.features[i+1] << "," << srv.response.features[i+2] << "," << srv.response.features[i+3] << ")" << std::endl;
 
                 AlleyHoopROSUtils::Feature* f = new AlleyHoopROSUtils::Feature(AlleyHoopROSUtils::FeatureTypes::StaticObject);
                 f->transform.position.x = srv.response.features[i];
@@ -92,15 +94,58 @@ namespace AlleyHoopROSCore
                 //add the feature
                 features.push_back(f);
             }
+
+            return true;
         }
 
-        return true;
+        return false;
         
     }
 
     bool FeatureFinder::findRoadOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr)
     { 
-        return true;
+         //ensure an image was sent
+        if(imagePtr == nullptr)
+        {
+            return false;
+        }
+
+        //create service msg
+        alleyhoop_ros_msgs::FindFeaturesOnImage srv;
+        imagePtr->toImageMsg(srv.request.image);
+
+        //call to client with msg
+        if (!road_feature_finder_client.call(srv))
+        {
+            if(verboseMode)
+                ROS_ERROR("FeatureFinder: Failed to call service for road feature finder");
+            return false;
+        }
+
+        //ensure that features were found
+        if(srv.response.step < 1)
+        {
+            if(verboseMode)
+            {
+                std::cout << "FeatureFinder: no road found" << std::endl;
+            }
+            return false;
+        }
+        
+        //read response
+        if(verboseMode) std::cout << "FeatureFinder: found " << srv.response.features.size()/srv.response.step << " road features. Size: " << srv.response.features.size() << " Step: " << srv.response.step << std::endl;
+        if(srv.response.step == 4)
+        {
+            for(size_t i = 0; i < srv.response.features.size(); i+=srv.response.step)
+            {
+                if(verboseMode) std::cout << "FeatureFinder: found road at (" << srv.response.features[i] << "," << srv.response.features[i+1] << "," << srv.response.features[i+2] << "," << srv.response.features[i+3] << ")" << std::endl;
+
+            }
+
+            return true;
+        }
+        
+        return false;
     }
 
     bool FeatureFinder::findObjectsOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr)
@@ -119,27 +164,27 @@ namespace AlleyHoopROSCore
         if (!object_feature_finder_client.call(srv))
         {
             if(verboseMode)
-                ROS_ERROR("Failed to call service for object feature finder");
+                ROS_ERROR("FeatureFinder: Failed to call service for object feature finder");
             return false;
         }
 
-        //read responce
+        //ensure that features were found
         if(srv.response.step < 1)
         {
             if(verboseMode)
             {
-                std::cout << "FeatureFinder: no features found" << std::endl;
+                std::cout << "FeatureFinder: no objects found" << std::endl;
             }
             return false;
         }
-        else if(srv.response.step == 4)
+        
+        //read response
+        if(verboseMode) std::cout << "FeatureFinder: found " << srv.response.features.size()/srv.response.step << " objects. Size: " << srv.response.features.size() << " Step: " << srv.response.step << std::endl;
+        if(srv.response.step == 4)
         {
-            for(int i = 0; i < srv.response.features.size(); i+srv.response.step)
+            for(size_t i = 0; i < srv.response.features.size(); i+=srv.response.step)
             {
-                if(verboseMode)
-                {
-                    std::cout << "FeatureFinder: found feature at (" << srv.response.features[i] << "," << srv.response.features[i+1] << "," << srv.response.features[i+2] << "," << srv.response.features[i+3] << ")" << std::endl;
-                }
+                if(verboseMode) std::cout << "FeatureFinder: found object at (" << srv.response.features[i] << "," << srv.response.features[i+1] << "," << srv.response.features[i+2] << "," << srv.response.features[i+3] << ")" << std::endl;
 
                 AlleyHoopROSUtils::Feature* f = new AlleyHoopROSUtils::Feature(AlleyHoopROSUtils::FeatureTypes::StaticObject);
                 f->transform.position.x = srv.response.features[i];

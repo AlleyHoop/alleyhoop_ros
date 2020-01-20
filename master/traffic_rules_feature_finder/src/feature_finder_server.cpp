@@ -21,6 +21,8 @@ using namespace cv;
 bool findFeaturesOnImage(alleyhoop_ros_msgs::FindFeaturesOnImage::Request &req,
                          alleyhoop_ros_msgs::FindFeaturesOnImage::Response &res)
 {    
+    bool at_least_one_feature = false;
+
     //convert the image
     cv_bridge::CvImagePtr imagePtr = cv_bridge::toCvCopy(req.image, sensor_msgs::image_encodings::BGR8);
 
@@ -69,6 +71,8 @@ bool findFeaturesOnImage(alleyhoop_ros_msgs::FindFeaturesOnImage::Request &req,
     {
         for( size_t i = 0; i < circles.size(); i++ )
         {
+            at_least_one_feature = true;
+
             //get center and radius of circle
             Vec3i c = circles[i];
             Point center = Point(c[0], c[1]);
@@ -97,13 +101,13 @@ bool findFeaturesOnImage(alleyhoop_ros_msgs::FindFeaturesOnImage::Request &req,
             std::vector<Point> points;
             cv::findNonZero(resImage, points);
 
-            //add the feature the center x , y , w, h means that every four elements is one feature
+            //add the feature. Every four elements is one feature
             if(points.size() > 100)
             {
-                features.push_back(c[0]); //x
-                features.push_back(c[1]); //y
-                features.push_back(c[2]);  //w == r
-                features.push_back(c[2]);  //h == r
+                features.push_back(c[0] - c[2]/2); //min x
+                features.push_back(c[1] - c[2]/2); //min y
+                features.push_back(c[0] + c[2]/2);  //max x
+                features.push_back(c[1] + c[2]/2);  //max y
             }
 
             //show images
@@ -119,11 +123,18 @@ bool findFeaturesOnImage(alleyhoop_ros_msgs::FindFeaturesOnImage::Request &req,
             hsvMask2.release();
             resImage.release();
         }
-    }
 
-    //set result
-    res.step = 4;
-    res.features = features;
+        //set result
+        if(at_least_one_feature)
+        {
+            res.step = 4;
+        }
+        else
+        {
+            res.step = 0;
+        }
+        res.features = features;
+    }
 
     //release open cv images
     srcImage.release();

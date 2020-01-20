@@ -6,6 +6,7 @@
     <arg name="enable_arduino_slave" default="false"/>
     <arg name="enable_pi_camera" default="false"/>
     <arg name="enable_fake_pi_camera" default="false"/>
+    <arg name="enable_fake_depth_camera" default="false"/>
 
     <!--launch slave communication-->
     <group if="$(arg enable_arduino_slave)">
@@ -19,7 +20,12 @@
 
     <!--launch fake pi camera-->
     <group if="$(arg enable_fake_pi_camera)">
-        <node name="pi_camera" pkg="raspi_utils" type="fake_raspi_camera.py" output="screen" cwd="node"/>
+        <node name="fake_pi_camera" pkg="raspi_utils" type="fake_raspi_camera.py" args="image=traffic_sign.jpeg topic=/raspi_camera/image_raw" output="screen" cwd="node"/>
+    </group>
+
+    <!--launch fake pi camera-->
+    <group if="$(arg enable_fake_depth_camera)">
+        <node name="fake_depth_camera" pkg="raspi_utils" type="fake_raspi_camera.py" args="image=highway.jpg topic=/depth_camera/image_raw" output="screen" cwd="node"/>
     </group>
 
     <!--launch feature finder-->
@@ -30,7 +36,7 @@
     <!--launch feature finder-->
     <group if="$(arg enable_object_feature_finder)">
         <include file="$(find object_feature_finder)/launch/nodes.launch">
-               <arg name="image_topic" value="/raspi_camera/image_raw" /> 
+               <arg name="image_topic" value="/depth_camera/image_raw" /> 
         </include>
     </group>
 

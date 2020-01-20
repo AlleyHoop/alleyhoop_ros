@@ -11,20 +11,31 @@ import os
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
+import re
 
 # img pub
 def main(args):
-    print("starting fake raspi cam image publisher on topic /raspi_camera/image_raw")
+    image_name = "traffic_sign.jpeg"
+    topic_name = "/raspi_camera/image_raw"
+
+    # parse args
+    for arg in args:
+        if(re.match("image=",arg)):
+            image_name = re.sub("image=", "", arg)
+        if(re.match("topic=",arg)):
+            topic_name = re.sub("topic=", "", arg)
+
+    print("starting fake raspi cam image publisher on topic " + topic_name)
 
     # init ros
     rospy.init_node('raspi_camera', anonymous=True)
-    pub = rospy.Publisher('/raspi_camera/image_raw', Image, queue_size=10)
+    pub = rospy.Publisher(topic_name, Image, queue_size=10)
     rate = rospy.Rate(10)
 
     # create cv2 bridge
     bridge = CvBridge()
 
-    pth = os.path.join(os.getcwd(), 'M25_motorway_2004-04-25.jpg')
+    pth = os.path.join(os.getcwd(), 'images/'+image_name)
     print("reading image from " + pth)
 
     # loop

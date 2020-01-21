@@ -14,6 +14,23 @@
     <arg name="enable_fake_pi_camera" default="false"/>
     <arg name="enable_fake_depth_camera" default="false"/>
 
+    <!--launch feature finder-->
+    <group if="$(arg enable_traffic_rules_feature_finder)">
+        <node name="traffic_rules_feature_finder" pkg="traffic_rules_feature_finder" type="traffic_rules_feature_finder_server" output="screen"/>
+    </group>
+
+    <!--launch feature finder-->
+    <group if="$(arg enable_object_feature_finder)">
+        <include file="$(find object_feature_finder)/launch/nodes.launch">
+               <arg name="image_topic" value="/camera/color/image_raw" /> 
+        </include>
+    </group>
+
+    <!--launch feature finder-->
+    <group if="$(arg enable_road_feature_finder)">
+        <node name="road_feature_finder" pkg="road_feature_finder" type="road_feature_finder_server" output="screen"/>
+    </group>
+
     <!--launch slave communication-->
     <group if="$(arg enable_arduino_sensor_slave)">
         <node name="arduino_sensor_slave" pkg="rosserial_python" type="serial_node.py" args="$(arg arduino_sensor_slave_port)" output="screen"/>
@@ -36,23 +53,6 @@
     <!--launch fake pi camera-->
     <group if="$(arg enable_fake_depth_camera)">
         <node name="fake_depth_camera" pkg="raspi_utils" type="fake_raspi_camera.py" args="image=highway.jpg topic=/depth_camera/image_raw" output="screen" cwd="node"/>
-    </group>
-
-    <!--launch feature finder-->
-    <group if="$(arg enable_traffic_rules_feature_finder)">
-        <node name="traffic_rules_feature_finder" pkg="traffic_rules_feature_finder" type="traffic_rules_feature_finder_server" output="screen"/>
-    </group>
-
-    <!--launch feature finder-->
-    <group if="$(arg enable_object_feature_finder)">
-        <include file="$(find object_feature_finder)/launch/nodes.launch">
-               <arg name="image_topic" value="/depth_camera/image_raw" /> 
-        </include>
-    </group>
-
-    <!--launch feature finder-->
-    <group if="$(arg enable_road_feature_finder)">
-        <node name="road_feature_finder" pkg="road_feature_finder" type="road_feature_finder_server" output="screen"/>
     </group>
 
     <!-- load parameters-->

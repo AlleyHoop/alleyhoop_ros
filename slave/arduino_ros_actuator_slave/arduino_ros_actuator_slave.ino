@@ -34,7 +34,6 @@ void setup()
   //setup led
   pinMode(led13_pin, OUTPUT);
   nodeHandle.subscribe(led13_sub);  
-
 }
 
 //routine

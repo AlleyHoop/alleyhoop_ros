@@ -39,10 +39,6 @@ namespace AlleyHoopROSCore
         if(!nh.getParam("AlleyHoop_Sensors/Lidar_TopicName",lidar_topic_name))
             lidar_topic_name = "/scan";
 
-        std::string depth_camera_image_raw_topic_name;
-        if(!nh.getParam("AlleyHoop_Sensors/DepthCameraImageRaw_TopicName",depth_camera_image_raw_topic_name))
-            depth_camera_image_raw_topic_name = "/depth_camera/image_raw";
-
         std::string depth_camera_info_topic_name;
         if(!nh.getParam("AlleyHoop_Sensors/DepthCameraInfo_TopicName",depth_camera_info_topic_name))
             depth_camera_info_topic_name = "/depth_camera/camera_info";
@@ -68,9 +64,9 @@ namespace AlleyHoopROSCore
         addSensor(lidar1);
         if(verboseMode) std::cout <<  " lidar1 subscribed to " << lidar_topic_name << std::endl;
 
-        depth_camera_1 = new AlleyHoopROSSensors::DepthCamera("depth_camera_1", _nh, depth_camera_image_raw_topic_name, depth_camera_pcl_topic_name, depth_camera_info_topic_name);
+        depth_camera_1 = new AlleyHoopROSSensors::DepthCamera("depth_camera_1", _nh, depth_camera_pcl_topic_name, depth_camera_info_topic_name);
         addSensor(depth_camera_1);
-        if(verboseMode) std::cout <<  " depth_camera_1 subscribed to " << depth_camera_image_raw_topic_name << " and " << depth_camera_pcl_topic_name << " and " << depth_camera_info_topic_name << std::endl;
+        if(verboseMode) std::cout <<  " depth_camera_1 subscribed to " << depth_camera_pcl_topic_name << " and " << depth_camera_info_topic_name << std::endl;
 
         imu = new AlleyHoopROSSensors::Imu("imu", _nh, imu_topic_name);
         addSensor(imu);
@@ -112,28 +108,27 @@ namespace AlleyHoopROSCore
 
             //get sensors data
             int ultrasonic_sensor_data = ultrasonic_sensor_1->getData();
-            cv_bridge::CvImagePtr image_data_1 = mono_camera_1->getData();
-            cv_bridge::CvImagePtr image_data_2 = depth_camera_1->getImageData();
-            sensor_msgs::PointCloud2 pcl = depth_camera_1->getDepthData();
+            cv_bridge::CvImagePtr image_data_foward = mono_camera_1->getData();
+            sensor_msgs::PointCloud2 pcl_data_foward = depth_camera_1->getData();
 
             //find objects
             if(verboseMode) std::cout <<  "-------------" << "\nController: finding features...." << std::endl;
             std::list<AlleyHoopROSUtils::Feature*> objects;
-            if(featureFinder->findObjectsOnImage(objects, image_data_2))
+            if(featureFinder->findObjectsOnImage(objects, image_data_foward))
             {
-                //featureFinder->processDepthDataOnFeatures(objects, pcl);
+                //featureFinder->processDepthDataOnFeatures(objects, pcl_data_foward);
             }
             
             //TODO base the signs on cropped versions of the found objects
             std::list<AlleyHoopROSUtils::Feature*> trafficSigns;
-            if(featureFinder->findTrafficRulesOnImage(trafficSigns, image_data_1))
+            if(featureFinder->findTrafficRulesOnImage(trafficSigns, image_data_foward))
             {
 
             }
 
             //find the road
             std::list<AlleyHoopROSUtils::Feature*> roadFeatures;
-            featureFinder->findRoadOnImage(roadFeatures, image_data_1);
+            featureFinder->findRoadOnImage(roadFeatures, image_data_foward);
             
             //make decisions
             if(verboseMode) std::cout <<  "-------------" << "\nController: making desicions...." << std::endl;

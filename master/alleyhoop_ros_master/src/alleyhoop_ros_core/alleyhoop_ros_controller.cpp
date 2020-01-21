@@ -159,13 +159,15 @@ namespace AlleyHoopROSCore
                 //Ultrasonic sensor example
                 if(ultrasonic_sensor_data < 30 && ultrasonic_sensor_data > 0)
                 {
-                    //turn on led
+                    //turn on leds
                     ah_vehicle->led1->setState(true);
+                    ah_vehicle->led2->setState(true);
                 }
                 else
                 {
                     //turn on led
                     ah_vehicle->led1->setState(false);
+                    ah_vehicle->led2->setState(false);
                 }
             }
 

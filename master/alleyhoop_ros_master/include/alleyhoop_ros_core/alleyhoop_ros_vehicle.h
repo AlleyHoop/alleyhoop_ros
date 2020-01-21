@@ -22,6 +22,7 @@ namespace AlleyHoopROSCore
 
             //actuators
             AlleyHoopROSActuators::Led* led1;
+            AlleyHoopROSActuators::Led* led2;
             AlleyHoopROSActuators::Motor* steering_motor;
             AlleyHoopROSActuators::Motor* velocity_motor;
 

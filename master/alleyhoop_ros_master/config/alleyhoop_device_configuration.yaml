@@ -5,9 +5,9 @@ AlleyHoop_Sensors: {
     ImuSensor_TopicName: "/arduino_sensor_slave/imu_sensor",
     MonoCameraImageRaw_TopicName: "/raspi_camera/image_raw",
     MonoCameraInfo_TopicName: "/raspi_camera/camera_info",
-    DepthCameraImageRaw_TopicName: "/depth_camera/image_raw",
-    DepthCameraInfo_TopicName: "/depth_camera/camera_info",
-    DepthCameraPcl_TopicName: "/depth_camera/points",
+    DepthCameraImageRaw_TopicName: "/camera/color/image_raw",
+    DepthCameraInfo_TopicName: "/camera/depth/camera_info",
+    DepthCameraPcl_TopicName: "/camera/depth/color/points",
     Lidar_TopicName: "/scan",
 }
 

@@ -5,12 +5,12 @@
 
     <!--launch lidar-->
     <group if="$(arg enable_lidar)">
-        <include file="$(find rplidar_ros)/launch/rplidar.launch" output="screen"/>
+        <include file="$(find rplidar_ros)/launch/rplidar.launch"/>
     </group>
 
     <!--launch realsense camera-->
     <group if="$(arg enable_lidar)">
-        <include file="$(find realsense2_camera)/launch/rs_camera.launch" output="screen">
+        <include file="$(find realsense2_camera)/launch/rs_camera.launch">
             <arg name="camera" value="camera"/>
             <arg name="filters" value="pointcloud"/>
             <arg name="enable_infra1" value="false"/>

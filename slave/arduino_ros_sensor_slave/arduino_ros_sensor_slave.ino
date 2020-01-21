@@ -14,21 +14,21 @@ ros::NodeHandle nodeHandle;
 long ultrasonic_sensor_data = 0;
 long ultrasonic_pub_timer = millis() + 1000;
 std_msgs::UInt8 ultrasonic_msg;
-ros::Publisher ultrasonic_pub("/arduino_slave/ultrasonic_sensor", &ultrasonic_msg);
+ros::Publisher ultrasonic_pub("/arduino_sensor_slave/ultrasonic_sensor", &ultrasonic_msg);
 
 //led1 data
-int led1_pin = 13;
-bool led1_state = false;
+int led13_pin = 13;
+bool led13_state = false;
 void messageCb( const std_msgs::Bool& msg)
 {
-  led1_state = msg.data;
+  led13_state = msg.data;
 }
-ros::Subscriber<std_msgs::Bool> led1_sub("/arduino_slave/led1_actuator", &messageCb );
+ros::Subscriber<std_msgs::Bool> led13_sub("/arduino_sensor_slave/led13", &messageCb );
 
 //imu data
 sensor_msgs::Imu imu_msg;
 long imu_pub_timer = millis() + 1000;
-ros::Publisher imu_pub("/arduino_slave/imu_sensor", &imu_msg);
+ros::Publisher imu_pub("/arduino_sensor_slave/imu_sensor", &imu_msg);
 
 //ultrasonic routine function
 void update_sensors()
@@ -65,9 +65,9 @@ void update_actuators()
 {
   //update led state
   if(led1_state)
-    digitalWrite(led1_pin, HIGH);
+    digitalWrite(led13_pin, HIGH);
   else
-    digitalWrite(led1_pin, LOW);
+    digitalWrite(led13_pin, LOW);
 }
 
 //arduino setup
@@ -85,8 +85,8 @@ void setup()
   nodeHandle.advertise(imu_pub);
 
   //setup led
-  pinMode(led1_pin, OUTPUT);
-  nodeHandle.subscribe(led1_sub);  
+  pinMode(led13_pin, OUTPUT);
+  nodeHandle.subscribe(led13_sub);  
 
 }
 

@@ -64,7 +64,7 @@ void update_sensors()
 void update_actuators()
 {
   //update led state
-  if(led1_state)
+  if(led13_state)
     digitalWrite(led13_pin, HIGH);
   else
     digitalWrite(led13_pin, LOW);

@@ -3,6 +3,8 @@ int ultrasonic_echopin;
 
 void setup_ultrasonic_sensor()
 {
+    ultrasonic_trigpin = 2;
+    ultrasonic_echopin = 4;
     pinMode(ultrasonic_trigpin, OUTPUT);
     pinMode(ultrasonic_echopin, INPUT);
 }
@@ -10,8 +12,6 @@ void setup_ultrasonic_sensor()
 void update_ultrasonic_sensor(long &distance)
 {
     //read ultrasoon
-    ultrasonic_trigpin = 2;
-    ultrasonic_echopin = 4;
     long duration;
     digitalWrite(ultrasonic_trigpin, LOW);
     delayMicroseconds(2);

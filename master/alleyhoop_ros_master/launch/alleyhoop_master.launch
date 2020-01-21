@@ -3,14 +3,24 @@
     <arg name="enable_traffic_rules_feature_finder" default="false"/>
     <arg name="enable_object_feature_finder" default="false"/>
     <arg name="enable_road_feature_finder" default="false"/>
-    <arg name="enable_arduino_slave" default="false"/>
+
+    <arg name="enable_arduino_actuator_slave" default="false"/>
+    <arg name="arduino_actuator_slave_port" default="/dev/ttyACM0"/>
+    <arg name="enable_arduino_sensor_slave" default="false"/>
+    <arg name="arduino_sensor_slave_port" default="/dev/ttyACM1"/>
+
+
     <arg name="enable_pi_camera" default="false"/>
     <arg name="enable_fake_pi_camera" default="false"/>
     <arg name="enable_fake_depth_camera" default="false"/>
 
     <!--launch slave communication-->
-    <group if="$(arg enable_arduino_slave)">
-        <node name="arduino_slave" pkg="rosserial_python" type="serial_node.py" args="/dev/ttyACM0" output="screen"/>
+    <group if="$(arg enable_arduino_sensor_slave)">
+        <node name="arduino_sensor_slave" pkg="rosserial_python" type="serial_node.py" args="$(arduino_sensor_slave_port)" output="screen"/>
+    </group>
+
+    <group if="$(arg enable_arduino_actuator_slave)">
+        <node name="arduino_actuator_slave" pkg="rosserial_python" type="serial_node.py" args="$(arduino_actuator_slave_port)" output="screen"/>
     </group>
 
     <!--launch pi camera-->

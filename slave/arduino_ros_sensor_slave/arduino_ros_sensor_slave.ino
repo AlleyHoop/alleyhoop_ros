@@ -1,5 +1,6 @@
 //ros includes
 #include <ros.h>
+#include <ros/time.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/UInt8.h>
 #include <sensor_msgs/Imu.h>
@@ -54,6 +55,25 @@ void update_sensors()
 
     //publish data
     imu_msg.header.frame_id = 0;
+    imu_msg.header.stamp = nodeHandle.now();
+    
+    imu_msg.orientation_covariance[0] = -1;
+    imu_msg.orientation.w = 1;
+    imu_msg.orientation.x = Mxyz[0];
+    imu_msg.orientation.y = Mxyz[1];
+    imu_msg.orientation.z = Mxyz[2];
+
+    imu_msg.linear_acceleration_covariance[0] = -1;
+    imu_msg.linear_acceleration.x = Axyz[0];
+    imu_msg.linear_acceleration.y = Axyz[1];
+    imu_msg.linear_acceleration.z = Axyz[2];
+
+    imu_msg.angular_velocity_covariance[0] = -1;
+    imu_msg.angular_velocity.x = Gxyz[0];
+    imu_msg.angular_velocity.y = Gxyz[1];
+    imu_msg.angular_velocity.z = Gxyz[2];
+
+    //publish data
     millis();
     imu_pub.publish( &imu_msg );
     imu_pub_timer = millis() + 1000;

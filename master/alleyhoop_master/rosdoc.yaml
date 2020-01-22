@@ -1,2 +1,2 @@
 - builder: doxygen
-  file_patterns: '*.cpp *.hpp *.dox *.md'
+  file_patterns: '*.cpp *.hpp *.dox *.md *.h'

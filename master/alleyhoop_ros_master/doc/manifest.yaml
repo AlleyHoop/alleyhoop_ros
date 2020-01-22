@@ -1,0 +1,22 @@
+actions: []
+authors: ''
+brief: ''
+bugtracker: ''
+depends:
+- catkin
+- roscpp
+- std_msgs
+- sensor_msgs
+- alleyhoop_master
+- rospy
+- alleyhoop_ros_msgs
+- tf
+- cv_bridge
+description: The alleyhoop_master package
+license: TODO
+maintainers: krebsalad <johanmgina7@gmail.com>
+msgs: []
+package_type: package
+repo_url: ''
+srvs: []
+url: ''

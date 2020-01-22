@@ -3,8 +3,8 @@ Alleyhoop_VerboseMode: "log"
 AlleyHoop_Sensors: {
     UltrasonicSensor_TopicName: "/arduino_sensor_slave/ultrasonic_sensor",
     ImuSensor_TopicName: "/arduino_sensor_slave/imu_sensor",
-    MonoCameraImageRaw_TopicName: "/raspi_camera/image_raw",
-    MonoCameraInfo_TopicName: "/raspi_camera/camera_info",
+    MonoCameraImageRaw_TopicName: "/camera/color/image_raw",
+    MonoCameraInfo_TopicName: "/camera/color/camera_info",
     DepthCameraInfo_TopicName: "/camera/depth/camera_info",
     DepthCameraPcl_TopicName: "/camera/depth/color/points",
     Lidar_TopicName: "/scan",

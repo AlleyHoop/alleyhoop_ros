@@ -3,7 +3,10 @@
 
 namespace AlleyHoopROSUtils
 {
-
+    //* A utility class for positioning
+    /**
+     * holds values x, y, and z
+    */
     class Vector3
     {
         public:
@@ -17,6 +20,10 @@ namespace AlleyHoopROSUtils
             
     };
 
+    //* A utility class for positioning
+    /**
+     * hold values position, rotation, and scale
+    */
     class Transform
     {
         public:

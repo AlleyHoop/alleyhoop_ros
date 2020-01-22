@@ -3,14 +3,15 @@
 
 #include <string>
 
-//* An abstract sensor class
-/**
-* A class for indentifying sensors based on names
-*
-*/
+
 
 namespace AlleyHoopMVC
 {
+    //* An abstract sensor class
+    /**
+    * A class for indentifying sensors based on names
+    *
+    */
     class Sensor
     {
         public:
@@ -34,7 +35,7 @@ namespace AlleyHoopMVC
             * \brief The default constructor for the sensor class
             * \param _name parameter for setting the name of the sensor
             */
-	        Sensor(std::string n) : name(n)  {};
+	        Sensor(std::string _name) : name(_name)  {};
     };
 }
 

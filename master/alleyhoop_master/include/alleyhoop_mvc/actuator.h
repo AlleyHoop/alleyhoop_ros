@@ -1,16 +1,15 @@
 #ifndef ACTUATOR_H_
 #define ACTUATOR_H_
 
-//* An abstract actuator class
-/**
-* A class for indentifying actuators based on names
-*
-*/
-
 #include <string>
 
 namespace AlleyHoopMVC
 {
+    //* An abstract actuator class
+    /**
+    * A class for indentifying actuators based on names
+    *
+    */
     class Actuator
     {
         public:

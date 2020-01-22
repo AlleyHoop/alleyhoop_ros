@@ -1,6 +1,8 @@
 #ifndef ALLEYHOOPROSMOTOR_H_
 #define ALLEYHOOPROSMOTOR_H_
 
+
+
 #include <ros/ros.h>
 
 #include "alleyhoop_mvc/actuator.h"
@@ -10,29 +12,59 @@
 
 namespace AlleyHoopROSActuators
 {
-
+    //* A motor implementation of the actuator class from the alleyhoop_master package
+    /**
+    * A class that publishes data for a motor
+    *
+    */
+   
     class Motor : public AlleyHoopMVC::Actuator
     {
-        public:      
+        public:    
+            /*!
+            * \brief The constructor for the motor class
+            * \param _name the name of the actuator, is required to create the actuator base class
+            * \param _nh the nodehandle to publish data on
+            * \param _topic the topic on which data is to be published
+            */   
             Motor(std::string _name, ros::NodeHandle* _nh, std::string _topic);
+            /*!
+            * \brief default destructor
+            */
             virtual ~Motor() = default;
 
+            /*!
+            * \brief set the state of the motor
+            * \param p an integer, the state to set the motor to
+            */
             void setPercentage(int p);
+
+            /*!
+            * \brief get the current state of the motor
+            */
             int getPercentage();
+
+            /*!
+            * \brief update function, should be called from the base controller class
+            */
             void update();
 
+            /*!
+            * \brief get the current time in milli seconds
+            */
             static uint64_t timeMillis();
 
-            const std::string topic_name;
+            
+            const std::string topic_name; /**< the topic to publish motor data on */
 
         protected:
-            ros::Publisher pub;
-            ros::NodeHandle nh;
+            ros::Publisher pub; /**< the publisher */
+            ros::NodeHandle nh; /**< the nodehandle*/
 
         private:
-            int percentage;
-            double pub_rate;
-            double pub_time;
+            int percentage; /**< the state of the motor*/
+            double pub_rate; /**< the rate with which the motor state is published in milli seconds*/
+            double pub_time; /**< the time the next state needs to be published in milli seconds since epoch*/
 
             
     };

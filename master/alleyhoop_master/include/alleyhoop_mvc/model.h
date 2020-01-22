@@ -1,14 +1,14 @@
 #ifndef MODEL_H_
 #define MODEL_H_
 
-//* An abstract model class
-/**
-* The model class in self must be inherited and can then only be instantiated
-*
-*/
 
 namespace AlleyHoopMVC
 {
+    //* An abstract model class
+    /**
+    * The model class in self must be inherited and can then only be instantiated
+    *
+    */
 
     class Model
     {

@@ -1,20 +1,21 @@
 #ifndef VEHICLE_H_
 #define VEHICLE_H_
 
-//* An abstract vehicle class
-/**
-* The vehicle class in it self must be inherited and can then only be instantiated, the base class does :
-* 1. manages lifecyle of actuators
-* 2. to manage the lifecyle of actuators they must be added via the inheriting child class
-*
-*/
+
 
 #include <map>
 #include "alleyhoop_mvc/actuator.h"
 
 namespace AlleyHoopMVC
 {
-
+    //* An abstract vehicle class
+    /**
+    * The vehicle class in it self must be inherited and can then only be instantiated, the base class does :
+    * 1. manages lifecyle of actuators
+    * 2. to manage the lifecyle of actuators they must be added via the inheriting child class
+    *
+    */
+   
     class Vehicle
     {
         public:
@@ -69,7 +70,7 @@ namespace AlleyHoopMVC
             {
                 if(actuators.find(name) != actuators.end())
                 {
-                    std::cout << "removed and deleted actuator " + n << std::endl;
+                    std::cout << "removed and deleted actuator " + name << std::endl;
                     Actuator* s = actuators.find(name)->second;
                     actuators.erase(name);
                     delete s;

@@ -10,32 +10,48 @@
 
 namespace AlleyHoopROSCore
 {
+    //* A ros vehicle implementation of the vehicle class from the alleyhoop_master package
+    /**
+    * This class instructs the actuators to publish there actuator data so that the actual vehicle moves.
+    */
 
     class Vehicle : public AlleyHoopMVC::Vehicle
     {
         public:
+            /*!
+            * \brief The constructor for the vehicle class
+            * \param _nh the nodehandle to publish data on
+            */
             Vehicle(ros::NodeHandle* _nh);
+
+            /*!
+            * \brief The default destructor
+            */
             ~Vehicle() = default;
+
+            /*!
+            * \brief The update function, generally called from the main process
+            */
             bool update();
 
-            static bool verboseMode;
+            static bool verboseMode; /**< a static bool, when true more print messages will be displayed on the console*/
 
             //actuators
-            AlleyHoopROSActuators::Led* led1;
-            AlleyHoopROSActuators::Led* led2;
-            AlleyHoopROSActuators::Motor* steering_motor;
-            AlleyHoopROSActuators::Motor* velocity_motor;
+            AlleyHoopROSActuators::Led* led1; /**< a pointer to a led */
+            AlleyHoopROSActuators::Led* led2; /**< a pointer to a led */
+            AlleyHoopROSActuators::Motor* steering_motor; /**< a pointer to the motor for steering the vehicle */
+            AlleyHoopROSActuators::Motor* velocity_motor; /**< a pointer to the motor for moving the vehicle */
 
             //positioning and movement
-            AlleyHoopROSUtils::Transform transform;
-            AlleyHoopROSUtils::Transform destination;
+            AlleyHoopROSUtils::Transform transform; /**< the current position and rotation of the vehicle */
+            AlleyHoopROSUtils::Transform destination; /**< the destination position and rotation of the vehicle */
             
         protected:
             //ros
-            ros::NodeHandle nh;
+            ros::NodeHandle nh; /**< the nodehandle */
 
-            int maxSpeed;
-            int currentSpeed;
+            int maxSpeed; /**< the maximum speed the vehicle is allowed to move */
+            int currentSpeed; /**< the current speed of the vehicle */
             
 
             

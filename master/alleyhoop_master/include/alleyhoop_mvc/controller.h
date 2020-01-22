@@ -1,14 +1,6 @@
 #ifndef CONTROLLER_H_
 #define CONTROLLER_H_
 
-//* An abstract controller class
-/**
-* The controller class in it self must be inherited and can then only be instantiated, the base class does :
-* 1. manages lifecyle of sensors
-* 2. to manage the lifecyle of sensors they must be added via the inheriting child class
-*
-*/
-
 #include <map>
 #include "alleyhoop_mvc/vehicle.h"
 #include "alleyhoop_mvc/sensor.h"
@@ -16,6 +8,13 @@
 
 namespace AlleyHoopMVC
 {
+    //* An abstract controller class
+    /**
+    * The controller class in it self must be inherited and can then only be instantiated, the base class does :
+    * 1. manages lifecyle of sensors
+    * 2. to manage the lifecyle of sensors they must be added via the inheriting child class
+    *
+    */
     class Controller
     {
         public:

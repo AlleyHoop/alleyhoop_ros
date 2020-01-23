@@ -1,4 +1,5 @@
  #include "alleyhoop_ros_utils/alleyhoop_ros_math.h"
+ #include <stdlib.h>
  #include <math.h>
 
 namespace AlleyHoopROSUtils

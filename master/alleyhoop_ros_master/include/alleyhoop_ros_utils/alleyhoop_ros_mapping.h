@@ -32,7 +32,7 @@ namespace AlleyHoopROSUtils
             float heuristics;
             float distance;
 
-            static float AlleyHoopROSUtils::Vector3 NodeSizes;
+            static AlleyHoopROSUtils::Vector3 NodeSizes;
 
             /*!
             * \brief this function returns the cost of the node, heuristics + distance

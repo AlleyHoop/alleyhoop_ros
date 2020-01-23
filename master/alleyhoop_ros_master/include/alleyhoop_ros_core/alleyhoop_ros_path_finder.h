@@ -5,6 +5,7 @@
 #include "alleyhoop_mvc/model.h"
 
 #include "alleyhoop_ros_utils/alleyhoop_ros_mapping.h"
+#include "alleyhoop_ros_utils/alleyhoop_ros_math.h"
 #include "alleyhoop_ros_utils/alleyhoop_ros_feature.h"
 
 #include <list>

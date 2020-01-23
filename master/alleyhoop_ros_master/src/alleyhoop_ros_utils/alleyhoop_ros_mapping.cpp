@@ -33,7 +33,7 @@ namespace AlleyHoopROSUtils
         if ( std::fmod(_position.x, Node::NodeSizes.x)/Node::NodeSizes.x > 0.5f )
             averaged_x = _position.x + (Node::NodeSizes.x - (_position.x , Node::NodeSizes.x));
         else
-            averaged_x = _position.x - std::fmod(_position.x , Node::NodeSize.x);
+            averaged_x = _position.x - std::fmod(_position.x , Node::NodeSizes.x);
         
         if (std::fmod(_position.y , Node::NodeSizes.y)/Node::NodeSizes.y > 0.5f )
             averaged_y = _position.y + (Node::NodeSizes.y - (_position.y , Node::NodeSizes.y));

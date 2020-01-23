@@ -54,7 +54,7 @@ namespace AlleyHoopROSSensors
             ros::NodeHandle nh; /**< the nodehandle */
 
         private:
-            bool state;
+            bool state; /**< the state of the tracker */
     };
 
 }

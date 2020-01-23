@@ -23,11 +23,10 @@ namespace AlleyHoopROSCore
     bool PathFinder::findPath(AlleyHoopROSUtils::Transform& currentTransform, AlleyHoopROSUtils::Transform& targetTransform, std::list<AlleyHoopROSUtils::Feature*>& objects, std::list<AlleyHoopROSUtils::Feature*>& road)
     {
         //set current node \todo base the extents on the vehicles features
-        currentNodes = getNodes(currentTransform, AlleyHoopROSUtils::NodeSizes);
+        currentNodes = getNodes(currentTransform, AlleyHoopROSUtils::Node::NodeSizes);
         for(std::list<AlleyHoopROSUtils::Node*>::iterator node_iter = currentNodes.begin(); node_iter != currentNodes.end(); node_iter++)
         {
-            AlleyHoopROSUtils::Feature* newNode = (*node_iter);
-            newNode->walkable = true;
+            (*node_iter)->walkable = true;
         }
 
         //instantiate nodes
@@ -49,7 +48,7 @@ namespace AlleyHoopROSCore
         //clear processed nodes
         for(std::map<std::string, AlleyHoopROSUtils::Node*>::iterator node_iter = map.begin(); node_iter != map.end(); node_iter++)
         {
-            (*node_iter)->processed = false;
+            (node_iter->second)->processed = false;
         }
 
         //find path
@@ -91,13 +90,13 @@ namespace AlleyHoopROSCore
             for (std::list<AlleyHoopROSUtils::Node*>::iterator adj_node_iter = processNode->adjacentNodes.begin(); adj_node_iter != processNode->adjacentNodes.end(); adj_node_iter++)
             {
                 //ingnore non walkable nodes or already processed nodes
-                if(!adj_node_iter->walkable || adj_node_iter->occupied || adj_node_iter->processed)
+                if(!(*adj_node_iter)->walkable || (*adj_node_iter)->occupied || (*adj_node_iter)->processed)
                 {
                     continue;
                 }
 
                 //set the heuritic = (sqrt of (dx^2 + dy^2 + dz^2)), distance value, and path if not in open list yet
-                AlleyHoopROSUtils::Node* adj_node = getNodeInList(openList, adj_node_iter->nodeId);
+                AlleyHoopROSUtils::Node* adj_node = getNodeInList(openList, (*adj_node_iter)->nodeId);
                 if(adj_node == nullptr)
                 {
                     adj_node = (*adj_node_iter);
@@ -124,7 +123,7 @@ namespace AlleyHoopROSCore
         //exit if not found path
         if(processNode == nullptr)
         {
-            if(verbose_mode) std::cout << "did not find a path" << std::endl
+            if(verboseMode) std::cout << "did not find a path" << std::endl;
             return false;
         }
 
@@ -135,7 +134,7 @@ namespace AlleyHoopROSCore
             path.push_back(next_node);
             next_node = next_node->parent;
         }
-        if(verbose_mode) std::cout << "succesfully found a path" << std::endl
+        if(verboseMode) std::cout << "succesfully found a path" << std::endl;
 
         return true;
     }
@@ -149,7 +148,7 @@ namespace AlleyHoopROSCore
 
             for(std::list<AlleyHoopROSUtils::Node*>::iterator node_iter = _nodes.begin(); node_iter != _nodes.end(); node_iter++)
             {
-                AlleyHoopROSUtils::Feature* newNode = (*node_iter);
+                AlleyHoopROSUtils::Node* newNode = (*node_iter);
         
                 //check type of feature and set feature types
                 if(feature->featureType == AlleyHoopROSUtils::FeatureTypes::Object)
@@ -177,12 +176,12 @@ namespace AlleyHoopROSCore
         std::list<AlleyHoopROSUtils::Node*> _nodes;
 
         //get bounds
-        float start_x = transform.position.x - (extents.x/2.0f);
-        float start_y = transform.position.y - (extents.y/2.0f);
-        float start_z = transform.position.z - (extents.z/2.0f);
-        float end_x = transform.position.x + (extents.x/2.0f);
-        float end_y = transform.position.y + (extents.y/2.0f);
-        float end_z = transform.position.z + (extent.z/2.0f);
+        float start_x = _transform.position.x - (extents.x/2.0f);
+        float start_y = _transform.position.y - (extents.y/2.0f);
+        float start_z = _transform.position.z - (extents.z/2.0f);
+        float end_x = _transform.position.x + (extents.x/2.0f);
+        float end_y = _transform.position.y + (extents.y/2.0f);
+        float end_z = _transform.position.z + (extents.z/2.0f);
 
         //\todo apply rotation reference from reference node
         // start_x *=
@@ -204,11 +203,11 @@ namespace AlleyHoopROSCore
                     //create node note thats the node pointer is also saved in map
                     _nodes.push_back(getNode(position));
 
-                    start_z += AlleyHoopROSUtils::NodeSizes.x;
+                    start_z += AlleyHoopROSUtils::Node::NodeSizes.x;
                 }
-                start_y+= AlleyHoopROSUtils::NodeSizes.y;
+                start_y+= AlleyHoopROSUtils::Node::NodeSizes.y;
             }
-            start_x+= AlleyHoopROSUtils::NodeSizes.z;
+            start_x+= AlleyHoopROSUtils::Node::NodeSizes.z;
         }
 
         return _nodes;
@@ -239,7 +238,7 @@ namespace AlleyHoopROSCore
         //return node only if already existing
         for (std::map<std::string, AlleyHoopROSUtils::Node*>::iterator node_iter = map.begin(); node_iter != map.end(); node_iter++)
         {
-            if(node_iter->first == nodeId)
+            if(node_iter->first == _nodeId)
                 if(node_iter->second != nullptr)
                     return node_iter->second;
                 else

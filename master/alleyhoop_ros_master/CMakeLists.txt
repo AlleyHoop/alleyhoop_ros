@@ -49,6 +49,7 @@ add_library(alleyhoop_ros_sensors src/alleyhoop_ros_sensors/alleyhoop_ros_ultras
                                   src/alleyhoop_ros_sensors/alleyhoop_ros_lidar.cpp
                                   src/alleyhoop_ros_sensors/alleyhoop_ros_depth_camera.cpp
                                   src/alleyhoop_ros_sensors/alleyhoop_ros_imu.cpp
+                                  src/alleyhoop_ros_sensors/alleyhoop_ros_linetracker.cpp
 )
 target_link_libraries(alleyhoop_ros_sensors 
    ${catkin_LIBRARIES}

@@ -8,7 +8,7 @@
 
 namespace AlleyHoopROSUtils
 {
-    enum FeatureTypes {None=0, StaticObject=1, MovingObject=2};
+    enum FeatureTypes {None=0, Object=1, MovingObject=2, Road=3};
 
     //* A utility class for saving features and passing on relevant information
     /**
@@ -32,7 +32,7 @@ namespace AlleyHoopROSUtils
 
 
             AlleyHoopROSUtils::Transform transform; /**< the transform of the feature */
-            AlleyHoopROSUtils::Vector3 halfExtents; /**< the half extens from the center(position) of the feature */
+            AlleyHoopROSUtils::Vector3 extents; /**< the lengths of each side (x, y, z) */
             int featureType; /**< the type of feature this is */
             std::string label_name; /**< the label name, such us bike, car, person... */
     };

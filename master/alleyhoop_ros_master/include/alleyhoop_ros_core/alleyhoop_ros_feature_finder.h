@@ -65,7 +65,7 @@ namespace AlleyHoopROSCore
             * This is an internal function of the package. For accurate results it is required that features passed in the parameters are from an image coming from the same camera from which the poincloud data is extracted.
             * \param features is a list of features on which depth data will be added pased on pointcloud data
             * \param pcl is the image from which pointcloud data will be extracted
-            * \TODO actually implement the function
+            * \todo actually implement the function
             */
             bool processDepthDataOnFeatures(std::list<AlleyHoopROSUtils::Feature*>& features, sensor_msgs::PointCloud2& pcl);
 

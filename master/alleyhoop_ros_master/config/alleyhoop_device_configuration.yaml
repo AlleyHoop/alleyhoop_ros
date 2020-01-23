@@ -7,6 +7,8 @@ AlleyHoop_Sensors: {
     MonoCameraInfo_TopicName: "/camera/color/camera_info",
     DepthCameraInfo_TopicName: "/camera/depth/camera_info",
     DepthCameraPcl_TopicName: "/camera/depth/color/points",
+    LineTrackerLeft_TopicName: "/arduino_sensor_slave/linetracker_left",
+    LineTrackerRight_TopicName: "/arduino_sensor_slave/linetracker_right",
     Lidar_TopicName: "/scan",
 }
 

@@ -7,18 +7,13 @@
 
 #include "arduino_imu.h"
 #include "arduino_ultrasonic_sensor.h"
+#include "arduino_linetracking_sensors.h"
 
 //ros node (only one possible on arduino)
 ros::NodeHandle nodeHandle;
 
-//ultrasonic data
-long ultrasonic_sensor_data = 0;
-long ultrasonic_pub_timer = millis() + 1000;
-std_msgs::UInt8 ultrasonic_msg;
-ros::Publisher ultrasonic_pub("/arduino_sensor_slave/ultrasonic_sensor", &ultrasonic_msg);
-
 //led1 data
-int led13_pin = 13;
+const int led13_pin = 13;
 bool led13_state = false;
 void messageCb( const std_msgs::Bool& msg)
 {
@@ -26,23 +21,36 @@ void messageCb( const std_msgs::Bool& msg)
 }
 ros::Subscriber<std_msgs::Bool> led13_sub("/arduino_sensor_slave/led13", &messageCb );
 
+//ultrasonic data
+long ultrasonic_pub_timer = millis() + 1000;
+std_msgs::UInt8 ultrasonic_msg;
+ros::Publisher ultrasonic_pub("/arduino_sensor_slave/ultrasonic_sensor", &ultrasonic_msg);
+
 //imu data
 sensor_msgs::Imu imu_msg;
 long imu_pub_timer = millis() + 1000;
 ros::Publisher imu_pub("/arduino_sensor_slave/imu_sensor", &imu_msg);
 
+//linetracking sensors
+std_msgs::Bool linetracker1_msg;
+std_msgs::Bool linetracker2_msg;
+long linetrackers_pub_timer = millis() + 1000;
+ros::Publisher linetracker1_pub("/arduino_sensor_slave/linetracker_left", &linetracker1_msg);
+ros::Publisher linetracker2_pub("/arduino_sensor_slave/linetracker_right", &linetracker2_msg);
+
 //ultrasonic routine function
 void update_sensors()
 {
-  //publish ultrasonic data
+  //update ultrasonic data
   if(millis() > ultrasonic_pub_timer)
   {
     //update data
-    update_ultrasonic_sensor( ultrasonic_sensor_data );
+    update_ultrasonic_sensor();
+
+    //set data
+    ultrasonic_msg.data = ultrasonic_sensor_data;
 
     //publish data
-    ultrasonic_msg.data = ultrasonic_sensor_data;
-    millis();
     ultrasonic_pub.publish( &ultrasonic_msg );
     ultrasonic_pub_timer = millis() + 1000;
   }
@@ -53,7 +61,7 @@ void update_sensors()
     //update data
     update_imu();
 
-    //publish data
+    //set data
     imu_msg.header.frame_id = 0;
     imu_msg.header.stamp = nodeHandle.now();
     
@@ -74,9 +82,24 @@ void update_sensors()
     imu_msg.angular_velocity.z = Gxyz[2];
 
     //publish data
-    millis();
     imu_pub.publish( &imu_msg );
     imu_pub_timer = millis() + 1000;
+  }
+
+  //update line tracking sensors
+  if(millis() > linetrackers_pub_timer)
+  {
+    //update data
+    update_linetracking_sensors();
+
+    //set data
+    linetracker1_msg.data = linetracker1_data;
+    linetracker2_msg.data = linetracker2_data;
+
+    //publish data
+    linetracker1_pub.publish( &linetracker1_msg );
+    linetracker2_pub.publish( &linetracker2_msg );
+    linetrackers_pub_timer = millis() + 1000;
   }
 }
 
@@ -108,6 +131,10 @@ void setup()
   pinMode(led13_pin, OUTPUT);
   nodeHandle.subscribe(led13_sub);  
 
+  //setup linetracking sensors
+  setup_linetracking_sensors();
+  nodeHandle.advertise(linetracker1_pub);
+  nodeHandle.advertise(linetracker2_pub);
 }
 
 //routine

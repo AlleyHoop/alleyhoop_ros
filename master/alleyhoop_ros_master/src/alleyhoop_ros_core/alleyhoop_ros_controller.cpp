@@ -25,15 +25,15 @@ namespace AlleyHoopROSCore
         //read params, if fail set a default value
         std::string ultrasonic_sensor_topic_name;
         if(!nh.getParam("AlleyHoop_Sensors/UltrasonicSensor_TopicName",ultrasonic_sensor_topic_name))
-            ultrasonic_sensor_topic_name = "/arduino_slave/ultrasonic_sensor";
+            ultrasonic_sensor_topic_name = "/arduino_sensor_slave/ultrasonic_sensor";
         
         std::string mono_camera_image_raw_topic_name;
         if(!nh.getParam("AlleyHoop_Sensors/MonoCameraImageRaw_TopicName",mono_camera_image_raw_topic_name))
-            mono_camera_image_raw_topic_name = "/raspi_camera/image_raw";
+            mono_camera_image_raw_topic_name = "/camera/color/image_raw";
 
         std::string mono_camera_info_topic_name;
         if(!nh.getParam("AlleyHoop_Sensors/MonoCameraInfo_TopicName",mono_camera_info_topic_name))
-            mono_camera_info_topic_name = "/raspi_camera/camera_info";
+            mono_camera_info_topic_name = "/camera/color/camera_info";
 
         std::string lidar_topic_name;
         if(!nh.getParam("AlleyHoop_Sensors/Lidar_TopicName",lidar_topic_name))
@@ -41,15 +41,23 @@ namespace AlleyHoopROSCore
 
         std::string depth_camera_info_topic_name;
         if(!nh.getParam("AlleyHoop_Sensors/DepthCameraInfo_TopicName",depth_camera_info_topic_name))
-            depth_camera_info_topic_name = "/depth_camera/camera_info";
+            depth_camera_info_topic_name = "/camera/depth/camera_info";
 
         std::string depth_camera_pcl_topic_name;
         if(!nh.getParam("AlleyHoop_Sensors/DepthCameraPcl_TopicName",depth_camera_pcl_topic_name))
-            depth_camera_pcl_topic_name = "/depth_camera/points";
+            depth_camera_pcl_topic_name = "/camera/depth/color/points";
 
         std::string imu_topic_name;
         if(!nh.getParam("AlleyHoop_Sensors/ImuSensor_TopicName",imu_topic_name))
-            imu_topic_name = "/arduino_slave/imu_sensor";
+            imu_topic_name = "/arduino_sensor_slave/imu_sensor";
+
+        std::string linetracker_left_topic_name;
+        if(!nh.getParam("AlleyHoop_Sensors/LineTrackerLeft_TopicName",linetracker_left_topic_name))
+            linetracker_left_topic_name = "/arduino_sensor_slave/linetracker_left";
+
+        std::string linetracker_right_topic_name;
+        if(!nh.getParam("AlleyHoop_Sensors/LineTrackerRight_TopicName",linetracker_right_topic_name))
+            linetracker_right_topic_name = "/arduino_sensor_slave/linetracker_right";
         
         //setup sensors, add to controller base class for life line managing and update routine
         ultrasonic_sensor_1 = new AlleyHoopROSSensors::UltrasonicSensor("ultrasonic_sensor", _nh, ultrasonic_sensor_topic_name);
@@ -72,10 +80,17 @@ namespace AlleyHoopROSCore
         addSensor(imu);
         if(verboseMode) std::cout <<  " imu subscribed to " << imu_topic_name << std::endl;
 
+        linetracker_left = new AlleyHoopROSSensors::LineTracker("linetracker_left", _nh, linetracker_left_topic_name);
+        addSensor(linetracker_left);
+        if(verboseMode) std::cout <<  " linetracker_left subscribed to " << linetracker_left_topic_name << std::endl;
+
+        linetracker_right = new AlleyHoopROSSensors::LineTracker("linetracker_right", _nh, linetracker_right_topic_name);
+        addSensor(linetracker_right);
+        if(verboseMode) std::cout <<  " linetracker_right subscribed to " << linetracker_right_topic_name << std::endl;
+
         //setup feature finders
         featureFinder = new FeatureFinder(_nh);
         
-
         //setup path finders
         AlleyHoopROSUtils::Vector3 _startPosition;
         AlleyHoopROSUtils::Vector3 _nodeSizes(2, 2, 2);
@@ -107,7 +122,7 @@ namespace AlleyHoopROSCore
             ros::spinOnce();
 
             //get sensors data
-            int ultrasonic_sensor_data = ultrasonic_sensor_1->getData();
+            int ultrasonic_sensor_data = ultrasonic_sensor_1->getData(); 
             cv_bridge::CvImagePtr image_data_foward = mono_camera_1->getData();
             sensor_msgs::PointCloud2 pcl_data_foward = depth_camera_1->getData();
 
@@ -150,19 +165,42 @@ namespace AlleyHoopROSCore
 
                 //!!TODO read the path and translate to motion for the motor
                 //ah_vehicle->
+
+                // <OLD> control steering based linetrackers
+                if(linetracker_right->getData() == true && linetracker_left->getData() == true)
+                {
+                    ah_vehicle->steering_motor->setData(1500);
+                }
+
+                if(linetracker_right->getData() == true && linetracker_left->getData() == false)
+                {
+                   ah_vehicle->steering_motor->setData(1800);
+                }
+
+                if(linetracker_right->getData() == false && linetracker_left->getData() == true)
+                {
+                    ah_vehicle->steering_motor->setData(1200);
+                }
+
+                if(linetracker_right->getData() == false && linetracker_left->getData() == false)
+                {
+                    ah_vehicle->steering_motor->setData(1500);
+                }
                 
-                //Ultrasonic sensor example
+                // <OLD> Ultrasonic sensor example
                 if(ultrasonic_sensor_data < 30 && ultrasonic_sensor_data > 0)
                 {
                     //turn on leds
                     ah_vehicle->led1->setState(true);
                     ah_vehicle->led2->setState(true);
+                    ah_vehicle->velocity_motor->setData(-100);
                 }
                 else
                 {
                     //turn on led
                     ah_vehicle->led1->setState(false);
                     ah_vehicle->led2->setState(false);
+                    ah_vehicle->velocity_motor->setData(100);
                 }
             }
 

@@ -29,7 +29,7 @@ void getGyro_Data(void); //
 void getCompass_Data(void); //
 void getCompassDate_calibrated(void); //
 
-
+//setup function
 void setup_imu()
 {
     //imu init
@@ -39,6 +39,7 @@ void setup_imu()
     delay(1000);
 }
 
+//update function
 void update_imu()
 {
     getAccel_Data();

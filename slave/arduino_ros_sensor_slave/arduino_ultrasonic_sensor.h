@@ -1,15 +1,19 @@
-int ultrasonic_trigpin;
-int ultrasonic_echopin;
+//pins
+const int ultrasonic_trigpin = 2;
+const int ultrasonic_echopin = 4;
 
+//export data
+long ultrasonic_sensor_data = 0;
+
+//setup function
 void setup_ultrasonic_sensor()
 {
-    ultrasonic_trigpin = 2;
-    ultrasonic_echopin = 4;
     pinMode(ultrasonic_trigpin, OUTPUT);
     pinMode(ultrasonic_echopin, INPUT);
 }
 
-void update_ultrasonic_sensor(long &distance)
+//update function
+void update_ultrasonic_sensor()
 {
     //read ultrasoon
     long duration;
@@ -19,5 +23,5 @@ void update_ultrasonic_sensor(long &distance)
     delayMicroseconds(10);
     digitalWrite(ultrasonic_trigpin, LOW);
     duration=pulseIn(ultrasonic_echopin, HIGH);
-    distance=duration*0.032/2;
+    ultrasonic_sensor_data=duration*0.032/2;
 }

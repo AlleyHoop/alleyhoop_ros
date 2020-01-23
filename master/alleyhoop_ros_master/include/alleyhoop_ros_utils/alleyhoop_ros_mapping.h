@@ -3,6 +3,7 @@
 
 #include <string>
 #include "alleyhoop_ros_utils/alleyhoop_ros_math.h"
+#include <list>
 
 namespace AlleyHoopROSUtils
 {
@@ -23,14 +24,25 @@ namespace AlleyHoopROSUtils
 
             AlleyHoopROSUtils::Vector3 position;
             bool walkable;
+            bool occupied;
             bool processed;
+            AlleyHoopROSUtils::Node* parent;
+            std::list<AlleyHoopROSUtils::Node*> adjacentNodes;
 
             float heuristics;
             float distance;
 
-            static float NodeSizeX;
-            static float NodeSizeY;
-            static float NodeSizeZ;
+            static float AlleyHoopROSUtils::Vector3 NodeSizes;
+
+            /*!
+            * \brief this function returns the cost of the node, heuristics + distance
+            */
+            float getNodeCost();
+
+            /*!
+            * \brief this will find nodes adjacent to the node and will fill the adjacent nodes member variable
+            */
+            void updateAdjacentNodes();
 
             /*!
             * \brief get a node id from a given position
@@ -50,6 +62,8 @@ namespace AlleyHoopROSUtils
             * \param nodeSizes a vector of the sizes of a node
             */
             static void updateNodeSizes(Vector3& nodeSizes);
+
+            
             
     };
 

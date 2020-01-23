@@ -16,7 +16,7 @@ namespace AlleyHoopROSSensors
     /**
     * This sensor class is used to retrieve imu data
     */
-   
+
     class Imu : public AlleyHoopMVC::Sensor
     {
         public:      
@@ -46,7 +46,7 @@ namespace AlleyHoopROSSensors
 
             /*!
             * \brief get the current imu data
-            * \TODO actually return data
+            * \todo does not yet return data. actually return the data as vectors
             */
             void getData();
 

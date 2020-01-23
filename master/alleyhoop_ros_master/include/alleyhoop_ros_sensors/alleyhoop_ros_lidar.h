@@ -47,7 +47,7 @@ namespace AlleyHoopROSSensors
 
             /*!
             * \brief function to retrieve data
-            * \TODO actually return data
+            * \todo actually return the data
             */
             void getData();
 

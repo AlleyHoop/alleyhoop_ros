@@ -11,6 +11,7 @@
 #include "alleyhoop_ros_sensors/alleyhoop_ros_lidar.h"
 #include "alleyhoop_ros_sensors/alleyhoop_ros_depth_camera.h"
 #include "alleyhoop_ros_sensors/alleyhoop_ros_imu.h"
+#include "alleyhoop_ros_sensors/alleyhoop_ros_linetracker.h"
 
 
 namespace AlleyHoopROSCore
@@ -43,7 +44,7 @@ namespace AlleyHoopROSCore
 
             /*!
             * \brief update function, is generally called from the main process
-            * \TODO actually control the vehicle
+            * \todo actually control the vehicle
             */
             bool update();
 
@@ -59,6 +60,8 @@ namespace AlleyHoopROSCore
             AlleyHoopROSSensors::DepthCamera* depth_camera_1; /**< a pointer to a depth camera for retrieving pointcloud data */
             AlleyHoopROSSensors::Lidar* lidar1; /**< a pointer to a laser tracer for depth measurement */
             AlleyHoopROSSensors::Imu* imu; /**< a pointer to a intertial measurement unit for retrieving accelaration, velocity and angular movement data */
+            AlleyHoopROSSensors::LineTracker* linetracker_left; /**< a pointer to the left line tracker */
+            AlleyHoopROSSensors::LineTracker* linetracker_right; /**< a pointer to the right line tracker */
 
             //finder
             FeatureFinder* featureFinder; /**< a pointer to a feature finder */

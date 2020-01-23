@@ -80,15 +80,15 @@ namespace AlleyHoopROSCore
                 
                 if(verboseMode) std::cout << "FeatureFinder: found traffic feature at (" << srv.response.features[i] << "," << srv.response.features[i+1] << "," << srv.response.features[i+2] << "," << srv.response.features[i+3] << ")" << std::endl;
 
-                AlleyHoopROSUtils::Feature* f = new AlleyHoopROSUtils::Feature(AlleyHoopROSUtils::FeatureTypes::StaticObject);
+                AlleyHoopROSUtils::Feature* f = new AlleyHoopROSUtils::Feature(AlleyHoopROSUtils::FeatureTypes::Object);
                 f->transform.position.x = srv.response.features[i];
                 f->transform.position.y = srv.response.features[i+1];
                 //TODO estimate position z value
 
                 //TODO estimate rotational values
 
-                f->halfExtents.x = srv.response.features[i+2];
-                f->halfExtents.y = srv.response.features[i+3];
+                f->extents.x = srv.response.features[i+2];
+                f->extents.y = srv.response.features[i+3];
                 //TODO estimate z half extents value
 
                 //add the feature
@@ -186,15 +186,15 @@ namespace AlleyHoopROSCore
             {
                 if(verboseMode) std::cout << "FeatureFinder: found object at (" << srv.response.features[i] << "," << srv.response.features[i+1] << "," << srv.response.features[i+2] << "," << srv.response.features[i+3] << ")" << std::endl;
 
-                AlleyHoopROSUtils::Feature* f = new AlleyHoopROSUtils::Feature(AlleyHoopROSUtils::FeatureTypes::StaticObject);
+                AlleyHoopROSUtils::Feature* f = new AlleyHoopROSUtils::Feature(AlleyHoopROSUtils::FeatureTypes::Object);
                 f->transform.position.x = srv.response.features[i];
                 f->transform.position.y = srv.response.features[i+1];
                 //TODO estimate position z value
 
                 //TODO estimate rotational values
 
-                f->halfExtents.x = srv.response.features[i+2];
-                f->halfExtents.y = srv.response.features[i+3];
+                f->extents.x = srv.response.features[i+2];
+                f->extents.y = srv.response.features[i+3];
                 //TODO estimate z half extents value
 
                 //add the feature

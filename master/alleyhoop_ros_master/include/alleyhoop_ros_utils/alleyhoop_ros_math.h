@@ -17,7 +17,9 @@ namespace AlleyHoopROSUtils
             float x;
             float y;
             float z;
-            
+
+            //todo add vector functions for addition, subtraction, multiplication and division operator overloading
+            static float getDistance(Vector3& vec1, Vector3& vec2);
     };
 
     //* A utility class for positioning

@@ -50,8 +50,10 @@ namespace AlleyHoopROSCore
             //ros
             ros::NodeHandle nh; /**< the nodehandle */
 
-            int maxSpeed; /**< the maximum speed the vehicle is allowed to move */
-            int currentSpeed; /**< the current speed of the vehicle */
+            int maxSpeed = 100; /**< the maximum speed the vehicle is allowed to move */
+            int moveDirection = 0; /**< the direction to move, -1 = backwards, 0 = brake, 1 = fowards */
+            int currentSpeed = 0; /**< the current speed of the vehicle */
+            int steer = 0;  /**< the angle to turn the steering motor */
             
 
             

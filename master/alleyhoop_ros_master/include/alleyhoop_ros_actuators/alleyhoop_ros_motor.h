@@ -8,7 +8,7 @@
 #include "alleyhoop_mvc/actuator.h"
 #include <chrono>
 #include <cstdint>
-#include <std_msgs/UInt8.h>
+#include <std_msgs/Int16.h>
 
 namespace AlleyHoopROSActuators
 {
@@ -35,14 +35,14 @@ namespace AlleyHoopROSActuators
 
             /*!
             * \brief set the state of the motor
-            * \param p an integer, the state to set the motor to
+            * \param d an integer, the state to set the motor to
             */
-            void setPercentage(int p);
+            void setData(int d);
 
             /*!
             * \brief get the current state of the motor
             */
-            int getPercentage();
+            int getData();
 
             /*!
             * \brief update function, should be called from the base controller class
@@ -62,7 +62,7 @@ namespace AlleyHoopROSActuators
             ros::NodeHandle nh; /**< the nodehandle*/
 
         private:
-            int percentage; /**< the state of the motor*/
+            int data; /**< the state of the motor*/
             double pub_rate; /**< the rate with which the motor state is published in milli seconds*/
             double pub_time; /**< the time the next state needs to be published in milli seconds since epoch*/
 

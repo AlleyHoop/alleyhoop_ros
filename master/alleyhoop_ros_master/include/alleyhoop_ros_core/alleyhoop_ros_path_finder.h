@@ -1,7 +1,6 @@
 #ifndef  ALLEYHOOPROSPATHFINDER_H_
 #define  ALLEYHOOPROSPATHFINDER_H_
 
-
 #include <ros/ros.h>
 #include "alleyhoop_mvc/model.h"
 
@@ -40,7 +39,7 @@ namespace AlleyHoopROSCore
             * \param targetTransform the destrination transform
             * \param objects features on which a path CAN NOT be made
             * \param road features on which a path MUST be made
-            * \TODO actually implement the function
+            * \todo actually implement the function
             */ 
             bool findPath(AlleyHoopROSUtils::Transform& currentTransform, AlleyHoopROSUtils::Transform& targetTransform , std::list<AlleyHoopROSUtils::Feature*>& objects, std::list<AlleyHoopROSUtils::Feature*>& road);
 
@@ -54,15 +53,46 @@ namespace AlleyHoopROSCore
 
         private:
             std::map<std::string, AlleyHoopROSUtils::Node*> map; /**< the map the pathfinder made based on features */
-            AlleyHoopROSUtils::Node* currentNode; /**< the current position */
+            AlleyHoopROSUtils::Node* referenceNode; /**< node to reference from */
+            std::list<AlleyHoopROSUtils::Node*> currentNodes; /**< the current nodes occupied by the vehicle */
             AlleyHoopROSUtils::Node* targetNode; /**< the destinatinon position */
 
             /*!
-            * \brief a utility function to get a node from a position
+            * \brief a utility function to get and or create a node from a position
             * this function will do modular operations on the position based on nodeSizes given in the constructor. If the position is within the bounds of an existing node, that node will be returned.
+            * Note that a new node will be created if not already existing
             * \param _position the position the node is gotten from
             */
             AlleyHoopROSUtils::Node* getNode(AlleyHoopROSUtils::Vector3& _position);
+
+            /*!
+            * \brief a utility function to get a node from a node id
+            * Unlike the other getNode function, this one will not create a new node
+            * \param _nodeId the id of the node
+            */
+            AlleyHoopROSUtils::Node* getNode(std::string _nodeId);
+
+            /*!
+            * \brief a utility function to get a node from a node id
+            * Unlike the other getNode function, this one will not create a new node
+            * \param _transform the transform of the node
+            * \param extents the lengths of each side of the object to translate to nodes 
+            */
+            std::list<AlleyHoopROSUtils::Node*> getNodes(AlleyHoopROSUtils::Transform& _transform, AlleyHoopROSUtils::Vector3& extents);
+
+            /*!
+            * \brief a utility function to get a node from a given list with id. Will return a nullptr when no node is found.
+            * \param nodeList the list to find the node in
+            * \param _nodeId the id of the node to be found
+            */
+            AlleyHoopROSUtils::Node* getNodeInList(std::list<AlleyHoopROSUtils::Node*>& nodeList, std::string _nodeId);
+
+            /*!
+            * \brief a utility function to fill the adjacentNodes member of a given node
+            * \todo implement the logic for this function so that all adjacent nodes, with a unit of nodeSize are added into the adjacent nodes list in the node
+            * \param _node the node to find adjacentNode for
+            */
+            void updateAdjacentNodes(AlleyHoopROSUtils::Node* _node);
 
             /*!
             * \brief this function will delete all map nodes

@@ -4,14 +4,17 @@
 namespace AlleyHoopROSUtils
 {
 
-    float Node::NodeSizeX = 1;
-    float Node::NodeSizeY = 1;
-    float Node::NodeSizeZ = 1;
+    AlleyHoopROSUtils::Vector3 Node::NodeSizes;
 
     Node::Node(AlleyHoopROSUtils::Vector3 _position)
-        : position(averagePosition(_position)), nodeId(convertPositionToNodeId(position))
+        : position(averagePosition(_position)), nodeId(convertPositionToNodeId(position)), walkable(false), occupied(false), processed(false), distance(0), heuristics(0), parent(nullptr)
     {
 
+    }
+
+    float Node::getNodeCost()
+    {
+        return distance + heuristics;
     }
 
     std::string Node::convertPositionToNodeId(AlleyHoopROSUtils::Vector3& _position)
@@ -27,20 +30,20 @@ namespace AlleyHoopROSUtils
         float averaged_y;
         float averaged_z;
 
-        if ( std::fmod(_position.x, Node::NodeSizeX)/Node::NodeSizeX > 0.5f )
-            averaged_x = _position.x + (Node::NodeSizeX - (_position.x , Node::NodeSizeX));
+        if ( std::fmod(_position.x, Node::NodeSizes.x)/Node::NodeSizes.x > 0.5f )
+            averaged_x = _position.x + (Node::NodeSizes.x - (_position.x , Node::NodeSizes.x));
         else
-            averaged_x = _position.x - std::fmod(_position.x , Node::NodeSizeX);
+            averaged_x = _position.x - std::fmod(_position.x , Node::NodeSize.x);
         
-        if (std::fmod(_position.y , Node::NodeSizeY)/Node::NodeSizeY > 0.5f )
-            averaged_y = _position.y + (Node::NodeSizeY - (_position.y , Node::NodeSizeY));
+        if (std::fmod(_position.y , Node::NodeSizes.y)/Node::NodeSizes.y > 0.5f )
+            averaged_y = _position.y + (Node::NodeSizes.y - (_position.y , Node::NodeSizes.y));
         else
-            averaged_y = _position.y - std::fmod(_position.y , Node::NodeSizeY);
+            averaged_y = _position.y - std::fmod(_position.y , Node::NodeSizes.y);
 
-        if ( std::fmod(_position.z, Node::NodeSizeZ)/Node::NodeSizeZ > 0.5f )
-            averaged_z = _position.z + (Node::NodeSizeZ - (_position.z , Node::NodeSizeZ));
+        if ( std::fmod(_position.z, Node::NodeSizes.z)/Node::NodeSizes.z > 0.5f )
+            averaged_z = _position.z + (Node::NodeSizes.z - (_position.z , Node::NodeSizes.z));
         else
-            averaged_z = _position.z - std::fmod(_position.z , Node::NodeSizeZ);
+            averaged_z = _position.z - std::fmod(_position.z , Node::NodeSizes.z);
 
         AlleyHoopROSUtils::Vector3 averagedPosition(averaged_x, averaged_y, averaged_z);
         return averagedPosition;
@@ -48,9 +51,9 @@ namespace AlleyHoopROSUtils
 
      void Node::updateNodeSizes(Vector3& nodeSizes)
      {
-        Node::NodeSizeX = nodeSizes.x;
-        Node::NodeSizeY = nodeSizes.y;
-        Node::NodeSizeZ = nodeSizes.z;
+        Node::NodeSizes.x = nodeSizes.x;
+        Node::NodeSizes.y = nodeSizes.y;
+        Node::NodeSizes.z = nodeSizes.z;
      }
 
 }

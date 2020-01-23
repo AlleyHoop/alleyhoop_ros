@@ -13,25 +13,25 @@ namespace AlleyHoopROSActuators
     Motor::Motor(std::string _name, ros::NodeHandle* _nh, std::string _topic)
 	    : AlleyHoopMVC::Actuator(_name), nh(*_nh), topic_name(_topic), percentage(50), pub_rate(250), pub_time(timeMillis() + pub_rate)
     {
-        pub = nh.advertise<std_msgs::UInt8>(topic_name, 1);
+        pub = nh.advertise<std_msgs::Int16>(topic_name, 1);
     }
 
-    int Motor::getPercentage()
+    int Motor::getData()
     {
-        return percentage;
+        return data;
     }
 
-    void Motor::setPercentage(int p)
+    void Motor::setData(int d)
     {
-        percentage = p;
+        data = p;
     }
 
     void Motor::update()
     {
         if(timeMillis() > pub_time)
         {
-            std_msgs::UInt8 msg;
-            msg.data = percentage;
+            std_msgs::Int16 msg;
+            msg.data = data;
             pub.publish(msg);
             pub_time = timeMillis() + pub_rate;
         }

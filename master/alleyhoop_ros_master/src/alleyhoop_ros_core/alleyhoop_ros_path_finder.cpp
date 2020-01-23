@@ -29,40 +29,18 @@ namespace AlleyHoopROSCore
             AlleyHoopROSUtils::Feature* newNode = (*node_iter);
             newNode->walkable = true;
         }
+
         //instantiate nodes
-        for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = objects.begin(); feature_iter != objects.end(); feature_iter++)
-        {
-            AlleyHoopROSUtils::Feature* feature = (*feature_iter);
-            std::list<AlleyHoopROSUtils::Node*> _nodes = getNodes(feature->transform, feature->extents);
+        instantiateNodesFromFeatures(objects);
+        instantiateNodesFromFeatures(road);
 
-            for(std::list<AlleyHoopROSUtils::Node*>::iterator node_iter = _nodes.begin(); node_iter != _nodes.end(); node_iter++)
-            {
-                AlleyHoopROSUtils::Feature* newNode = (*node_iter);
-        
-                //check type of feature and set feature types
-                if(feature->featureType == AlleyHoopROSUtils::FeatureTypes::Object)
-                {
-                    newNode->occupied = true;
-                }
-
-                if(feature->featureType == AlleyHoopROSUtils::FeatureTypes::MovingObject)
-                {
-                    newNode->occupied = true;
-                }
-
-                if(feature->featureType == AlleyHoopROSUtils::FeatureTypes::Road)
-                {
-                    newNode->walkable = true;
-                }
-
-            }
-        }
-
-        //create opened & closed list and add starting node
+        //create opened & closed list
         std::list<AlleyHoopROSUtils::Node*> openList;
         std::list<AlleyHoopROSUtils::Node*> closedList;
         AlleyHoopROSUtils::Node* processNode = getNode(currentTransform.position);
         AlleyHoopROSUtils::Node* lastNode = getNode(targetTransform.position);
+
+        //set the node to start with
         openList.push_back(processNode);
 
         //calculate estimated distance 
@@ -158,8 +136,39 @@ namespace AlleyHoopROSCore
             next_node = next_node->parent;
         }
         if(verbose_mode) std::cout << "succesfully found a path" << std::endl
-        
+
         return true;
+    }
+
+    void PathFinder::instantiateNodesFromFeatures(std::list<AlleyHoopROSUtils::Feature*>& features)
+    {
+        for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = features.begin(); feature_iter != features.end(); feature_iter++)
+        {
+            AlleyHoopROSUtils::Feature* feature = (*feature_iter);
+            std::list<AlleyHoopROSUtils::Node*> _nodes = getNodes(feature->transform, feature->extents);
+
+            for(std::list<AlleyHoopROSUtils::Node*>::iterator node_iter = _nodes.begin(); node_iter != _nodes.end(); node_iter++)
+            {
+                AlleyHoopROSUtils::Feature* newNode = (*node_iter);
+        
+                //check type of feature and set feature types
+                if(feature->featureType == AlleyHoopROSUtils::FeatureTypes::Object)
+                {
+                    newNode->occupied = true;
+                }
+
+                if(feature->featureType == AlleyHoopROSUtils::FeatureTypes::MovingObject)
+                {
+                    newNode->occupied = true;
+                }
+
+                if(feature->featureType == AlleyHoopROSUtils::FeatureTypes::Road)
+                {
+                    newNode->walkable = true;
+                }
+
+            }
+        }
     }
 
     std::list<AlleyHoopROSUtils::Node*> PathFinder::getNodes(AlleyHoopROSUtils::Transform& _transform, AlleyHoopROSUtils::Vector3& extents)

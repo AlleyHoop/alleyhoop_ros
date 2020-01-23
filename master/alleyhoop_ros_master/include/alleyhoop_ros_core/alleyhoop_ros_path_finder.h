@@ -58,6 +58,13 @@ namespace AlleyHoopROSCore
             AlleyHoopROSUtils::Node* targetNode; /**< the destinatinon position */
 
             /*!
+            * \brief a utility function to convert features into nodes
+            * this function will pass the convertion of a node to the function getNodes where after it will set the occupancy values of the node
+            * \param features these are the features to be converted
+            */
+            void instantiateNodesFromFeatures(std::list<AlleyHoopROSUtils::Feature*>& features);
+
+            /*!
             * \brief a utility function to get and or create a node from a position
             * this function will do modular operations on the position based on nodeSizes given in the constructor. If the position is within the bounds of an existing node, that node will be returned.
             * Note that a new node will be created if not already existing

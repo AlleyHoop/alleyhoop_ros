@@ -11,8 +11,7 @@
 
 
     <arg name="enable_pi_camera" default="false"/>
-    <arg name="enable_fake_pi_camera" default="false"/>
-    <arg name="enable_fake_depth_camera" default="false"/>
+    <arg name="enable_fake_camera" default="false"/>
 
     <!--launch feature finder-->
     <group if="$(arg enable_traffic_rules_feature_finder)">
@@ -46,13 +45,8 @@
     </group>
 
     <!--launch fake pi camera-->
-    <group if="$(arg enable_fake_pi_camera)">
-        <node name="fake_pi_camera" pkg="raspi_utils" type="fake_raspi_camera.py" args="image=traffic_sign.jpeg topic=/raspi_camera/image_raw" output="screen" cwd="node"/>
-    </group>
-
-    <!--launch fake pi camera-->
-    <group if="$(arg enable_fake_depth_camera)">
-        <node name="fake_depth_camera" pkg="raspi_utils" type="fake_raspi_camera.py" args="image=highway.jpg topic=/depth_camera/image_raw" output="screen" cwd="node"/>
+    <group if="$(arg enable_fake_camera)">
+        <node name="fake_depth_camera" pkg="raspi_utils" type="fake_raspi_camera.py" args="image=highway.jpg topic=/camera/color/image_raw" output="screen" cwd="node"/>
     </group>
 
     <!-- load parameters-->

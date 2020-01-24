@@ -161,7 +161,7 @@ namespace AlleyHoopROSCore
   
                 //find path to target position
                 if(verboseMode) std::cout <<  "-------------" << "\nController: finding path...." << std::endl;
-                pathFinder->findPath(ah_vehicle->transform, ah_vehicle->destination, objects, roadFeatures);
+                //pathFinder->findPath(ah_vehicle->transform, ah_vehicle->destination, objects, roadFeatures);
 
                 //!!TODO read the path and translate to motion for the motor
                 //ah_vehicle->

@@ -1,0 +1,27 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/alleyhoop-monitor/catkin_ws/devel/include/**",
+        "/opt/ros/kinetic/include/**",
+        "/home/alleyhoop-monitor/catkin_ws/src/alleyhoop_master/include/**",
+        "/home/alleyhoop-monitor/catkin_ws/src/alleyhoop_ros_master/include/**",
+        "/home/alleyhoop-monitor/catkin_ws/src/alleyhoop_ros_msgs/include/**",
+        "/home/alleyhoop-monitor/catkin_ws/src/darknet_ros/darknet_ros/include/**",
+        "/home/alleyhoop-monitor/catkin_ws/src/hector_geotiff/include/**",
+        "/home/alleyhoop-monitor/catkin_ws/src/hector_map_tools/include/**",
+        "/home/alleyhoop-monitor/catkin_ws/src/hector_mapping/include/**",
+        "/home/alleyhoop-monitor/catkin_ws/src/hector_marker_drawing/include/**",
+        "/home/alleyhoop-monitor/catkin_ws/src/object_feature_finder/include/**",
+        "/home/alleyhoop-monitor/catkin_ws/src/road_feature_finder/include/**",
+        "/home/alleyhoop-monitor/catkin_ws/src/traffic_rules_feature_finder/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ]
+}

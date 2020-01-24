@@ -9,6 +9,7 @@ Panels:
         - /Grid1
         - /RobotModel1
         - /LaserScan1
+        - /Map1
       Splitter Ratio: 0.5
     Tree Height: 565
   - Class: rviz/Selection
@@ -72,7 +73,6 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
         lidar_link:
           Alpha: 1
           Show Axes: false
@@ -114,6 +114,16 @@ Visualization Manager:
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
+    - Alpha: 0.699999988
+      Class: rviz/Map
+      Color Scheme: map
+      Draw Behind: false
+      Enabled: true
+      Name: Map
+      Topic: /map
+      Unreliable: false
+      Use Timestamp: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -139,7 +149,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 6.81472015
+      Distance: 16.8729954
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
@@ -154,10 +164,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.39539808
+      Pitch: 0.695397854
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.71357679
+      Yaw: 5.19357491
     Saved: ~
 Window Geometry:
   Displays:
@@ -175,5 +185,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1200
-  X: 556
-  Y: 107
+  X: 238
+  Y: 66

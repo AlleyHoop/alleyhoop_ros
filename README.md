@@ -57,3 +57,4 @@ Uses ROS for communication between components. The architecture is based on MVC 
          * [realsense_ros](http://wiki.ros.org/realsense2_camera)
 
 The hardware components for which this software was made can be seen below:
+![alt text](https://github.com/AlleyHoop/alleyhoop_ros/blob/master/documentation/hardware%20setup.png "Hardware setup")

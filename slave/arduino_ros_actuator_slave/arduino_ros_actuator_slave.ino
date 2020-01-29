@@ -31,7 +31,7 @@ void velocityMessageCb( const std_msgs::Int16& msg)
 {
   velocity = msg.data;
 }
-ros::Subscriber<std_msgs::Int16> velocity_sub("/arduino_actuator_slave/velocity", &velocityMessageCb );
+ros::Subscriber<std_msgs::Int16> velocity_sub("/arduino_actuator_slave/direction", &velocityMessageCb );
 
 
 //led 1 routine function
@@ -39,21 +39,16 @@ void update_actuators()
 {
   //update led state
   if(led13_state)
+  {
     digitalWrite(led13_pin, HIGH);
+  }
   else
+  {
     digitalWrite(led13_pin, LOW);
+  }
 
   //update motors
-  int dir = 0;
-  if(velocity > 0)
-  {
-    dir = 1;
-  }
-  if(velocity < 0)
-  {
-    dir = -1;
-  }
-  update_motors(abs(velocity), steer, dir);
+  update_motors(velocity, steer);
 }
 
 //arduino setup

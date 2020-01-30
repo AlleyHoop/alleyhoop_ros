@@ -11,9 +11,9 @@ namespace AlleyHoopROSActuators
 
 
     Led::Led(std::string _name, ros::NodeHandle* _nh, std::string _topic)
-	    : AlleyHoopMVC::Actuator(_name), nh(*_nh), topic_name(_topic), state(false), pub_rate(250), pub_time(timeMillis() + pub_rate)
+	    : AlleyHoopMVC::Actuator(_name), nh(*_nh), topic_name(_topic), state(false), pub_rate(100), pub_time(timeMillis() + pub_rate)
     {
-        pub = nh.advertise<std_msgs::Bool>(topic_name, 1);
+        pub = nh.advertise<std_msgs::Bool>(topic_name, 1);  //always publish latest message
     }
 
     bool Led::getState()

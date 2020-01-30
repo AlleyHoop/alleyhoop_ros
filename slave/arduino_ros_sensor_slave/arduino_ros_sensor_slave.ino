@@ -15,26 +15,32 @@ ros::NodeHandle nodeHandle;
 //led1 data
 const int led13_pin = 13;
 bool led13_state = false;
+const long cmd_led13_timer_rate = 200; 
+long cmd_led13_timer = millis() + cmd_led13_timer_rate;  //timer to check if led data was updated
 void messageCb( const std_msgs::Bool& msg)
 {
+  cmd_led13_timer = millis() + cmd_led13_timer_rate; //reset the timer since new data has arrived
   led13_state = msg.data;
 }
 ros::Subscriber<std_msgs::Bool> led13_sub("/arduino_sensor_slave/led13", &messageCb );
 
 //ultrasonic data
-long ultrasonic_pub_timer = millis() + 1000;
+const long ultrasonic_pub_rate = 100;
+long ultrasonic_pub_timer = millis() + ultrasonic_pub_timer;
 std_msgs::UInt8 ultrasonic_msg;
 ros::Publisher ultrasonic_pub("/arduino_sensor_slave/ultrasonic_sensor", &ultrasonic_msg);
 
 //imu data
+const long imu_pub_rate = 200;
+long imu_pub_timer = millis() + imu_pub_rate;
 sensor_msgs::Imu imu_msg;
-long imu_pub_timer = millis() + 1000;
 ros::Publisher imu_pub("/arduino_sensor_slave/imu_sensor", &imu_msg);
 
 //linetracking sensors
 std_msgs::Bool linetracker1_msg;
 std_msgs::Bool linetracker2_msg;
-long linetrackers_pub_timer = millis() + 1000;
+const long linetrackers_pub_rate = 200;
+long linetrackers_pub_timer = millis() + linetrackers_pub_rate;
 ros::Publisher linetracker1_pub("/arduino_sensor_slave/linetracker_left", &linetracker1_msg);
 ros::Publisher linetracker2_pub("/arduino_sensor_slave/linetracker_right", &linetracker2_msg);
 
@@ -52,7 +58,7 @@ void update_sensors()
 
     //publish data
     ultrasonic_pub.publish( &ultrasonic_msg );
-    ultrasonic_pub_timer = millis() + 1000;
+    ultrasonic_pub_timer = millis() + ultrasonic_pub_rate;
   }
 
   //update imu data
@@ -83,7 +89,7 @@ void update_sensors()
 
     //publish data
     imu_pub.publish( &imu_msg );
-    imu_pub_timer = millis() + 1000;
+    imu_pub_timer = millis() + imu_pub_rate;
   }
 
   //update line tracking sensors
@@ -99,7 +105,7 @@ void update_sensors()
     //publish data
     linetracker1_pub.publish( &linetracker1_msg );
     linetracker2_pub.publish( &linetracker2_msg );
-    linetrackers_pub_timer = millis() + 1000;
+    linetrackers_pub_timer = millis() + linetrackers_pub_rate;
   }
 }
 
@@ -107,13 +113,12 @@ void update_sensors()
 void update_actuators()
 {
   //update led state
-  if(led13_state)
+  if(led13_state && millis() < cmd_led13_timer)
     digitalWrite(led13_pin, HIGH);
   else
     digitalWrite(led13_pin, LOW);
 }
 
-//arduino setup
 void setup()
 {
   //node init
@@ -137,7 +142,6 @@ void setup()
   nodeHandle.advertise(linetracker2_pub);
 }
 
-//routine
 void loop()
 {
   //update actuators based subscribed data
@@ -148,5 +152,4 @@ void loop()
 
   //callback and send data
   nodeHandle.spinOnce();
-
 }

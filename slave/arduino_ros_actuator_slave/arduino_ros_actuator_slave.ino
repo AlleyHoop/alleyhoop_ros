@@ -7,33 +7,38 @@
 
 //ros node (only one possible on arduino)
 ros::NodeHandle nodeHandle;
-long cmd_fail_timer = millis() + 500;
 
 //led1 data
 const int led13_pin = 13;
 bool led13_state = false;
+const long cmd_led13_timer_rate = 200; 
+long cmd_led13_timer = millis() + cmd_led13_timer_rate;  //timer to check if led data was updated
 void ledMessageCb( const std_msgs::Bool& msg)
 {
   led13_state = msg.data;
+  cmd_led13_timer = millis() + cmd_led13_timer_rate; //reset the timer since new data has arrived
 }
 ros::Subscriber<std_msgs::Bool> led13_sub("/arduino_actuator_slave/led13", &ledMessageCb );
 
+
 //steering data
 int side = 0;
-bool cmd_side = false;
+const long cmd_side_timer_rate = 100;
+long cmd_side_timer = millis() + cmd_side_timer_rate; //timer to check if motor data was updated
 void sideMessageCb( const std_msgs::Int16& msg)
 {
-  cmd_side = true;
+  cmd_side_timer = millis() + cmd_side_timer_rate; //reset the timer since new data has arrived
   side = msg.data;
 }
 ros::Subscriber<std_msgs::Int16> side_sub("/arduino_actuator_slave/side", &sideMessageCb );
 
 //velocity data
 int direction = 0;
-bool cmd_direction = false;
+const long cmd_direction_timer_rate = 100;
+long cmd_direction_timer = millis() + cmd_direction_timer_rate; //timer to check if motor data was updated
 void directionMessageCb( const std_msgs::Int16& msg)
 {
-  cmd_direction = true;
+  cmd_direction_timer = millis() + cmd_direction_timer_rate //reset the timer since new data has arrived
   direction = msg.data;
 }
 ros::Subscriber<std_msgs::Int16> direction_sub("/arduino_actuator_slave/direction", &directionMessageCb );
@@ -43,7 +48,7 @@ ros::Subscriber<std_msgs::Int16> direction_sub("/arduino_actuator_slave/directio
 void update_actuators()
 {
   //update led state
-  if(led13_state)
+  if(led13_state && millis() < cmd_led13_timer)
   {
     digitalWrite(led13_pin, HIGH);
   }
@@ -53,7 +58,7 @@ void update_actuators()
   }
 
   //update motors if received messages
-  if(cmd_direction && cmd_side)
+  if(millis() < cmd_direction_timer && millis() < cmd_side_timer)
   {
     update_motors(direction, side);
   }
@@ -89,18 +94,4 @@ void loop()
 
   //callback and make sure received important messages
   nodeHandle.spinOnce();
-
-  //reset failover timer if commands for both motors received
-  if(cmd_direction && cmd_side)
-  {
-    cmd_fail_timer = millis() + 500;
-  }
-
-  //ensure motors dont run
-  if(millis() > cmd_fail_timer)
-  {
-    cmd_direction = false;
-    cmd_side = false;
-  }
-
 }

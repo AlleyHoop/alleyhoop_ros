@@ -19,7 +19,7 @@ void velocity_motor_move(int _velocity)
         velocity_motor.writeMicroseconds(1500);
         delay(200);
         velocity_motor.writeMicroseconds(current_velocity);
-        delay(100);
+        delay(50);
     }
 }
 

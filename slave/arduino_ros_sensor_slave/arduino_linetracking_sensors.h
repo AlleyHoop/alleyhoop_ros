@@ -3,8 +3,8 @@ const int tracingPin1 = 7;
 const int tracingPin2 = 6;
 
 //exported data
-bool linetracker1_data;
-bool linetracker2_data;
+bool linetracker1_data = false;
+bool linetracker2_data = false;
 
 //setup function
 void setup_linetracking_sensors()

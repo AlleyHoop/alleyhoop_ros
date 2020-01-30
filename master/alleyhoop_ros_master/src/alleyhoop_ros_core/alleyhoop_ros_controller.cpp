@@ -169,22 +169,22 @@ namespace AlleyHoopROSCore
                 // <OLD> control steering based linetrackers
                 if(linetracker_right->getData() == true && linetracker_left->getData() == true)
                 {
-                    ah_vehicle->steering_motor->setData(1500);
+                    ah_vehicle->steering_motor->setData(0);
                 }
 
                 if(linetracker_right->getData() == true && linetracker_left->getData() == false)
                 {
-                   ah_vehicle->steering_motor->setData(1800);
+                   ah_vehicle->steering_motor->setData(1);
                 }
 
                 if(linetracker_right->getData() == false && linetracker_left->getData() == true)
                 {
-                    ah_vehicle->steering_motor->setData(1200);
+                    ah_vehicle->steering_motor->setData(-1);
                 }
 
                 if(linetracker_right->getData() == false && linetracker_left->getData() == false)
                 {
-                    ah_vehicle->steering_motor->setData(1500);
+                    ah_vehicle->steering_motor->setData(0);
                 }
                 
                 // <OLD> Ultrasonic sensor example
@@ -193,14 +193,14 @@ namespace AlleyHoopROSCore
                     //turn on leds
                     ah_vehicle->led1->setState(true);
                     ah_vehicle->led2->setState(true);
-                    ah_vehicle->velocity_motor->setData(-100);
+                    ah_vehicle->velocity_motor->setData(-1);
                 }
                 else
                 {
                     //turn on led
                     ah_vehicle->led1->setState(false);
                     ah_vehicle->led2->setState(false);
-                    ah_vehicle->velocity_motor->setData(100);
+                    ah_vehicle->velocity_motor->setData(1);
                 }
             }
 

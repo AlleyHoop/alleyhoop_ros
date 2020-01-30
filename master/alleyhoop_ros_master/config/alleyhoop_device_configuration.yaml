@@ -2,8 +2,8 @@ Alleyhoop_VerboseMode: "log"
 
 AlleyHoop_Sensors: {
     UltrasonicSensor_TopicName: "/arduino_sensor_slave/ultrasonic_sensor",
-    ImuSensor_TopicName: "/arduino_sensor_slave/imu_sensor",
     MonoCameraImageRaw_TopicName: "/camera/color/image_raw",
+    ImuSensor_TopicName: "/arduino_sensor_slave/imu_sensor",
     MonoCameraInfo_TopicName: "/camera/color/camera_info",
     DepthCameraInfo_TopicName: "/camera/depth/camera_info",
     DepthCameraPcl_TopicName: "/camera/depth/color/points",
@@ -15,8 +15,8 @@ AlleyHoop_Sensors: {
 AlleyHoop_Actuators: {
     Led1_TopicName: "/arduino_actuator_slave/led13",
     Led2_TopicName: "/arduino_sensor_slave/led13",
-    SteeringMotor_TopicName: "/arduino_actuator_slave/servo",
-    VelocityMotor_TopicName: "/arduino_actuator_slave/esc",
+    SteeringMotor_TopicName: "/arduino_actuator_slave/side",
+    VelocityMotor_TopicName: "/arduino_actuator_slave/direction",
 }
 
 AlleyHoop_Models: {

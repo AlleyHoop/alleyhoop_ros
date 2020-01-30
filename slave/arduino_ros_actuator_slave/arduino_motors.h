@@ -6,14 +6,18 @@ const int steering_motor_pin = 9;
 int current_steer = 0;
 
 //velocity motor pins
+Servo velocity_motor;
 const int velocity_motor_pin = 10;    
 int current_velocity = 0;                            
 
 void setup_motors()
 {
     //setup motor pins
+    velocity_motor.attach(velocity_motor_pin);
     steering_motor.attach(steering_motor_pin);
-    pinMode(velocity_motor_pin, OUTPUT);
+
+    //set motors to default state
+    velocity_motor_move(1500);
 
 }
 
@@ -22,19 +26,19 @@ void update_motors(int _direction, int _side)
     //brake
     if(_direction == 0)
     {
-        velocity_motor_move(0);
+        velocity_motor_move(1500);
     }
 
     //move backward
     if(_direction <= -1)
     {
-        velocity_motor_move(250);
+        velocity_motor_move(1400);
     }
 
     //move foward
     if(_direction >= 1)
     {
-        velocity_motor_move(100);
+        velocity_motor_move(1600);
     }
 
 
@@ -64,14 +68,21 @@ void velocity_motor_move(int _velocity)
     if(current_velocity != _velocity)
     {
         current_velocity = _velocity;
-        analogWrite(velocity_motor_pin, 0);
+        velocity_motor.writeMicroseconds(1500);
         delay(200);
-        analogWrite(velocity_motor_pin, current_velocity);
+        velocity_motor.writeMicroseconds(current_velocity);
         delay(100);
     }
 }
 
 void steer_motor_move(int _steer)
 {
-    steering_motor.write(_steer);
+    if(current_steer != _steer)
+    {
+        current_steer = _steer;
+        current_steer.writeMicroseconds(1500);
+        delay(200);
+        steering_motor.writeMicroseconds(current_steer);
+        delay(100);
+    }
 }

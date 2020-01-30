@@ -18,20 +18,20 @@ void ledMessageCb( const std_msgs::Bool& msg)
 ros::Subscriber<std_msgs::Bool> led13_sub("/arduino_actuator_slave/led13", &ledMessageCb );
 
 //steering data
-int steer = 0;
-void steerMessageCb( const std_msgs::Int16& msg)
+int side = 0;
+void sideMessageCb( const std_msgs::Int16& msg)
 {
-  steer = msg.data;
+  side = msg.data;
 }
-ros::Subscriber<std_msgs::Int16> steer_sub("/arduino_actuator_slave/steer", &steerMessageCb );
+ros::Subscriber<std_msgs::Int16> side_sub("/arduino_actuator_slave/side", &sideMessageCb );
 
 //velocity data
-int velocity = 0;
-void velocityMessageCb( const std_msgs::Int16& msg)
+int direction = 0;
+void directionMessageCb( const std_msgs::Int16& msg)
 {
-  velocity = msg.data;
+  direction = msg.data;
 }
-ros::Subscriber<std_msgs::Int16> velocity_sub("/arduino_actuator_slave/direction", &velocityMessageCb );
+ros::Subscriber<std_msgs::Int16> direction_sub("/arduino_actuator_slave/direction", &directionMessageCb );
 
 
 //led 1 routine function
@@ -48,7 +48,7 @@ void update_actuators()
   }
 
   //update motors
-  update_motors(velocity, steer);
+  update_motors(direction, side);
 }
 
 //arduino setup
@@ -63,7 +63,8 @@ void setup()
 
   //setup motors
   setup_motors();
-  nodeHandle.subscribe();
+  nodeHandle.subscribe(direction_sub);
+  nodeHandle.subscribe(side_sub);
 }
 
 //routine

@@ -166,6 +166,24 @@ namespace AlleyHoopROSCore
                 //!!TODO read the path and translate to motion for the motor
                 //ah_vehicle->
 
+                
+                
+                // <OLD> Ultrasonic sensor example
+                if(ultrasonic_sensor_data < 30 && ultrasonic_sensor_data > 0)
+                {
+                    //turn on leds
+                    ah_vehicle->led1->setState(true);
+                    ah_vehicle->led2->setState(true);
+                    ah_vehicle->velocity_motor->setData(-1);
+                }
+                else if(ultrasonic_sensor_data >= 30)
+                {
+                    //turn on led
+                    ah_vehicle->led1->setState(false);
+                    ah_vehicle->led2->setState(false);
+                    ah_vehicle->velocity_motor->setData(1);
+                }
+
                 // <OLD> control steering based linetrackers
                 if(linetracker_right->getData() == true && linetracker_left->getData() == true)
                 {
@@ -185,22 +203,7 @@ namespace AlleyHoopROSCore
                 if(linetracker_right->getData() == false && linetracker_left->getData() == false)
                 {
                     ah_vehicle->steering_motor->setData(0);
-                }
-                
-                // <OLD> Ultrasonic sensor example
-                if(ultrasonic_sensor_data < 30 && ultrasonic_sensor_data > 0)
-                {
-                    //turn on leds
-                    ah_vehicle->led1->setState(true);
-                    ah_vehicle->led2->setState(true);
-                    ah_vehicle->velocity_motor->setData(-1);
-                }
-                else
-                {
-                    //turn on led
-                    ah_vehicle->led1->setState(false);
-                    ah_vehicle->led2->setState(false);
-                    ah_vehicle->velocity_motor->setData(1);
+                    ah_vehicle->velocity_motor->setData(0);
                 }
             }
 

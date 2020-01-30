@@ -19,16 +19,20 @@ ros::Subscriber<std_msgs::Bool> led13_sub("/arduino_actuator_slave/led13", &ledM
 
 //steering data
 int side = 0;
+bool cmd_side = false;
 void sideMessageCb( const std_msgs::Int16& msg)
 {
+  cmd_side = true;
   side = msg.data;
 }
 ros::Subscriber<std_msgs::Int16> side_sub("/arduino_actuator_slave/side", &sideMessageCb );
 
 //velocity data
 int direction = 0;
+bool cmd_direction = false
 void directionMessageCb( const std_msgs::Int16& msg)
 {
+  cmd_direction = true;
   direction = msg.data;
 }
 ros::Subscriber<std_msgs::Int16> direction_sub("/arduino_actuator_slave/direction", &directionMessageCb );
@@ -47,8 +51,17 @@ void update_actuators()
     digitalWrite(led13_pin, LOW);
   }
 
-  //update motors
-  update_motors(direction, side);
+  //update motors if received messages
+  if(cmd_direction && cmd_side)
+  {
+    update_motors(direction, side);
+  }
+  else
+  {
+    //stop motors
+    update_motors(0, 0);
+  }
+  
 }
 
 //arduino setup
@@ -73,7 +86,9 @@ void loop()
   //update actuators based subscribed data
   update_actuators();
 
-  //callback and send data
+  //callback and make sure received important messages
+  cmd_direction = false;
+  cmd_side = false;
   nodeHandle.spinOnce();
 
 }

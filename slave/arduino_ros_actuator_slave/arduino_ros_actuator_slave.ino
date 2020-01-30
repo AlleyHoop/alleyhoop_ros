@@ -7,6 +7,7 @@
 
 //ros node (only one possible on arduino)
 ros::NodeHandle nodeHandle;
+long cmd_fail_timer = millis() + 500;
 
 //led1 data
 const int led13_pin = 13;
@@ -29,7 +30,7 @@ ros::Subscriber<std_msgs::Int16> side_sub("/arduino_actuator_slave/side", &sideM
 
 //velocity data
 int direction = 0;
-bool cmd_direction = false
+bool cmd_direction = false;
 void directionMessageCb( const std_msgs::Int16& msg)
 {
   cmd_direction = true;
@@ -87,8 +88,19 @@ void loop()
   update_actuators();
 
   //callback and make sure received important messages
-  cmd_direction = false;
-  cmd_side = false;
   nodeHandle.spinOnce();
+
+  //reset failover timer if commands for both motors received
+  if(cmd_direction && cmd_side)
+  {
+    cmd_fail_timer = millis() + 500;
+  }
+
+  //ensure motors dont run
+  if(millis() > cmd_fail_timer)
+  {
+    cmd_direction = false;
+    cmd_side = false;
+  }
 
 }

@@ -44,8 +44,6 @@ bool findFeaturesOnImage(alleyhoop_ros_msgs::FindFeaturesOnImage::Request &req,
 
     //source image
     Mat srcImage = imagePtr->image.clone();
-    int height = srcImage.rows;
-    int width = srcImage.cols;
 
     //create hsv image
     Mat hsvImage;

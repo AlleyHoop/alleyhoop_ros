@@ -95,14 +95,9 @@ namespace AlleyHoopROSCore
                 AlleyHoopROSUtils::Feature* f = new AlleyHoopROSUtils::Feature(AlleyHoopROSUtils::FeatureTypes::Object);
                 f->transform.position.x = srv.response.features[i];
                 f->transform.position.y = srv.response.features[i+1];
-                //TODO estimate position z value
-
-                //TODO estimate rotational values
-
                 f->extents.x = srv.response.features[i+2];
                 f->extents.y = srv.response.features[i+3];
-                //TODO estimate z half extents value
-
+                
                 //add the feature
                 features.push_back(f);
             }

@@ -172,7 +172,21 @@ namespace AlleyHoopROSCore
                     ah_vehicle->velocity_motor->setData(1);
                 }
 
-                // <example> turn to side of the blob
+                // <example> turn to side of the blob, assuming image is 640 x 480
+                if(blob.size() > 0)
+                {
+                    int height = 640;
+                    int width = 480;
+                    if(blob[0]->transform.position.x > width/2)
+                    {
+                        ah_vehicle->steering_motor->setData(-1);
+                    }
+                    else
+                    {
+                        ah_vehicle->steering_motor->setData(1);  
+                    }
+                    
+                }
 
                 //!!TODOix feature transforms to reference from the center of the vehicle
                 //for(std::list<AlleyHoopROSUtils::Feature*>::iterator feature_iter = objects.begin(); feature_iter != objects.end(); feature_iter++)

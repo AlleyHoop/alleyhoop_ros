@@ -184,27 +184,6 @@ namespace AlleyHoopROSCore
                     ah_vehicle->velocity_motor->setData(1);
                 }
 
-                // <OLD> control steering based linetrackers
-                if(linetracker_right->getData() == true && linetracker_left->getData() == true)
-                {
-                    ah_vehicle->steering_motor->setData(0);
-                }
-
-                if(linetracker_right->getData() == true && linetracker_left->getData() == false)
-                {
-                   ah_vehicle->steering_motor->setData(1);
-                }
-
-                if(linetracker_right->getData() == false && linetracker_left->getData() == true)
-                {
-                    ah_vehicle->steering_motor->setData(-1);
-                }
-
-                if(linetracker_right->getData() == false && linetracker_left->getData() == false)
-                {
-                    ah_vehicle->steering_motor->setData(0);
-                    ah_vehicle->velocity_motor->setData(0);
-                }
             }
 
             //!!TODO save points of interest such us objects to track and merge them to list of features at the top

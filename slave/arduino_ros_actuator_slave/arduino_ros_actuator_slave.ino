@@ -11,7 +11,7 @@ ros::NodeHandle nodeHandle;
 //led1 data
 const int led13_pin = 13;
 bool led13_state = false;
-const long cmd_led13_timer_rate = 200; 
+const long cmd_led13_timer_rate = 500; 
 long cmd_led13_timer = millis() + cmd_led13_timer_rate;  //timer to check if led data was updated
 void ledMessageCb( const std_msgs::Bool& msg)
 {
@@ -23,7 +23,7 @@ ros::Subscriber<std_msgs::Bool> led13_sub("/arduino_actuator_slave/led13", &ledM
 
 //steering data
 int side = 0;
-const long cmd_side_timer_rate = 100;
+const long cmd_side_timer_rate = 150;
 long cmd_side_timer = millis() + cmd_side_timer_rate; //timer to check if motor data was updated
 void sideMessageCb( const std_msgs::Int16& msg)
 {
@@ -34,11 +34,11 @@ ros::Subscriber<std_msgs::Int16> side_sub("/arduino_actuator_slave/side", &sideM
 
 //velocity data
 int direction = 0;
-const long cmd_direction_timer_rate = 100;
+const long cmd_direction_timer_rate = 150;
 long cmd_direction_timer = millis() + cmd_direction_timer_rate; //timer to check if motor data was updated
 void directionMessageCb( const std_msgs::Int16& msg)
 {
-  cmd_direction_timer = millis() + cmd_direction_timer_rate //reset the timer since new data has arrived
+  cmd_direction_timer = millis() + cmd_direction_timer_rate; //reset the timer since new data has arrived
   direction = msg.data;
 }
 ros::Subscriber<std_msgs::Int16> direction_sub("/arduino_actuator_slave/direction", &directionMessageCb );

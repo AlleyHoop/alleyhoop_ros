@@ -3,7 +3,7 @@
 namespace AlleyHoopROSSensors
 {
     LineTracker::LineTracker(std::string _name, ros::NodeHandle* _nh, std::string _topic)
-	    : AlleyHoopMVC::Sensor(_name), nh(*_nh), topic_name(_topic), state(false)
+	    : AlleyHoopMVC::Sensor(_name), nh(*_nh), topic_name(_topic), value(0)
     {
         sub = nh.subscribe(topic_name, 1, &LineTracker::callBack, this);
     }
@@ -13,13 +13,13 @@ namespace AlleyHoopROSSensors
         //nothing for ros sensor // rosspin() is called from the controller
     }
 
-    bool LineTracker::getData()
+    int LineTracker::getData()
     {
-        return state;
+        return value;
     }
 
-    void LineTracker::callBack(const std_msgs::Bool msg)
+    void LineTracker::callBack(const std_msgs::UInt8 msg)
     {
-        state = msg.data;
+        value = msg.data;
     }
 }

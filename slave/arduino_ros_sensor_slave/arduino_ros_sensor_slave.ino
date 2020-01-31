@@ -15,7 +15,7 @@ ros::NodeHandle nodeHandle;
 //led1 data
 const int led13_pin = 13;
 bool led13_state = false;
-const long cmd_led13_timer_rate = 200; 
+const long cmd_led13_timer_rate = 500; 
 long cmd_led13_timer = millis() + cmd_led13_timer_rate;  //timer to check if led data was updated
 void messageCb( const std_msgs::Bool& msg)
 {
@@ -37,8 +37,8 @@ sensor_msgs::Imu imu_msg;
 ros::Publisher imu_pub("/arduino_sensor_slave/imu_sensor", &imu_msg);
 
 //linetracking sensors
-std_msgs::Bool linetracker1_msg;
-std_msgs::Bool linetracker2_msg;
+std_msgs::UInt8 linetracker1_msg;
+std_msgs::UInt8 linetracker2_msg;
 const long linetrackers_pub_rate = 200;
 long linetrackers_pub_timer = millis() + linetrackers_pub_rate;
 ros::Publisher linetracker1_pub("/arduino_sensor_slave/linetracker_left", &linetracker1_msg);

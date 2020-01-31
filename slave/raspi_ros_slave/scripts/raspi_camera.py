@@ -35,11 +35,11 @@ def GetPiCameraImageAsCvImageJpegFormat():
 
 # img pub
 def main(args):
-    print("starting raspi cam image publisher on topic /raspi_camera/image_raw")
+    print("starting raspi cam image publisher on topic /camera/color/image_raw")
 
     # init ros
     rospy.init_node('raspi_camera', anonymous=True)
-    pub = rospy.Publisher('/raspi_camera/image_raw', Image, queue_size=10)
+    pub = rospy.Publisher('/camera/color/image_raw', Image, queue_size=10)
     rate = rospy.Rate(10)
 
     # create cv2 bridge

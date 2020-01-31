@@ -2,6 +2,9 @@
     <!--launch args-->
     <arg name="enable_lidar" default="false"/>
     <arg name="enable_realsense_camera" default="false"/>
+    <arg name="enable_pi_camera" default="false"/>
+    <arg name="enable_fake_camera" default="false"/>
+    
 
     <!--launch lidar-->
     <group if="$(arg enable_lidar)">
@@ -22,6 +25,16 @@
             <arg name="depth_fps"         default="6" />
             <arg name="color_fps"         default="6" />
         </include>
+    </group>
+
+    <!--launch pi camera / used to replace realsense camera-->
+    <group if="$(arg enable_pi_camera)">
+        <node name="pi_camera" pkg="raspi_ros_slave" type="raspi_camera.py" output="screen"/>
+    </group>
+
+    <!--launch fake pi camera / publish an image-->
+    <group if="$(arg enable_fake_camera)">
+        <node name="fake_depth_camera" pkg="raspi_ros_slave" type="fake_raspi_camera.py" args="image=highway.jpg topic=/camera/color/image_raw" output="screen" cwd="node"/>
     </group>
 
 </launch>

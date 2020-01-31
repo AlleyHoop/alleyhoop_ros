@@ -1,22 +1,15 @@
 <launch>
     <!--launch args-->
-    <arg name="enable_traffic_rules_feature_finder" default="false"/>
+    <arg name="enable_blob_feature_finder" default="false"/>
     <arg name="enable_object_feature_finder" default="false"/>
-    <arg name="enable_road_feature_finder" default="false"/>
 
     <arg name="enable_arduino_actuator_slave" default="false"/>
     <arg name="arduino_actuator_slave_port" default="/dev/ttyACM0"/>
     <arg name="enable_arduino_sensor_slave" default="false"/>
     <arg name="arduino_sensor_slave_port" default="/dev/ttyACM1"/>
 
-
     <arg name="enable_pi_camera" default="false"/>
     <arg name="enable_fake_camera" default="false"/>
-
-    <!--launch feature finder-->
-    <group if="$(arg enable_traffic_rules_feature_finder)">
-        <node name="traffic_rules_feature_finder" pkg="traffic_rules_feature_finder" type="traffic_rules_feature_finder_server" output="screen"/>
-    </group>
 
     <!--launch feature finder-->
     <group if="$(arg enable_object_feature_finder)">
@@ -26,8 +19,8 @@
     </group>
 
     <!--launch feature finder-->
-    <group if="$(arg enable_road_feature_finder)">
-        <node name="road_feature_finder" pkg="road_feature_finder" type="road_feature_finder_server" output="screen"/>
+    <group if="$(arg enable_blob_feature_finder)">
+        <node name="blob_feature_finder" pkg="blob_feature_finder" type="blob_feature_finder_server" output="screen"/>
     </group>
 
     <!--launch slave communication-->

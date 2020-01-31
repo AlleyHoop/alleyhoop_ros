@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(traffic_rules_feature_finder)
+project(blob_feature_finder)
 
 add_compile_options(-std=c++11)
 
@@ -26,9 +26,9 @@ include_directories(include
    ${OpenCV_INCLUDE_DIRS}
 )
 
-add_executable(traffic_rules_feature_finder_server src/feature_finder_server.cpp)
-add_dependencies(traffic_rules_feature_finder_server alleyhoop_ros_msgs_generate_messages_cpp)
-target_link_libraries(traffic_rules_feature_finder_server
+add_executable(blob_feature_finder_server src/feature_finder_server.cpp)
+add_dependencies(blob_feature_finder_server alleyhoop_ros_msgs_generate_messages_cpp)
+target_link_libraries(blob_feature_finder_server
    ${catkin_LIBRARIES}
    ${OpenCV_LIBS}
 )
@@ -36,7 +36,7 @@ target_link_libraries(traffic_rules_feature_finder_server
 install(DIRECTORY include/ DESTINATION include)
 
 install(TARGETS
-   traffic_rules_feature_finder_server
+   blob_feature_finder_server
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

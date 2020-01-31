@@ -40,8 +40,8 @@ namespace AlleyHoopROSCore
             * \param features is a list in which features will be added. 
             * \param imagePtr is the image from which features will be extracted
             */
-
             bool findObjectsOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr);
+            
             /*!
             * \brief a function to find traffic rules and signs on an image.
             * This function will use ros services to detect features. This means that the actual detection can be implemented in various ways and is external from this package
@@ -50,6 +50,15 @@ namespace AlleyHoopROSCore
             * \param imagePtr is the image from which features will be extracted
             */
             bool findTrafficRulesOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr);
+
+            /*!
+            * \brief a function to find blob on an image.
+            * This function will use ros services to detect features. This means that the actual detection can be implemented in various ways and is external from this package
+            * The function will return true when it has succesfully retrieved data
+            * \param features is a list in which features will be added. 
+            * \param imagePtr is the image from which features will be extracted
+            */
+            bool findBlobOnImage(std::list<AlleyHoopROSUtils::Feature*>& features, cv_bridge::CvImagePtr& imagePtr);
 
             /*!
             * \brief a function to find a road on an image.
@@ -79,6 +88,7 @@ namespace AlleyHoopROSCore
             ros::ServiceClient traffic_rules_feature_finder_client; /**< the service client for retrieving data when the function findTrafficRulesOnImage is called*/
             ros::ServiceClient road_feature_finder_client; /**< the service client for retrieving data when the function findRoadOnImage is called*/
             ros::ServiceClient object_feature_finder_client; /**< the service client for retrieving data when the function findObjectsOnImage is called*/
+             ros::ServiceClient blob_feature_finder_service; /**< the service client for retrieving data when the function findBlobOnImage is called*/
     };
 
 }

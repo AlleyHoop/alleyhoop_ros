@@ -23,4 +23,5 @@ AlleyHoop_Models: {
   TrafficRulesFeaturesOnImage_ServiceName: "traffic_rules_feature_finder",
   ObjectFeaturesOnImage_ServiceName: "object_feature_finder",
   RoadFeaturesOnImage_ServiceName: "road_feature_finder",
+  BlobFeaturesOnImage_ServiceName: "blob_feature_finder",
 }

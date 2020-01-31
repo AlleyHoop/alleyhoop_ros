@@ -5,7 +5,7 @@
 
 #include "alleyhoop_mvc/sensor.h"
 
-#include <std_msgs/UInt8.h>
+#include <std_msgs/Bool.h>
 
 
 namespace AlleyHoopROSSensors
@@ -35,7 +35,7 @@ namespace AlleyHoopROSSensors
             * \brief this function is called when new LineTracker sensor data is available
             * \param scan the message retrieved from ros
             */
-            void callBack(const std_msgs::UInt8 msg);
+            void callBack(const std_msgs::Bool msg);
 
             /*!
             * \brief this function should be called from the base controller class
@@ -54,7 +54,7 @@ namespace AlleyHoopROSSensors
             ros::NodeHandle nh; /**< the nodehandle */
 
         private:
-            bool value; /**< the state of the tracker */
+            bool state; /**< the state of the tracker */
     };
 
 }

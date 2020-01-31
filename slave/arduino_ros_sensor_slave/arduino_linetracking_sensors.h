@@ -1,21 +1,21 @@
 //pins
-const int trackerPin1 = A0;
-const int trackerPin2 = A1;
+const int tracingPin1 = 7;
+const int tracingPin2 = 6;
 
 //exported data
-int linetracker1_data = 0;
-int linetracker2_data = 0;
+bool linetracker1_data = false;
+bool linetracker2_data = false;
 
 //setup function
 void setup_linetracking_sensors()
 {
-
+    pinMode(tracingPin1,   INPUT);
+    pinMode(tracingPin2,  INPUT);
 }
 
 //update function
 void update_linetracking_sensors()
 {
-    linetracker1_data = analogRead(trackerPin1);
-    linetracker2_data = analogRead(trackerPin2);
+    linetracker1_data = digitalRead(tracingPin1);
+    linetracker2_data = digitalRead(tracingPin2);
 }
-

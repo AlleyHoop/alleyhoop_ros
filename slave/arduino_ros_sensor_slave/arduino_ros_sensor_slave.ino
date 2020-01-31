@@ -25,21 +25,21 @@ void messageCb( const std_msgs::Bool& msg)
 ros::Subscriber<std_msgs::Bool> led13_sub("/arduino_sensor_slave/led13", &messageCb );
 
 //ultrasonic data
-const long ultrasonic_pub_rate = 100;
+const long ultrasonic_pub_rate = 50;
 long ultrasonic_pub_timer = millis() + ultrasonic_pub_timer;
 std_msgs::UInt8 ultrasonic_msg;
 ros::Publisher ultrasonic_pub("/arduino_sensor_slave/ultrasonic_sensor", &ultrasonic_msg);
 
 //imu data
-const long imu_pub_rate = 200;
+const long imu_pub_rate = 100;
 long imu_pub_timer = millis() + imu_pub_rate;
 sensor_msgs::Imu imu_msg;
 ros::Publisher imu_pub("/arduino_sensor_slave/imu_sensor", &imu_msg);
 
 //linetracking sensors
-std_msgs::UInt8 linetracker1_msg;
-std_msgs::UInt8 linetracker2_msg;
-const long linetrackers_pub_rate = 200;
+std_msgs::Bool linetracker1_msg;
+std_msgs::Bool linetracker2_msg;
+const long linetrackers_pub_rate = 100;
 long linetrackers_pub_timer = millis() + linetrackers_pub_rate;
 ros::Publisher linetracker1_pub("/arduino_sensor_slave/linetracker_left", &linetracker1_msg);
 ros::Publisher linetracker2_pub("/arduino_sensor_slave/linetracker_right", &linetracker2_msg);

@@ -47,99 +47,85 @@ bool findFeaturesOnImage(alleyhoop_ros_msgs::FindFeaturesOnImage::Request &req,
     int height = srcImage.rows;
     int width = srcImage.cols;
 
-    //create grayscaled image
-    Mat grayImage;
-    cvtColor(srcImage, grayImage, CV_BGR2GRAY);
-    medianBlur(grayImage, grayImage, 5);
-
     //create hsv image
     Mat hsvImage;
     cvtColor(srcImage, hsvImage, CV_BGR2HSV);
 
-    //draw the circle on a black canvas
-    Mat blankImage(height, width, CV_8UC1, Scalar(0,0,0));
+    // get mask for color red
+    Mat hsvMask1;
+    inRange(hsvImage,
+            Scalar(0, 70, 50), Scalar(10, 255, 255),
+        hsvMask1);
+    Mat hsvMask2;
+    inRange(hsvImage,
+            Scalar(170, 70, 50), Scalar(180, 255, 255),
+        hsvMask2);
+    Mat hsvMask = hsvMask1 | hsvMask2;
 
-    //find circles in image
-    std::vector<Vec3f> circles;
-    HoughCircles(grayImage, circles, HOUGH_GRADIENT, 1,
-                grayImage.rows/8,  // change this value to detect circles with different distances to each other
-                200, 100, 20, 50 // change the last two parameters
-    );
-
-    //identify features within found circles
-    if(circles.size() > 0)
+    //find contours
+    std::vector<std::vector<Point> > contours;
+    std::vector<Vec4i> hierarchy;
+    findContours( hsvMask, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+   
+    
+    //get largest contour as feature
+    if(contours.size() > 0)
     {
-        for( size_t i = 0; i < circles.size(); i++ )
+        at_least_one_feature = true;
+
+        //get largest contour
+        int cuurent_area = 0;
+        int largest_area = 0;
+        int largest_contour_index = 0;
+        for( int i = 0; i< contours.size(); i++ )
         {
-            at_least_one_feature = true;
+        
+        double area = contourArea( contours[i] );  //  Find the area of contour
 
-            //get center and radius of circle
-            Vec3i c = circles[i];
-            Point center = Point(c[0], c[1]);
-            int radius = c[2];
-
-            //draw the circle on a black canvas
-            Mat circleImage = blankImage.clone();
-            circle( circleImage, center, radius, Scalar(255,255,255), CV_FILLED, 8, 0);
-
-            // get mask for color red
-            Mat hsvMask1;
-            inRange(hsvImage,
-                    Scalar(0, 70, 50), Scalar(10, 255, 255),
-                hsvMask1);
-            Mat hsvMask2;
-            inRange(hsvImage,
-                    Scalar(170, 70, 50), Scalar(180, 255, 255),
-                hsvMask1);
-            Mat hsvMask = hsvMask1 | hsvMask2;
-
-            //resulting image
-            Mat resImage;
-            bitwise_and(circleImage, hsvMask, resImage);
-
-            //for each white point on the blankImage check add up the color from the original image
-            std::vector<Point> points;
-            cv::findNonZero(resImage, points);
-
-            //add the feature. Every four elements is one feature
-            if(points.size() > 100)
+            if( area > largest_area )
             {
-                features.push_back(c[0] - c[2]/2); //min x
-                features.push_back(c[1] - c[2]/2); //min y
-                features.push_back(c[0] + c[2]/2);  //max x
-                features.push_back(c[1] + c[2]/2);  //max y
+                largest_area = area;
+                largest_contour_index = i;                   //Store the index of largest contour
             }
-
-            //show images
-            //imshow("hsv combined mask", hsvMask);
-            //imshow("detected circles", circleImage);
-            //imshow("bitwise and", resImage);
-            //waitKey(0);
-
-            //release open cv images
-            circleImage.release();
-            hsvMask.release();
-            hsvMask1.release();
-            hsvMask2.release();
-            resImage.release();
         }
 
-        //set result
-        if(at_least_one_feature)
-        {
-            res.step = 4;
-        }
-        else
-        {
-            res.step = 0;
-        }
-        res.features = features;
+        /// Draw contours
+        Mat drawing = Mat::zeros( hsvMask.size(), CV_8UC3 );
+        drawContours( drawing, contours,largest_contour_index, Scalar( 0, 255, 0 ), 2 );
+
+        //get the bounding rect
+        Rect bounding_rect = boundingRect( contours[largest_contour_index] );
+        features.push_back(bounding_rect.x);
+        features.push_back(bounding_rect.y);
+        features.push_back(bounding_rect.width);
+        features.push_back(bounding_rect.height);
+
+        //show images
+        //imshow("original image", srcImage);
+        //imshow("hsv combined mask", hsvMask);
+        //imshow("drawing", drawing);
+        //waitKey(0);
+
+        //release open cv images
+        hsvMask.release();
+        hsvMask1.release();
+        hsvMask2.release();
+        drawing.release();
     }
+
+    //set result
+    if(at_least_one_feature)
+    {
+        res.step = 4;
+    }
+    else
+    {
+        res.step = 0;
+    }
+    res.features = features;
 
     //release open cv images
     srcImage.release();
-    grayImage.release();
-    blankImage.release();
     hsvImage.release();
 
     return true;

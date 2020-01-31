@@ -88,7 +88,7 @@ namespace AlleyHoopROSCore
             ros::ServiceClient traffic_rules_feature_finder_client; /**< the service client for retrieving data when the function findTrafficRulesOnImage is called*/
             ros::ServiceClient road_feature_finder_client; /**< the service client for retrieving data when the function findRoadOnImage is called*/
             ros::ServiceClient object_feature_finder_client; /**< the service client for retrieving data when the function findObjectsOnImage is called*/
-             ros::ServiceClient blob_feature_finder_service; /**< the service client for retrieving data when the function findBlobOnImage is called*/
+             ros::ServiceClient blob_feature_finder_client; /**< the service client for retrieving data when the function findBlobOnImage is called*/
     };
 
 }
